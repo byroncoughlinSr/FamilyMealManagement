@@ -1,0 +1,121 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:2:1-63:12
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:2:1-63:12
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:2:1-63:12
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:2:1-63:12
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:2:1-63:12
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:2:1-63:12
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:2:1-63:12
+	package
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:3:5-39
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+	android:versionName
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:5:5-30
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:4:5-28
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+uses-sdk
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:7:5-9:41
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:7:5-9:41
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:7:5-9:41
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:7:5-9:41
+INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:7:5-9:41
+	android:targetSdkVersion
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:9:9-38
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:8:9-35
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml
+application
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:11:5-61:19
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:14:9-41
+	android:icon
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:13:9-45
+	android:allowBackup
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:12:9-35
+	android:theme
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:15:9-40
+activity#org.coughlin.grocerylist.GrocerylistActivity
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:16:9-36:20
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:18:13-45
+	android:launchMode
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:19:13-43
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:17:13-72
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:20:13-24:29
+action#android.intent.action.MAIN
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:21:17-69
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:21:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:23:17-77
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:23:27-74
+meta-data#android.app.searchable
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:26:13-28:54
+	android:resource
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:28:17-51
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:27:17-54
+intent-filter#action:name:android.intent.action.SEARCH
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:30:13-32:29
+action#android.intent.action.SEARCH
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:31:17-71
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:31:25-68
+intent-filter#action:name:android.intent.action.VIEW
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:33:13-35:29
+action#android.intent.action.VIEW
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:34:17-69
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:34:25-66
+provider#org.coughlin.grocerylist.GroceryContentProvider
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:38:9-43:20
+	android:authorities
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:40:13-64
+	android:exported
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:41:13-36
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:39:13-75
+grant-uri-permission
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:42:13-62
+	android:pathPattern
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:42:35-59
+activity#org.coughlin.grocerylist.SearchActivity
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:45:9-49:20
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:47:13-58
+	android:launchMode
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:48:13-43
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:46:13-67
+activity#org.coughlin.grocerylist.ProductActivity
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:50:9-53:20
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:52:13-59
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:51:13-68
+activity#org.coughlin.grocerylist.HistoryActivity
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:54:9-57:20
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:56:13-59
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:55:13-68
+provider#org.coughlin.grocerylist.HistoryContentProvider
+ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:58:9-60:20
+	android:authorities
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:58:57-108
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.grocerylist.application1/app/src/main/AndroidManifest.xml:58:19-56

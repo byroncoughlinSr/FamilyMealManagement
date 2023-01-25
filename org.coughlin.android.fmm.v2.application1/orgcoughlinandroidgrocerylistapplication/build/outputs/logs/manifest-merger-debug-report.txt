@@ -1,0 +1,263 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:2:1-62:12
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:2:1-62:12
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:2:1-62:12
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:2:1-62:12
+MERGED from [androidx.appcompat:appcompat-resources:1.6.0] /home/byron/.gradle/caches/transforms-3/75867072870227a6d47bfc3dcbe80e4e/transformed/jetified-appcompat-resources-1.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.appcompat:appcompat:1.6.0] /home/byron/.gradle/caches/transforms-3/5521fd259f8332737a22b3743c01d4b7/transformed/appcompat-1.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /home/byron/.gradle/caches/transforms-3/f66ae2e3f3030ca408ea17e7c467639b/transformed/drawerlayout-1.1.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment:1.3.6] /home/byron/.gradle/caches/transforms-3/c44db921d64db197524d35fa7594e186/transformed/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/byron/.gradle/caches/transforms-3/3bc05c5cb8f8db139d32045463e80927/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.1.0] /home/byron/.gradle/caches/transforms-3/a04783f29b3d212547f0bdc516b18598/transformed/customview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.6.0] /home/byron/.gradle/caches/transforms-3/1ce5845c6fc16b9914c30e4a33090e75/transformed/jetified-activity-1.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/byron/.gradle/caches/transforms-3/3eaa52d22143a4ca7a75a7453afe2314/transformed/jetified-emoji2-views-helper-1.2.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.loader:loader:1.0.0] /home/byron/.gradle/caches/transforms-3/367789d21f8395d0d2535ca2cf256883/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/byron/.gradle/caches/transforms-3/f94025579e5a4c230bbba5aa7dd1079d/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/byron/.gradle/caches/transforms-3/efec15db3c3191908c5d93c86b98c8a6/transformed/jetified-lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.9.0] /home/byron/.gradle/caches/transforms-3/2b39f009f120677f828fd2f89cd70e5b/transformed/jetified-core-ktx-1.9.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/byron/.gradle/caches/transforms-3/929e3e14d89d7add6b51a10562494976/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/byron/.gradle/caches/transforms-3/486998729bd0270ca6ef99f3632c6fdf/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/byron/.gradle/caches/transforms-3/51d99444bfcce4167befc289aaeead8b/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:17:1-37:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/byron/.gradle/caches/transforms-3/e9c0667ffb0f5abbc13f0e6ed5d96563/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.2.0] /home/byron/.gradle/caches/transforms-3/c90f73336cffabdcdad24d0e61bfc4f0/transformed/jetified-savedstate-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/byron/.gradle/caches/transforms-3/8ef30433ab1bf62a45c58ef3e0560ed0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/byron/.gradle/caches/transforms-3/ba19eefd8bd3c595b581ae8bc180a84e/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /home/byron/.gradle/caches/transforms-3/8ee6982d4a5986110d359b3576bf2135/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/byron/.gradle/caches/transforms-3/e7248a3bfb7983b0a014dbd89b3befea/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/byron/.gradle/caches/transforms-3/0671bb7bb856238b78c07173458201df/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/byron/.gradle/caches/transforms-3/75ee34e9d1f114d6ffc9ab3d2a088bd1/transformed/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/byron/.gradle/caches/transforms-3/3150cf7c9b77e480aa0237667e8a6f0a/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/byron/.gradle/caches/transforms-3/6ec40e2dea3142aafc1fd54c03d8c543/transformed/jetified-annotation-experimental-1.3.0/AndroidManifest.xml:17:1-22:12
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:2:1-62:12
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:2:1-62:12
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:2:1-62:12
+	package
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:3:5-39
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+	android:versionName
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:5:5-30
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:4:5-28
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+uses-sdk
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:7:5-8:41
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:7:5-8:41
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:7:5-8:41
+MERGED from [androidx.appcompat:appcompat-resources:1.6.0] /home/byron/.gradle/caches/transforms-3/75867072870227a6d47bfc3dcbe80e4e/transformed/jetified-appcompat-resources-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat-resources:1.6.0] /home/byron/.gradle/caches/transforms-3/75867072870227a6d47bfc3dcbe80e4e/transformed/jetified-appcompat-resources-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.0] /home/byron/.gradle/caches/transforms-3/5521fd259f8332737a22b3743c01d4b7/transformed/appcompat-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.6.0] /home/byron/.gradle/caches/transforms-3/5521fd259f8332737a22b3743c01d4b7/transformed/appcompat-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /home/byron/.gradle/caches/transforms-3/f66ae2e3f3030ca408ea17e7c467639b/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /home/byron/.gradle/caches/transforms-3/f66ae2e3f3030ca408ea17e7c467639b/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] /home/byron/.gradle/caches/transforms-3/c44db921d64db197524d35fa7594e186/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] /home/byron/.gradle/caches/transforms-3/c44db921d64db197524d35fa7594e186/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/byron/.gradle/caches/transforms-3/3bc05c5cb8f8db139d32045463e80927/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/byron/.gradle/caches/transforms-3/3bc05c5cb8f8db139d32045463e80927/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.1.0] /home/byron/.gradle/caches/transforms-3/a04783f29b3d212547f0bdc516b18598/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.1.0] /home/byron/.gradle/caches/transforms-3/a04783f29b3d212547f0bdc516b18598/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.6.0] /home/byron/.gradle/caches/transforms-3/1ce5845c6fc16b9914c30e4a33090e75/transformed/jetified-activity-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.6.0] /home/byron/.gradle/caches/transforms-3/1ce5845c6fc16b9914c30e4a33090e75/transformed/jetified-activity-1.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/byron/.gradle/caches/transforms-3/3eaa52d22143a4ca7a75a7453afe2314/transformed/jetified-emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2-views-helper:1.2.0] /home/byron/.gradle/caches/transforms-3/3eaa52d22143a4ca7a75a7453afe2314/transformed/jetified-emoji2-views-helper-1.2.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/byron/.gradle/caches/transforms-3/367789d21f8395d0d2535ca2cf256883/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/byron/.gradle/caches/transforms-3/367789d21f8395d0d2535ca2cf256883/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/byron/.gradle/caches/transforms-3/f94025579e5a4c230bbba5aa7dd1079d/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.5.1] /home/byron/.gradle/caches/transforms-3/f94025579e5a4c230bbba5aa7dd1079d/transformed/lifecycle-viewmodel-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/byron/.gradle/caches/transforms-3/efec15db3c3191908c5d93c86b98c8a6/transformed/jetified-lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1] /home/byron/.gradle/caches/transforms-3/efec15db3c3191908c5d93c86b98c8a6/transformed/jetified-lifecycle-viewmodel-savedstate-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.9.0] /home/byron/.gradle/caches/transforms-3/2b39f009f120677f828fd2f89cd70e5b/transformed/jetified-core-ktx-1.9.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.9.0] /home/byron/.gradle/caches/transforms-3/2b39f009f120677f828fd2f89cd70e5b/transformed/jetified-core-ktx-1.9.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/byron/.gradle/caches/transforms-3/929e3e14d89d7add6b51a10562494976/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/byron/.gradle/caches/transforms-3/929e3e14d89d7add6b51a10562494976/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/byron/.gradle/caches/transforms-3/486998729bd0270ca6ef99f3632c6fdf/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/byron/.gradle/caches/transforms-3/486998729bd0270ca6ef99f3632c6fdf/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/byron/.gradle/caches/transforms-3/51d99444bfcce4167befc289aaeead8b/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/byron/.gradle/caches/transforms-3/51d99444bfcce4167befc289aaeead8b/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/byron/.gradle/caches/transforms-3/e9c0667ffb0f5abbc13f0e6ed5d96563/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.5.1] /home/byron/.gradle/caches/transforms-3/e9c0667ffb0f5abbc13f0e6ed5d96563/transformed/lifecycle-runtime-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.2.0] /home/byron/.gradle/caches/transforms-3/c90f73336cffabdcdad24d0e61bfc4f0/transformed/jetified-savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.2.0] /home/byron/.gradle/caches/transforms-3/c90f73336cffabdcdad24d0e61bfc4f0/transformed/jetified-savedstate-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/byron/.gradle/caches/transforms-3/8ef30433ab1bf62a45c58ef3e0560ed0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/byron/.gradle/caches/transforms-3/8ef30433ab1bf62a45c58ef3e0560ed0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/byron/.gradle/caches/transforms-3/ba19eefd8bd3c595b581ae8bc180a84e/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/byron/.gradle/caches/transforms-3/ba19eefd8bd3c595b581ae8bc180a84e/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /home/byron/.gradle/caches/transforms-3/8ee6982d4a5986110d359b3576bf2135/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /home/byron/.gradle/caches/transforms-3/8ee6982d4a5986110d359b3576bf2135/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/byron/.gradle/caches/transforms-3/e7248a3bfb7983b0a014dbd89b3befea/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/byron/.gradle/caches/transforms-3/e7248a3bfb7983b0a014dbd89b3befea/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/byron/.gradle/caches/transforms-3/0671bb7bb856238b78c07173458201df/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] /home/byron/.gradle/caches/transforms-3/0671bb7bb856238b78c07173458201df/transformed/lifecycle-livedata-core-2.5.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/byron/.gradle/caches/transforms-3/75ee34e9d1f114d6ffc9ab3d2a088bd1/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /home/byron/.gradle/caches/transforms-3/75ee34e9d1f114d6ffc9ab3d2a088bd1/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/byron/.gradle/caches/transforms-3/3150cf7c9b77e480aa0237667e8a6f0a/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/byron/.gradle/caches/transforms-3/3150cf7c9b77e480aa0237667e8a6f0a/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/byron/.gradle/caches/transforms-3/6ec40e2dea3142aafc1fd54c03d8c543/transformed/jetified-annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.3.0] /home/byron/.gradle/caches/transforms-3/6ec40e2dea3142aafc1fd54c03d8c543/transformed/jetified-annotation-experimental-1.3.0/AndroidManifest.xml:20:5-44
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:7:5-8:41
+INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:7:5-8:41
+	android:targetSdkVersion
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:8:9-38
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:7:5-8:41
+		INJECTED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml
+application
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:10:5-60:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/byron/.gradle/caches/transforms-3/8ef30433ab1bf62a45c58ef3e0560ed0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /home/byron/.gradle/caches/transforms-3/8ef30433ab1bf62a45c58ef3e0560ed0/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/byron/.gradle/caches/transforms-3/ba19eefd8bd3c595b581ae8bc180a84e/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/byron/.gradle/caches/transforms-3/ba19eefd8bd3c595b581ae8bc180a84e/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:28:18-86
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:13:9-41
+	android:icon
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:12:9-45
+	android:allowBackup
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:11:9-35
+	android:theme
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:14:9-40
+activity#org.coughlin.grocerylist.GrocerylistActivity
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:15:9-35:20
+	android:launchMode
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:17:13-43
+	android:exported
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:18:13-36
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:16:13-72
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:19:13-23:29
+action#android.intent.action.MAIN
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:20:17-69
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:20:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:22:17-77
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:22:27-74
+meta-data#android.app.searchable
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:25:13-27:54
+	android:resource
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:27:17-51
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:26:17-54
+intent-filter#action:name:android.intent.action.SEARCH
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:29:13-31:29
+action#android.intent.action.SEARCH
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:30:17-71
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:30:25-68
+intent-filter#action:name:android.intent.action.VIEW
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:32:13-34:29
+action#android.intent.action.VIEW
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:33:17-69
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:33:25-66
+provider#org.coughlin.grocerylist.GroceryContentProvider
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:37:9-42:20
+	android:authorities
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:39:13-64
+	android:exported
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:40:13-37
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:38:13-75
+grant-uri-permission
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:41:13-62
+	android:pathPattern
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:41:35-59
+activity#org.coughlin.grocerylist.SearchActivity
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:44:9-48:20
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:46:13-58
+	android:launchMode
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:47:13-43
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:45:13-67
+activity#org.coughlin.grocerylist.ProductActivity
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:49:9-52:20
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:51:13-59
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:50:13-68
+activity#org.coughlin.grocerylist.HistoryActivity
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:53:9-56:20
+	android:label
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:55:13-59
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:54:13-68
+provider#org.coughlin.grocerylist.HistoryContentProvider
+ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:57:9-59:20
+	android:authorities
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:57:57-108
+	android:name
+		ADDED from /development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:57:19-56
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/byron/.gradle/caches/transforms-3/ba19eefd8bd3c595b581ae8bc180a84e/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /home/byron/.gradle/caches/transforms-3/ba19eefd8bd3c595b581ae8bc180a84e/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:30:17-75
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:23:9-81
+permission#org.coughlin.grocerylist.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:26:22-94
+uses-permission#org.coughlin.grocerylist.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78

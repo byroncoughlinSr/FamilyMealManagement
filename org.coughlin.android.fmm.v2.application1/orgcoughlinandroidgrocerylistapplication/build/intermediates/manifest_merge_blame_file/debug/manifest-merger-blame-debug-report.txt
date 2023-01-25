@@ -1,0 +1,149 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="org.coughlin.grocerylist"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+7-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:7:5-8:41
+8        android:minSdkVersion="26"
+8-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:7:5-8:41
+9        android:targetSdkVersion="33" />
+9-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:8:9-38
+10
+11    <permission
+11-->[androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:22:5-24:47
+12        android:name="org.coughlin.grocerylist.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+12-->[androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:23:9-81
+13        android:protectionLevel="signature" />
+13-->[androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:24:9-44
+14
+15    <uses-permission android:name="org.coughlin.grocerylist.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+15-->[androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:26:5-97
+15-->[androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:26:22-94
+16
+17    <application
+17-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:10:5-60:19
+18        android:allowBackup="true"
+18-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:11:9-35
+19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+19-->[androidx.core:core:1.9.0] /home/byron/.gradle/caches/transforms-3/85625968673fb9fd8db34217596f6efd/transformed/core-1.9.0/AndroidManifest.xml:28:18-86
+20        android:debuggable="true"
+21        android:extractNativeLibs="false"
+22        android:icon="@drawable/ic_launcher"
+22-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:12:9-45
+23        android:label="@string/app_name"
+23-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:13:9-41
+24        android:theme="@style/AppTheme" >
+24-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:14:9-40
+25        <activity
+25-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:15:9-35:20
+26            android:name="org.coughlin.grocerylist.GrocerylistActivity"
+26-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:16:13-72
+27            android:exported="true"
+27-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:18:13-36
+28            android:launchMode="singleTop" >
+28-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:17:13-43
+29            <intent-filter>
+29-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:19:13-23:29
+30                <action android:name="android.intent.action.MAIN" />
+30-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:20:17-69
+30-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:20:25-66
+31
+32                <category android:name="android.intent.category.LAUNCHER" />
+32-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:22:17-77
+32-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:22:27-74
+33            </intent-filter>
+34
+35            <meta-data
+35-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:25:13-27:54
+36                android:name="android.app.searchable"
+36-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:26:17-54
+37                android:resource="@xml/searchable" />
+37-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:27:17-51
+38
+39            <intent-filter>
+39-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:29:13-31:29
+40                <action android:name="android.intent.action.SEARCH" />
+40-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:30:17-71
+40-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:30:25-68
+41            </intent-filter>
+42            <intent-filter>
+42-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:32:13-34:29
+43                <action android:name="android.intent.action.VIEW" />
+43-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:33:17-69
+43-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:33:25-66
+44            </intent-filter>
+45        </activity>
+46
+47        <provider
+47-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:37:9-42:20
+48            android:name="org.coughlin.grocerylist.GroceryContentProvider"
+48-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:38:13-75
+49            android:authorities="org.coughlin.provider.grocery"
+49-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:39:13-64
+50            android:exported="false" >
+50-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:40:13-37
+51            <grant-uri-permission android:pathPattern=".*" />
+51-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:41:13-62
+51-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:41:35-59
+52        </provider>
+53
+54        <activity
+54-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:44:9-48:20
+55            android:name="org.coughlin.grocerylist.SearchActivity"
+55-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:45:13-67
+56            android:label="@string/title_activity_search"
+56-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:46:13-58
+57            android:launchMode="singleTop" >
+57-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:47:13-43
+58        </activity>
+59        <activity
+59-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:49:9-52:20
+60            android:name="org.coughlin.grocerylist.ProductActivity"
+60-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:50:13-68
+61            android:label="@string/title_activity_product" >
+61-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:51:13-59
+62        </activity>
+63        <activity
+63-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:53:9-56:20
+64            android:name="org.coughlin.grocerylist.HistoryActivity"
+64-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:54:13-68
+65            android:label="@string/title_activity_history" >
+65-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:55:13-59
+66        </activity>
+67
+68        <provider
+68-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:57:9-59:20
+69            android:name="org.coughlin.grocerylist.HistoryContentProvider"
+69-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:57:19-56
+70            android:authorities="org.coughlin.provider.history" >
+70-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:57:57-108
+71            <grant-uri-permission android:pathPattern=".*" />
+71-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:41:13-62
+71-->/development/android_workspace/org.coughlin.android.fmm.v2.application1/orgcoughlinandroidgrocerylistapplication/src/main/AndroidManifest.xml:41:35-59
+72        </provider>
+73        <provider
+73-->[androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+74            android:name="androidx.startup.InitializationProvider"
+74-->[androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:25:13-67
+75            android:authorities="org.coughlin.grocerylist.androidx-startup"
+75-->[androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:26:13-68
+76            android:exported="false" >
+76-->[androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:27:13-37
+77            <meta-data
+77-->[androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+78                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+78-->[androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:30:17-75
+79                android:value="androidx.startup" />
+79-->[androidx.emoji2:emoji2:1.2.0] /home/byron/.gradle/caches/transforms-3/798c3c0d56d8a0030f37c4437699c0b6/transformed/jetified-emoji2-1.2.0/AndroidManifest.xml:31:17-49
+80            <meta-data
+80-->[androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:31:13-33:52
+81                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+81-->[androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:32:17-78
+82                android:value="androidx.startup" />
+82-->[androidx.lifecycle:lifecycle-process:2.4.1] /home/byron/.gradle/caches/transforms-3/8c59a601db567b4cb6bd18434a8df3a7/transformed/jetified-lifecycle-process-2.4.1/AndroidManifest.xml:33:17-49
+83        </provider>
+84    </application>
+85
+86</manifest>

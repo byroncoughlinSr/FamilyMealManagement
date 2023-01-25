@@ -1,0 +1,166 @@
+[
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-xhdpi_ic_drawer.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-xhdpi/ic_drawer.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/menu_search.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/menu/search.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/xml_menu_searchable.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/xml/menu_searchable.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_activity_menu.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/activity_menu.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-mdpi_ic_menu_search.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-mdpi/ic_menu_search.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_item_drawer.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/item_drawer.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-xhdpi_ic_menu_search.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-xhdpi/ic_menu_search.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-mdpi_ic_drawer.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-mdpi/ic_drawer.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-hdpi_ic_launcher.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/menu_history.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/menu/history.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_fragment_history.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/fragment_history.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-xxhdpi_ic_launcher.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/menu_product.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/menu/product.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_fragment_product.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/fragment_product.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_menulist_item.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/menulist_item.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/menu_menu_item.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/menu/menu_item.xml"
+    },
+    {
+        "merged": "org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_activity_menu.xml.flat",
+        "source": "org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/activity_menu.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/xml_searchable.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/xml/searchable.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/menu_menu.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/menu/menu.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-mdpi_drawer_shadow.9.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-mdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-hdpi_drawer_shadow.9.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-hdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-xxhdpi_drawer_shadow.9.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-xxhdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-xxhdpi_shadowed_background.9.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-xxhdpi/shadowed_background.9.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_search_layout.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/search_layout.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_grocerylist_item.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/grocerylist_item.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-xhdpi_ic_launcher.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_fragment_navigation_drawer.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/fragment_navigation_drawer.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-xxhdpi_ic_drawer.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-xxhdpi/ic_drawer.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_fragment_menu.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/fragment_menu.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/menu_global.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/menu/global.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-xhdpi_drawer_shadow.9.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-xhdpi/drawer_shadow.9.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-hdpi_ic_menu_search.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-hdpi/ic_menu_search.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_activity_product.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/activity_product.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/menu_grocerylist.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/menu/grocerylist.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-mdpi_ic_launcher.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_historylist_item.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/historylist_item.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_activity_menu_item.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/activity_menu_item.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_activity_history.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/activity_history.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/layout_activity_grocerylist.xml.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/layout/activity_grocerylist.xml"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-hdpi_ic_drawer.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-hdpi/ic_drawer.png"
+    },
+    {
+        "merged": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-merged_res-5:/drawable-ldpi_ic_menu_search.png.flat",
+        "source": "/home/byron/.gradle/daemon/7.5/org.coughlin.grocerylist.orgcoughlinandroidfmmv2application-main-7:/drawable-ldpi/ic_menu_search.png"
+    }
+]

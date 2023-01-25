@@ -1,0 +1,62 @@
+{
+    "logs": [
+        {
+            "outputFile": "/development/android_workspace/org.coughlin.SwipeExample1/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+            "map": [
+                {
+                    "source": "/development/android_workspace/org.coughlin.SwipeExample1/app/src/main/res/values/styles.xml",
+                    "from": {
+                        "startLines": "6,15",
+                        "startColumns": "4,4",
+                        "startOffsets": "186,510",
+                        "endLines": "12,17",
+                        "endColumns": "12,12",
+                        "endOffsets": "472,665"
+                    },
+                    "to": {
+                        "startLines": "10,17",
+                        "startColumns": "4,4",
+                        "startOffsets": "484,775",
+                        "endLines": "16,19",
+                        "endColumns": "12,12",
+                        "endOffsets": "770,930"
+                    }
+                },
+                {
+                    "source": "/development/android_workspace/org.coughlin.SwipeExample1/app/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "8,3,7,4,5,6",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "318,56,265,106,159,212",
+                        "endColumns": "52,49,52,52,52,52",
+                        "endOffsets": "366,101,313,154,207,260"
+                    },
+                    "to": {
+                        "startLines": "4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "169,222,272,325,378,431",
+                        "endColumns": "52,49,52,52,52,52",
+                        "endOffsets": "217,267,320,373,426,479"
+                    }
+                },
+                {
+                    "source": "/development/android_workspace/org.coughlin.SwipeExample1/app/src/main/res/values/dimens.xml",
+                    "from": {
+                        "startLines": "3,4",
+                        "startColumns": "4,4",
+                        "startOffsets": "89,147",
+                        "endColumns": "57,55",
+                        "endOffsets": "142,198"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,113",
+                        "endColumns": "57,55",
+                        "endOffsets": "108,164"
+                    }
+                }
+            ]
+        }
+    ]
+}

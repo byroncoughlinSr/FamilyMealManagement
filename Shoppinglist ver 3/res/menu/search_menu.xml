@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_item_search" android:showAsAction="always" android:actionViewClass="android.widget.SearchView" android:title="@string/app_name" android:icon="@drawable/ic_menu_search"></item>
+    <item android:id="@+id/remove" android:showAsAction="ifRoom|collapseActionView" android:icon="@drawable/ic_menu_btn_add"></item>
+    
+
+</menu>
