@@ -1,4 +1,0 @@
-#Tue Jul 28 15:07:41 PDT 2020
-base.0=/development/android_workspace/org.coughlin.android.fmm.v1.application1/orgcoughlinandroidgrocerylistapplication/build/intermediates/dex/debug/mergeDexDebug/classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
