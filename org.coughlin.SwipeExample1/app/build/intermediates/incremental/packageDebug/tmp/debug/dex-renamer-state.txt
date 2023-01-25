@@ -1,4 +1,0 @@
-#Sat Jul 25 18:58:56 PDT 2020
-base.0=/development/android_workspace/org.coughlin.SwipeExample1/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
