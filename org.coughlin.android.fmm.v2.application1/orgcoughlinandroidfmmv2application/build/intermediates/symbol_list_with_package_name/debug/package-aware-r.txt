@@ -621,6 +621,7 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable checked
 drawable drawer_shadow
 drawable gradient_background
 drawable ic_drawer
@@ -948,6 +949,7 @@ string androidx_startup
 string app_name
 string drawer_close
 string drawer_open
+string grocerylist
 string hello_world
 string navigation_drawer_close
 string navigation_drawer_open

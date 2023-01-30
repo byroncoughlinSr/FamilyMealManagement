@@ -2,8 +2,6 @@ package org.coughlin.grocerylist;
 
 import java.io.IOException;
 import java.util.HashMap;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.app.SearchManager;
@@ -29,11 +27,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-public class GrocerylistActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {	
+public class GrocerylistActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 	private DrawerLayout mDrawerLayout;
 	DatabaseHelper dbHelper;
 	private ListView mDrawerListView;
 	private ListView mGroceryListView;
+	//CheckedTextView mCheckedTextView;
 	private ActionBarDrawerToggle mDrawerToggle;
 	private DatabaseAdapter mDatabaseAdapter;
     private CharSequence mDrawerTitle;
@@ -74,8 +73,14 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 		//Initialize main view objects
 		mBackgroundContainer = findViewById(R.id.view1);
 		mGroceryListView = findViewById(R.id.grocerylistview);
-		mGroceryListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);			
-		
+		mGroceryListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		mGroceryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+			}
+		});
+
 		//Setup and create navigation drawer
 		mDrawerTitle = "Navigational Drawer";
 		String[] mDrawerContents = getResources().getStringArray(R.array.drawer_titles);
@@ -182,27 +187,27 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 				searchManager.getSearchableInfo(getComponentName()));		   
 		return true;
 	}
-	
+
 	/**
      * Handle touch events to fade/move dragged items as they are swiped out
      */
    private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         float mDownX;
         private int mSwipeSlop = -1;
-        
+
         /**				onTouch()
          * Author: byron
          * Description: Handles the swiping of an item to delete from list
          * @return true or false
          */
-        @SuppressLint("ClickableViewAccessibility")
+
 		@Override
         public boolean onTouch(final View v, MotionEvent event) {
         	if (mSwipeSlop < 0) {
                 mSwipeSlop = ViewConfiguration.get(GrocerylistActivity.this).
                 		getScaledTouchSlop();
             }
-           
+           v.performClick();
             switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mItemPressed) {
@@ -249,6 +254,7 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 
             case MotionEvent.ACTION_UP:
                 {
+
                     // User let go - figure out whether to animate the view out, or back into place
                     if (mSwiping) {
                         float x = event.getX() + v.getTranslationX();
@@ -293,6 +299,11 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 									}
 								});
                    }
+					else {
+						boolean clicked = true;
+
+						//Toast.makeText(GrocerylistActivity.this, "id is " + check, Toast.LENGTH_SHORT).show();
+					}
                 }
                 mItemPressed = false;
                 break;

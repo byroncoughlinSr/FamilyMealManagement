@@ -4,43 +4,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start"
+    android:padding="16dp"
+    android:orientation="vertical"
     android:background="@drawable/gradient_background">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="start"
-        android:orientation="vertical">
-
-        <FrameLayout
+        android:orientation="vertical"
+        android:paddingVertical="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#FDD835"
+            android:gravity="center"
+            android:text="@string/grocerylist"
+            android:textSize="20sp"
+            android:textStyle="bold">
+        </TextView>
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="50sp"
-            android:paddingTop="50sp">
-
+            android:layout_height="20dp">
+        </Space>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <view
                 android:id="@+id/view1"
                 class="org.coughlin.grocerylist.BackgroundContainer"
-                android:layout_width="300sp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners"
-                android:paddingBottom="20sp">
-
+                android:background="@drawable/rounded_corners">
                 <ListView
                     android:id="@+id/grocerylistview"
-                    android:layout_width="240sp"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
-
                 </ListView>
             </view>
-        </FrameLayout>
-
+        </LinearLayout>
     </LinearLayout>
-
     <ListView
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"></ListView>
+        android:layout_gravity="start"
+        android:background="#111"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp">
+    </ListView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
