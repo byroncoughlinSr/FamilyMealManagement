@@ -622,6 +622,7 @@ drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable drawer_shadow
+drawable gradient_background
 drawable ic_drawer
 drawable ic_launcher
 drawable ic_menu_search
@@ -637,6 +638,7 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable rounded_corners
 drawable shadowed_background
 drawable test_level_drawable
 drawable tooltip_frame_dark
