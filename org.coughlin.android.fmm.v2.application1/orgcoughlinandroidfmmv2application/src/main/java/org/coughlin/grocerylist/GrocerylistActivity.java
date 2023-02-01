@@ -187,19 +187,16 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
      * Handle touch events to fade/move dragged items as they are swiped out
      */
    private final View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        float mDownX;
+   		float mDownX;
         private int mSwipeSlop = -1;
-
         /**				onTouch()
          * Author: byron
-         * Description: Handles the swiping of an item to delete from list
+         * @description: Handles the swiping of an item to delete from list
          * @return true or false
          */
-
 		@Override
         public boolean onTouch(final View v, MotionEvent event) {
 			CheckedTextView item = v.findViewById(R.id.item);
-
 			v.performClick();
         	if (mSwipeSlop < 0) {
                 mSwipeSlop = ViewConfiguration.get(GrocerylistActivity.this).
@@ -221,17 +218,15 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
                 mVelocityTracker.addMovement(event);                	
                 mItemPressed = true;
                 mDownX = event.getX();
-                break;                
-  
+                break;
             case MotionEvent.ACTION_CANCEL:
                 v.setAlpha(1);
                 v.setTranslationX(0);
                 mItemPressed = false;
                 break;
-                
             case MotionEvent.ACTION_MOVE:
                 {
-                    float x = event.getX() + v.getTranslationX();
+					float x = event.getX() + v.getTranslationX();
                     float deltaX = x - mDownX;
                     float deltaXAbs = Math.abs(deltaX);
                     mVelocityTracker.computeCurrentVelocity(1000 );
@@ -247,11 +242,9 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
                         v.setAlpha(1 - deltaXAbs / v.getWidth());
                     }
                 }
-                break;   
-
+                break;
             case MotionEvent.ACTION_UP:
                 {
-
                     // User let go - figure out whether to animate the view out, or back into place
                     if (mSwiping) {
                         float x = event.getX() + v.getTranslationX();
@@ -267,19 +260,6 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
                             endX = deltaX < 0 ? -v.getWidth() : v.getWidth();
                             endAlpha = 0;
                             remove = true;
-                        } else if (deltaXAbs < v.getWidth() / 16.0) {
-							fractionCovered = 1 - (deltaXAbs / v.getWidth());
-							endX = 0;
-							endAlpha = 1;
-							//click instead of move
-							if (item.isChecked()) {
-								item.setCheckMarkDrawable(0);
-								item.setChecked(false);
-							} else {
-								item.setCheckMarkDrawable(R.drawable.checked);
-								item.setChecked(true);
-							}
-							remove = false;
 						} else {
                             // Not far enough - animate it back
                             fractionCovered = 1 - (deltaXAbs / v.getWidth());
@@ -308,7 +288,9 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 										mGroceryListView.setEnabled(true);
 									}
 								});
-                   }
+                   } else {
+						handleItemChecked((CheckedTextView) v);
+					}
                 }
                 mItemPressed = false;
                 break;
@@ -318,32 +300,16 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
             return true;
         }
     };
-    
-    /**				animateRemoval()
-     * Author: byron
-     * Description: This method animates all other views in the ListView container (not including ignoreView)
-     * into their final positions. It is called after ignoreView has been removed from the
-     * adapter, but before layout has been run. The approach here is to figure out where
-     * everything is now, then allow layout to run, then figure out where everything is after
-     * layout, and then to run animations between all of those start/end positions.
-	 */
-    private void animateRemoval(final ListView listview, View viewToRemove) {
-       int firstVisiblePosition = listview.getFirstVisiblePosition();
-        for (int i = 0; i < listview.getChildCount(); ++i) {
-            View child = listview.getChildAt(i);
-            if (child != viewToRemove) {
-                int position = firstVisiblePosition + i;
-                long itemId = mAdapter.getItemId(position);
-                mItemIdTopMap.put(itemId, child.getTop());
-            }
-        }
-        // Delete the item from the adapter
-        int position = mGroceryListView.getPositionForView(viewToRemove);
-        removeFromList(position);       
-              
-        getLoaderManager().restartLoader(0, null, this);
-        mBackgroundContainer.hideBackground();
-    }
+   private void handleItemChecked(CheckedTextView item) {
+	   //click instead of move
+	   if (item.isChecked()) {
+		   item.setCheckMarkDrawable(0);
+		   item.setChecked(false);
+	   } else {
+		   item.setCheckMarkDrawable(R.drawable.checked);
+		   item.setChecked(true);
+	   }
+   }
 
 	/**				onPostCreate()
 	 * Author: byron
@@ -365,107 +331,111 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 		super.onConfigurationChanged(newConfig);
 	    mDrawerToggle.onConfigurationChanged(newConfig);
 	}
+	/**				getGrocerylist()
+	 * Author: byron
+	 * @description: Items in the list are designated by a 1 value being stored in the ProSelected column of the tblProduct.
+	 * This method gets the cursor from the content-provider that holds the names of the product for the listview.
+	 */
+	private void getGrocerylist() {
+		String[] from = {FamilyMealContracts.Products.PRO_NAME};
+		int[] to = {R.id.item};
+		getLoaderManager().initLoader(0, null, this);
+		mAdapter = new StableArrayAdapter(this, R.layout.grocerylist_item, null, from, to,0, mTouchListener);
+		mGroceryListView.setAdapter(mAdapter);
+	}
 
 	/**				onOptionsItemSelected()
 	 * Author: byron
 	 * Description:
 	 */
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {		
-				
+	public boolean onOptionsItemSelected(MenuItem item) {
 		// Pass the event to ActionBarDrawerToggle, if it returns
 	    // true, then it has handled the app icon touch event
 	    if (mDrawerToggle.onOptionsItemSelected(item)) {
 	    	return true;
 	    }    	
 	    return super.onOptionsItemSelected(item);
-	}	
-	
-	/**					onCreateLoader()
-	 * Description: Start a new loader or re-connect to existing one. Calls the content-provider query
-	 * @return Loader<cursor>
-	 */
-	@Override
-	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {		
-		mSelections = FamilyMealContracts.Products.PRO_SELECTED + "=1";
-		return new CursorLoader(this, FamilyMealContracts.Products.CONTENT_URI, mProjections, mSelections, null, null);
 	}
 
-	/**				onLoadFinished()
-	 * Author: byron
-	 * Description:This is called after the loader has finished its load. 
-	 * Cursor data is what has been loaded from the database using the content-provider query
-	 */
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		mAdapter.swapCursor(data);
-		mAdapter.setCursor(data);		
-	}
-
-	/**				onLoaderReset()
-	 * Author: byron
-	 * Description: Resets the loader
-	 */
-	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-		mAdapter.swapCursor(null);		
-	}
-	
 	/**				addToList()
 	 * Author: byron
-	 * Description: Adds item selected in search to grocerylist
+	 * @description: Adds item selected in search to grocerylist
+	 * @param id id of item to be added to grocerylist
 	 */
 	public void addToList(String id) {
-			ContentValues mContentValues = new ContentValues();
-	    		mContentValues.put(FamilyMealContracts.Products.PRO_SELECTED,1);
-	    		mSelections = id;
-	    		getContentResolver().update(FamilyMealContracts.Products.CONTENT_URI, mContentValues, mSelections, null);
-	    		getLoaderManager().restartLoader(0, null, this);
-	    		searchItem.collapseActionView();	    	
+		ContentValues mContentValues = new ContentValues();
+	    mContentValues.put(FamilyMealContracts.Products.PRO_SELECTED,1);
+	    mSelections = id;
+	    getContentResolver().update(FamilyMealContracts.Products.CONTENT_URI, mContentValues, mSelections, null);
+	    getLoaderManager().restartLoader(0, null, this);
+	    searchItem.collapseActionView();
 	 }	
 
 	/**				removeFromList()
 	 * Author: byron
-	 * Description: Called when removing item from list.
+	 * @description escription: Called when removing item from list.
 	 * This toggles the product selected field from 1 to 0.
 	 * Afterward the cursor is reloaded with item removed
+	 * @param position position of the item to be removed
 	 */
 	private void removeFromList(int position) {
 		ContentValues mContentValues = new ContentValues();
-			Cursor c = ((StableArrayAdapter)mGroceryListView.getAdapter()).getCursor();
-			c.moveToPosition(position);
-			String id = Integer.toString(c.getInt(0));
-			mSelections = id;
-    		mContentValues.put(FamilyMealContracts.Products.PRO_SELECTED,0);
-    		getContentResolver().update(FamilyMealContracts.Products.CONTENT_URI, mContentValues, mSelections, null);
-    		moveToHistory(id);    		
-    	}
-	private void moveToHistory(String id) {
+		Cursor c = ((StableArrayAdapter)mGroceryListView.getAdapter()).getCursor();
+		c.moveToPosition(position);
+		String id = Integer.toString(c.getInt(0));
+		mSelections = id;
+		mContentValues.put(FamilyMealContracts.Products.PRO_SELECTED,0);
+		getContentResolver().update(FamilyMealContracts.Products.CONTENT_URI, mContentValues, mSelections, null);
+		moveToHistory(id);
+	}
+
+	/**				animateRemoval()
+	 * Author: byron
+	 * Description: This method animates all other views in the ListView container (not including ignoreView)
+	 * into their final positions. It is called after ignoreView has been removed from the
+	 * adapter, but before layout has been run. The approach here is to figure out where
+	 * everything is now, then allow layout to run, then figure out where everything is after
+	 * layout, and then to run animations between all of those start/end positions.
+	 * @param listview the grocerylist view where item is to be removed
+	 * @param viewToRemove item to be removed
+	 */
+	private void animateRemoval(final ListView listview, View viewToRemove) {
+		int firstVisiblePosition = listview.getFirstVisiblePosition();
+		for (int i = 0; i < listview.getChildCount(); ++i) {
+			View child = listview.getChildAt(i);
+			if (child != viewToRemove) {
+				int position = firstVisiblePosition + i;
+				long itemId = mAdapter.getItemId(position);
+				mItemIdTopMap.put(itemId, child.getTop());
+			}
+		}
+		// Delete the item from the adapter
+		int position = mGroceryListView.getPositionForView(viewToRemove);
+		removeFromList(position);
+
+		getLoaderManager().restartLoader(0, null, this);
+		mBackgroundContainer.hideBackground();
+	}
+
+	/**					moveToHistory
+	 * @description moves item swiped to history
+	 * @param id id of item being swiped
+	 */
+		private void moveToHistory(String id) {
 		mDatabaseAdapter.open();
 		mDatabaseAdapter.moveToHistory(id);
 		mDatabaseAdapter.close();
 	}
 	
-	/**				getGrocerylist()
-	 * Author: byron
-	 * Description: Items in the list are designated by a 1 value being stored in the ProSelected column of the tblProduct.
-	 * This method gets the cursor from the content-provider that holds the names of the product for the listview.
-	 */
-	private void getGrocerylist() {
-		String[] from = {FamilyMealContracts.Products.PRO_NAME};
-    	int[] to = {R.id.item};
-		getLoaderManager().initLoader(0, null, this);
-		mAdapter = new StableArrayAdapter(this, R.layout.grocerylist_item, null, from, to,0, mTouchListener);
-    	mGroceryListView.setAdapter(mAdapter); 
-  
-    }
+
 
 	/**							onItemClick
 	 * @description handles items clicked in the left-drawer menu
-	 * @param parent parent
-	 * @param view view
-	 * @param position position
-	 * @param id id
+	 * @param parent View's parent
+	 * @param view left drawer view
+	 * @param position item's clicked position
+	 * @param id id of menu item
 	 */
 	private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -486,6 +456,40 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 
 		//Close drawer
 		mDrawerLayout.closeDrawer(mDrawerListView);
+	}
+	/**					onCreateLoader()
+	 * @description: Start a new loader or re-connect to existing one. Calls the content-provider query
+	 * @param arg0 id of loader to be called
+	 * @param arg1 Bundle arguments supplied by caller
+	 * @return Loader<cursor>
+	 */
+	@Override
+	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+		mSelections = FamilyMealContracts.Products.PRO_SELECTED + "=1";
+		return new CursorLoader(this, FamilyMealContracts.Products.CONTENT_URI, mProjections, mSelections, null, null);
+	}
+
+	/**				onLoadFinished()
+	 * Author: byron
+	 * @description This is called after the loader has finished its load.
+	 * Cursor data is what has been loaded from the database using the content-provider query
+	 * @param loader loader for grocerylist data
+	 * @param data data generated by loader
+	 */
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		mAdapter.swapCursor(data);
+		mAdapter.setCursor(data);
+	}
+
+	/**				onLoaderReset()
+	 * Author: byron
+	 * @description: Resets the loader
+	 * @param loader loader for grocerylist data
+	 */
+	@Override
+	public void onLoaderReset(Loader<Cursor> loader) {
+		mAdapter.swapCursor(null);
 	}
 }
 
