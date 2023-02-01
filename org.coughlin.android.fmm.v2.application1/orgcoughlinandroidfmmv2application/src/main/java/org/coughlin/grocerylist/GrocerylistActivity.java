@@ -86,7 +86,7 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 		mDrawerListView.setAdapter(new ArrayAdapter<>(this, R.layout.item_drawer, mDrawerContents));
 		
 		// Set the click listener for item in the drawer
-	    mDrawerListView.setOnItemClickListener(this::onItemClick);
+		mDrawerListView.setOnItemClickListener(this::onItemClick);
 
 		//connect to database
 		dbHelper = new DatabaseHelper(getApplicationContext());
@@ -198,7 +198,9 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 
 		@Override
         public boolean onTouch(final View v, MotionEvent event) {
-			CheckedTextView item = (CheckedTextView) v.findViewById(R.id.item);
+			CheckedTextView item = v.findViewById(R.id.item);
+
+			v.performClick();
         	if (mSwipeSlop < 0) {
                 mSwipeSlop = ViewConfiguration.get(GrocerylistActivity.this).
                 		getScaledTouchSlop();
@@ -307,11 +309,6 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 									}
 								});
                    }
-					else {
-						boolean clicked = true;
-
-						//Toast.makeText(GrocerylistActivity.this, "id is " + check, Toast.LENGTH_SHORT).show();
-					}
                 }
                 mItemPressed = false;
                 break;
@@ -416,7 +413,7 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 	
 	/**				addToList()
 	 * Author: byron
-	 * Description: Adds item selected in search to gocerylist
+	 * Description: Adds item selected in search to grocerylist
 	 */
 	public void addToList(String id) {
 			ContentValues mContentValues = new ContentValues();
@@ -464,11 +461,11 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
     }
 
 	/**							onItemClick
-	 * @description handles items clicked in the leftdrawer menu
-	 * @param parent
-	 * @param view
-	 * @param position
-	 * @param id
+	 * @description handles items clicked in the left-drawer menu
+	 * @param parent parent
+	 * @param view view
+	 * @param position position
+	 * @param id id
 	 */
 	private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
