@@ -32,18 +32,6 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name=".GroceryContentProvider"
-            android:authorities="org.coughlin.provider.grocery"
-            android:exported="false" >
-        </provider>
-        
-        <provider
-            android:name=".MenuContentProvider"
-            android:authorities="org.coughlin.provider.menu"
-            android:exported="false" >
-        </provider>
-
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"
@@ -58,12 +46,6 @@
             android:label="@string/title_activity_history" >
         </activity>
 
-        <provider
-            android:name=".HistoryContentProvider"
-            android:authorities="org.coughlin.provider.history"
-            android:exported="false">
-        </provider>
-
         <activity
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
@@ -76,9 +58,31 @@
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MenuItemActivity"
             android:label="@string/title_activity_menu_item" >
         </activity>
+
+        <provider
+            android:name=".HistoryContentProvider"
+            android:authorities="org.coughlin.provider.history"
+            android:exported="false">
+        </provider>
+
+        <provider
+            android:name=".GroceryContentProvider"
+            android:authorities="org.coughlin.provider.grocery"
+            android:exported="false" >
+        </provider>
+
+        <provider
+            android:name=".MenuContentProvider"
+            android:authorities="org.coughlin.provider.menu"
+            android:exported="false" >
+        </provider>
+
+
+
     </application>
 </manifest>
