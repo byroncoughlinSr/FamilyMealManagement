@@ -4,6 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:layout_gravity="start"
-    android:checkMark="@drawable/checked"
     android:checked="false"
     android:gravity="start" />

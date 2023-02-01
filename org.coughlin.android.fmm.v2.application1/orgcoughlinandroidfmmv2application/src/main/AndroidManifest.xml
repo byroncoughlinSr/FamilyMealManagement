@@ -3,8 +3,6 @@
     package="org.coughlin.grocerylist"
     android:versionCode="1"
     android:versionName="1.0" >
-
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -16,7 +14,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -81,8 +78,5 @@
             android:authorities="org.coughlin.provider.menu"
             android:exported="false" >
         </provider>
-
-
-
     </application>
 </manifest>
