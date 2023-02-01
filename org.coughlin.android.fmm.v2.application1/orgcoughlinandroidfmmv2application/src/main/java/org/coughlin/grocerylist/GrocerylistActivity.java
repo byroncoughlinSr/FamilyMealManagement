@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -74,12 +75,6 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 		mBackgroundContainer = findViewById(R.id.view1);
 		mGroceryListView = findViewById(R.id.grocerylistview);
 		mGroceryListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		mGroceryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-			}
-		});
 
 		//Setup and create navigation drawer
 		mDrawerTitle = "Navigational Drawer";
@@ -203,11 +198,11 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
 
 		@Override
         public boolean onTouch(final View v, MotionEvent event) {
+			CheckedTextView item = (CheckedTextView) v.findViewById(R.id.item);
         	if (mSwipeSlop < 0) {
                 mSwipeSlop = ViewConfiguration.get(GrocerylistActivity.this).
                 		getScaledTouchSlop();
             }
-           v.performClick();
             switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mItemPressed) {
@@ -270,7 +265,20 @@ public class GrocerylistActivity extends Activity implements LoaderManager.Loade
                             endX = deltaX < 0 ? -v.getWidth() : v.getWidth();
                             endAlpha = 0;
                             remove = true;
-                        } else {
+                        } else if (deltaXAbs < v.getWidth() / 16.0) {
+							fractionCovered = 1 - (deltaXAbs / v.getWidth());
+							endX = 0;
+							endAlpha = 1;
+							//click instead of move
+							if (item.isChecked()) {
+								item.setCheckMarkDrawable(0);
+								item.setChecked(false);
+							} else {
+								item.setCheckMarkDrawable(R.drawable.checked);
+								item.setChecked(true);
+							}
+							remove = false;
+						} else {
                             // Not far enough - animate it back
                             fractionCovered = 1 - (deltaXAbs / v.getWidth());
                             endX = 0;

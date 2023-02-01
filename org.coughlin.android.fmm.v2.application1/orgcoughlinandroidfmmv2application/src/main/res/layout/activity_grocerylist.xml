@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,43 +9,52 @@
     android:padding="16dp"
     android:orientation="vertical"
     android:background="@drawable/gradient_background">
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:paddingVertical="20dp">
+
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="#FDD835"
+            android:background="#05FDD835"
             android:gravity="center"
             android:text="@string/grocerylist"
             android:textSize="20sp"
-            android:textStyle="bold">
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
         </TextView>
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp">
-        </Space>
-        <LinearLayout
-            android:layout_width="wrap_content"
+
+        <view
+            android:id="@+id/view1"
+            class="org.coughlin.grocerylist.BackgroundContainer"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <view
-                android:id="@+id/view1"
-                class="org.coughlin.grocerylist.BackgroundContainer"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_corners"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
+
+            <ListView
+                android:id="@+id/grocerylistview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners">
-                <ListView
-                    android:id="@+id/grocerylistview"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
-                </ListView>
-            </view>
-        </LinearLayout>
-    </LinearLayout>
+                android:textAlignment="textStart"
+                tools:layout_editor_absoluteX="20dp"
+                tools:layout_editor_absoluteY="10dp">
+
+            </ListView>
+        </view>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <ListView
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
