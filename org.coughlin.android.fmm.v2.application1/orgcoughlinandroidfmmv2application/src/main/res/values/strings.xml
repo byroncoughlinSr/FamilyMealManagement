@@ -35,5 +35,6 @@
     <string name="new_menu_item_hint">Enter new menu item</string>
     <string name="add_new_menu_item">Add Menu Item</string>
     <string name="grocerylist">Grocerylist</string>
+    <string name="menu">Menu</string>
 
 </resources>

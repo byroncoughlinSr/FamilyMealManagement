@@ -33,6 +33,7 @@ public class MenuActivity extends Activity implements LoaderManager.LoaderCallba
 	private ActionBarDrawerToggle mDrawerToggle;
 	private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+	private MenuItem searchItem;
     private StableArrayAdapter mAdapter;
     private final String[] mProjections = {FamilyMealContracts.Products.ROW_ID, FamilyMealContracts.Products.PRO_NAME};
 	private final SQLiteQueryBuilder mSQLiteQueryBuilder = new SQLiteQueryBuilder();
@@ -48,16 +49,16 @@ public class MenuActivity extends Activity implements LoaderManager.LoaderCallba
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//setContentView( R.layout.activity_menu);
+		//set content view
 		mTitle = getTitle();
-		
+		setContentView( R.layout.activity_menu);
+
 		// Handle intent entries
-		getIntent();
 		handleIntent(getIntent());
 		
 		//Initialize main view objects
 		mBackgroundContainer = findViewById(R.id.view1);
-		//mMenuListView = findViewById(R.id.menulistview);
+		mMenuListView = findViewById(R.id.menulistview);
 		mMenuListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);	
 		
 		//Setup the database 
@@ -153,10 +154,10 @@ public class MenuActivity extends Activity implements LoaderManager.LoaderCallba
 	}
 	
 	 /**				handleIntent()
-		 * Author: byron
-		 * Description: Handles search intent
-		 * @param intent intent
-		 */
+	  * Author: byron
+	  * Description: Handles search intent
+	  * @param intent intent
+	  */
 		private void handleIntent(Intent intent) {
 			if (Intent.ACTION_VIEW.equals(intent.getAction())) {
 				Uri data = intent.getData();
@@ -187,14 +188,12 @@ public class MenuActivity extends Activity implements LoaderManager.LoaderCallba
 		super.onConfigurationChanged(newConfig);
 	    mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-	
-	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.menu, menu);
-		menu.findItem(R.id.search);
+		getMenuInflater().inflate(R.menu.menu, menu);
+		searchItem = menu.findItem(R.id.search);
     	
     	// Associate searchable configuration with the SearchView
 		SearchManager searchManager =
@@ -358,20 +357,6 @@ public class MenuActivity extends Activity implements LoaderManager.LoaderCallba
         mBackgroundContainer.hideBackground();
     }
 
-	/**				onPostCreate()
-	 * Author: byron
-	 * Description:
-	 * @param savedInstanceState
-	 */
-	
-
-	/**				onConfigurationChanged()
-	 * Author: byron
-	 * Description:
-	 * @param newConfig
-	 */
-	
-
 	/**				onOptionsItemSelected()
 	 * Author: byron
 	 * Description:
@@ -423,21 +408,21 @@ public class MenuActivity extends Activity implements LoaderManager.LoaderCallba
 	public void onLoaderReset(Loader<Cursor> loader) {
 		mAdapter.swapCursor(null);		
 	}
-	
+
 	/**				addToList()
 	 * Author: byron
 	 * Description: Adss item selected in search to menu list
 	 */
 	public void addToList(String id) {
 			ContentValues mContentValues = new ContentValues();
-			    		
+
 	    		mContentValues.put(Menulist.Menu.MEN_SELECTED,1);
 	    		mSelections = id;
 	    		getContentResolver().update(Menulist.Menu.CONTENT_URI, mContentValues, mSelections, null);
 	    		getLoaderManager().restartLoader(0, null, this);
-	    		//searchItem.collapseActionView();	    	
-	 }	
-	
+	    		//searchItem.collapseActionView();
+	 }
+
 	/**				removeFromList()
 	 * Author: byron
 	 * Description: Called when removing item from list. 
@@ -466,7 +451,7 @@ public class MenuActivity extends Activity implements LoaderManager.LoaderCallba
 		String[] from = {Menulist.Menu.MEN_NAME};
     	int[] to = {R.id.item};
 		getLoaderManager().initLoader(0, null, this);
-		//mAdapter = new StableArrayAdapter(this, R.layout.menulist_item, null, from, to,0, mTouchListener);
+		mAdapter = new StableArrayAdapter(this, R.layout.menulist_item, null, from, to,0, mTouchListener);
     	mMenuListView.setAdapter(mAdapter); 
   
     }
