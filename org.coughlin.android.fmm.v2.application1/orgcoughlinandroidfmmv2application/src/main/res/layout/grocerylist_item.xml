@@ -5,4 +5,6 @@
     android:layout_height="48dp"
     android:layout_gravity="start"
     android:checked="false"
+    android:checkMark="?android:attr/listChoiceIndicatorMultiple"
     android:gravity="start" />
+

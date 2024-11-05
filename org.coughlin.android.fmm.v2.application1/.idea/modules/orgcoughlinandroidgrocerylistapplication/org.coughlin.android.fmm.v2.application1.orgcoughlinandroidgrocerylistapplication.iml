@@ -3,7 +3,6 @@
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
-        <option name="GRADLE_PROJECT_PATH" value=":orgcoughlinandroidgrocerylistapplication" />
         <option name="LAST_SUCCESSFUL_SYNC_AGP_VERSION" />
         <option name="LAST_KNOWN_AGP_VERSION" />
       </configuration>
@@ -15,7 +14,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../orgcoughlinandroidgrocerylistapplication/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../orgcoughlinandroidgrocerylistapplication/build" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 33, extension level 3 Platform" jdkType="Android SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

@@ -72,11 +72,11 @@ public class DatabaseAdapter {
 	 * @param product product to check if exist
 	 * @return boolean
 	 */
-	public boolean checkForProduct(String product) {
+	public boolean checkForProduct(Product product) {
 		Cursor cursor;
 		String sqlStr;
 		
-		sqlStr = "SELECT " + FamilyMealContracts.Products.PRO_NAME + " FROM " + FamilyMealContracts.Products.PRO_TABLE_NAME + " WHERE " + FamilyMealContracts.Products.PRO_NAME + "='" + product + "'";
+		sqlStr = "SELECT " + product.getName() + " FROM " + Product.TABLE_NAME + " WHERE " + product.getName() + "='" + product + "'";
 		cursor = mDatabase.rawQuery(sqlStr, null);
 		cursor.moveToFirst();
 		cursor.close();
@@ -90,51 +90,9 @@ public class DatabaseAdapter {
 	public boolean checkForMenuItem(String menuItem) {
 		Cursor cursor;
 		String sqlStr;
-		
-		sqlStr = "SELECT " + FamilyMealContracts.MenuItems.MEN_NAME + " FROM " + FamilyMealContracts.MenuItems.MEN_TABLE_NAME + " WHERE " + FamilyMealContracts.MenuItems.MEN_NAME + "='" + menuItem + "'";
-		cursor = mDatabase.rawQuery(sqlStr, null);
-		cursor.moveToFirst();
-		cursor.close();
-		return cursor.getCount() > 0;
+	return true;
 	}
-	
-	/**
-	 * addProduct()
-	 * Author: byron
-	 * Description: Adds new product to database
-	 */
-	public void addProduct(String product) {
-		ContentValues mContentValues;
-		mContentValues = new ContentValues();
-		mContentValues.put(FamilyMealContracts.Products.PRO_NAME, product);
 
-		mDatabase.insert(FamilyMealContracts.Products.PRO_TABLE_NAME, null, mContentValues);
-	}
-	
-	/**
-	 * addMenuItem
-	 * Description: Adds new menu Item to database
-	 */
-	public void addMenuItem(String menuItem) {
-		ContentValues mContentValues;
-		mContentValues = new ContentValues();
-		mContentValues.put(FamilyMealContracts.MenuItems.MEN_NAME, menuItem);
 
-		mDatabase.insert(FamilyMealContracts.MenuItems.MEN_TABLE_NAME, null, mContentValues);
-	}
-	
-	public void moveToHistory(String id) {
-		ContentValues mContentValues;
-		Date date;
-		long time = System.currentTimeMillis();
-		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
-		date = new Date(time);
-		sdf.format(date);
-		String currentDate = date.toString();
-		mContentValues = new ContentValues();
-		mContentValues.put(Historylist.PRO_ID, id);
-		mContentValues.put(Historylist.HIS_DATE, currentDate);
-		mDatabase.insert(Historylist.HIS_TABLE_NAME, null, mContentValues);
-	}
 
 } // DatabaseAdapter
