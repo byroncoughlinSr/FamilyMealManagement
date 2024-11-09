@@ -35,21 +35,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @param db database to create
 	 */
 	@Override
-	public void onCreate(SQLiteDatabase db) {
-	
-	}		
-	
+	public void onCreate(SQLiteDatabase db) {}
 	/**			onUpgrade()
 	 * Description: This is a mandatory method. But is not used
 	 * @param	db, oldVersion, newVersion)
 	 */
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
-	}
-
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 	/**
-	 *
+	 * Description doesn't rea;;y create the database. But moves it copies it from the asset directory
 	 * @param mContext context
 	 * @throws IOException exception
 	 */
@@ -76,10 +70,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public boolean checkForDatabase(Context mContext) {
 		SQLiteDatabase tempDB = null;
 		try {
-
 			String packageName = mContext.getPackageName();
 			String fullPath = "/data/data/" + packageName + "/databases/" + DATABASE_NAME;
-
 			tempDB = SQLiteDatabase.openDatabase(fullPath, null, SQLiteDatabase.OPEN_READWRITE);
 		} catch (SQLiteException e) {
 			Log.e("dbFMeal -check", e.getMessage());

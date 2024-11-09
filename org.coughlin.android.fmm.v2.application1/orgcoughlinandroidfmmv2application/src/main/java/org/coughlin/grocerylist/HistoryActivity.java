@@ -34,7 +34,7 @@ public class HistoryActivity extends Activity implements LoaderManager.LoaderCal
     private CharSequence mTitle;
     private CursorAdapter historyAdapter;
   //  private StableArrayAdapter mAdapter;
-    private final String[] mProjections = {FamilyMealContracts.Products.ROW_ID, FamilyMealContracts.Products.PRO_NAME};
+    private final String[] mProjections = {FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID, FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME};
 	//private MenuItem searchItem;
     private VelocityTracker mVelocityTracker;
     private BackgroundContainer mBackgroundContainer;
@@ -417,7 +417,7 @@ public class HistoryActivity extends Activity implements LoaderManager.LoaderCal
 			c.moveToPosition(position);
 		String mSelections = Integer.toString(c.getInt(1));
 			
-    		mContentValues.put(FamilyMealContracts.Products.PRO_SELECTED,0);
+    		mContentValues.put(FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_SELECTED,0);
     		getContentResolver().delete(Historylist.CONTENT_URI, mSelections, null);
     		
     	}
@@ -428,7 +428,7 @@ public class HistoryActivity extends Activity implements LoaderManager.LoaderCal
 	 * This method gets the cursor from the content-provider that holds the names of the product for the listview.
 	 */
 	private void getHistorylist() {
-		String[] from = {FamilyMealContracts.Products.PRO_NAME, Historylist.HIS_DATE, Historylist.PRO_ID};
+		String[] from = {FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME, Historylist.HIS_DATE, Historylist.PRO_ID};
     	int[] to = {R.id.productTxt, R.id.dateTxt};
 		getLoaderManager().initLoader(0, null, this);
 		historyAdapter = new HistoryAdapter(this, R.layout.historylist_item, null, from, to,0, mTouchListener);

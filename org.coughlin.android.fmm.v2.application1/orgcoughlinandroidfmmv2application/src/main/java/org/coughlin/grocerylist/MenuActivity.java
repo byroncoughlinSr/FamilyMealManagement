@@ -34,7 +34,7 @@ public class MenuActivity extends Activity  {
 	private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private StableArrayAdapter mAdapter;
-    private final String[] mProjections = {FamilyMealContracts.Products.ROW_ID, FamilyMealContracts.Products.PRO_NAME};
+    private final String[] mProjections = {FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID, FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME};
 	private final SQLiteQueryBuilder mSQLiteQueryBuilder = new SQLiteQueryBuilder();
     private String mSelections;
 	@Override

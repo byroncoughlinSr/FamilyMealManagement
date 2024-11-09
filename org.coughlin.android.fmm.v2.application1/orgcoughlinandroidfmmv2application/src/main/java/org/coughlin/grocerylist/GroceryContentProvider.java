@@ -46,18 +46,18 @@ public class GroceryContentProvider  extends ContentProvider {
 		Cursor cursor = null;
 		
 		Map<String, String> projectionMap = new HashMap<String, String>();
-		projectionMap.put(BaseColumns._ID,  FamilyMealContracts.Products.ROW_ID + " AS " + BaseColumns._ID);
-		projectionMap.put(FamilyMealContracts.Products.PRO_NAME, FamilyMealContracts.Products.PRO_NAME);
-		projectionMap.put(SearchManager.SUGGEST_COLUMN_TEXT_1, FamilyMealContracts.Products.PRO_NAME + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1);
-		projectionMap.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID,  FamilyMealContracts.Products.ROW_ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
+		projectionMap.put(BaseColumns._ID,  FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID + " AS " + BaseColumns._ID);
+		projectionMap.put(FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME, FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME);
+		projectionMap.put(SearchManager.SUGGEST_COLUMN_TEXT_1, FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME + " AS " + SearchManager.SUGGEST_COLUMN_TEXT_1);
+		projectionMap.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID,  FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID + " AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
 				
 		String query = uri.getLastPathSegment();
 		
 		if(SearchManager.SUGGEST_URI_PATH_QUERY.equals(query)) {
 			
-			selection = FamilyMealContracts.Products.PRO_NAME + " like '%" + selectionArgs[0] + "%'";
+			selection = FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME + " like '%" + selectionArgs[0] + "%'";
 			mSQLiteQueryBuilder = new SQLiteQueryBuilder();
-						mSQLiteQueryBuilder.setTables(FamilyMealContracts.Products.PRO_TABLE_NAME);
+						mSQLiteQueryBuilder.setTables(FamilyMealContracts.Products.TABLE_NAME);
 			mSQLiteQueryBuilder.setProjectionMap(projectionMap);
 			
 			SQLiteDatabase db = database.getWritableDatabase();		
@@ -67,7 +67,7 @@ public class GroceryContentProvider  extends ContentProvider {
 		} 
 		else {
 			mSQLiteQueryBuilder = new SQLiteQueryBuilder();
-			mSQLiteQueryBuilder.setTables(FamilyMealContracts.Products.PRO_TABLE_NAME);
+			mSQLiteQueryBuilder.setTables(FamilyMealContracts.Products.TABLE_NAME);
 			SQLiteDatabase db = database.getWritableDatabase();
 			
 			cursor = mSQLiteQueryBuilder.query(db, null, selection, selectionArgs, null, null, null);
@@ -82,8 +82,8 @@ public class GroceryContentProvider  extends ContentProvider {
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
 		SQLiteDatabase db = database.getWritableDatabase();
-		String where = FamilyMealContracts.Products.ROW_ID + " = " + selection;
-		db.update(FamilyMealContracts.Products.PRO_TABLE_NAME, values, where, null);
+		String where = FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID + " = " + selection;
+		db.update(FamilyMealContracts.Products.TABLE_NAME, values, where, null);
 		return 0;
 	}
 

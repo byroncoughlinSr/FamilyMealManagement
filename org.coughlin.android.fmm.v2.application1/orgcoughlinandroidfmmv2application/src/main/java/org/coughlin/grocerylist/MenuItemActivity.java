@@ -31,7 +31,7 @@ public class MenuItemActivity extends Activity {
     private EditText text;
     private String menuItem;
     private DatabaseAdapter mDatabaseAdapter;
-	private String[] mProjections = {FamilyMealContracts.Products.ROW_ID, FamilyMealContracts.Products.PRO_NAME};
+	private String[] mProjections = {FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID, FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME};
 	private SQLiteQueryBuilder mSQLiteQueryBuilder = new SQLiteQueryBuilder();
 	private String mSelections;
 
@@ -210,7 +210,7 @@ public class MenuItemActivity extends Activity {
 	
 	private void addMenuItem(String menuItem) {
 		mDatabaseAdapter.open();
-		mDatabaseAdapter.addMenuItem(menuItem);
+		//mDatabaseAdapter.addMenuItem(menuItem);
 		mDatabaseAdapter.close();
 	}
 }

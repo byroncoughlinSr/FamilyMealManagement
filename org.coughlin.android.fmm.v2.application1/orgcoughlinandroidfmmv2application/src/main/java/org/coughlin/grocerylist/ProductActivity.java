@@ -25,7 +25,7 @@ public class ProductActivity extends Activity{
 	private EditText text;
     private String product;
     private DatabaseAdapter mDatabaseAdapter;
-	private final String[] mProjections = {FamilyMealContracts.Products.ROW_ID, FamilyMealContracts.Products.PRO_NAME};
+	private final String[] mProjections = {FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID, FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME};
 	private final SQLiteQueryBuilder mSQLiteQueryBuilder = new SQLiteQueryBuilder();
 	private final String mSelections = null;
 
@@ -123,9 +123,11 @@ public class ProductActivity extends Activity{
 		button.setOnClickListener(v -> {
 			text = findViewById(R.id.newProductTxt);
 			product = text.getText().toString();
+			/**
 			if (!checkProductExists(product)) {
 				addProduct(product);
 			}
+			 */
 			text.setText("");
 			InputMethodManager inputMethodManager =(InputMethodManager)
 					getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -184,7 +186,7 @@ public class ProductActivity extends Activity{
 	 * @param product product
 	 * @return boolean true if product exists
 	 */
-	private boolean checkProductExists(String product) {
+	private boolean checkProductExists(Product product) {
 		mDatabaseAdapter.open();
 		if (mDatabaseAdapter.checkForProduct(product)) {
 			mDatabaseAdapter.close();
@@ -199,7 +201,7 @@ public class ProductActivity extends Activity{
 	
 	private void addProduct(String product) {
 		mDatabaseAdapter.open();
-		mDatabaseAdapter.addProduct(product);
+		//mDatabaseAdapter.addProduct(product);
 		mDatabaseAdapter.close();
 	}
 }

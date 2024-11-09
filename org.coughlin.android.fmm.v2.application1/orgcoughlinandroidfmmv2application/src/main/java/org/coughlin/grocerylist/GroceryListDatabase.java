@@ -24,10 +24,12 @@ public abstract class GroceryListDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     GroceryListDatabase.class, "grocery_list_database")
+                            .createFromAsset("dbFamilyMeal") // Automatically load from assets if it exists
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
+
 }
