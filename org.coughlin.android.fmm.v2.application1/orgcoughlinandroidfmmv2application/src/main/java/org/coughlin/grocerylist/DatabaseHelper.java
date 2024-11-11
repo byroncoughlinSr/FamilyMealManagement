@@ -4,8 +4,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -20,9 +23,10 @@ import android.util.Log;
  *
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-
+	public static final String DATABASE_NAME = "dbFamilyMeal";
+	public static final int DATABASE_VERSION = 1;
 	public DatabaseHelper(Context context) {
-		super(context, FamilyMealContracts.DATABASE_NAME, null, FamilyMealContracts.DATABASE_VERSION);
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 	
 	/**
@@ -31,29 +35,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @param db database to create
 	 */
 	@Override
-	public void onCreate(SQLiteDatabase db) {
-	
-	}		
-	
+	public void onCreate(SQLiteDatabase db) {}
 	/**			onUpgrade()
 	 * Description: This is a mandatory method. But is not used
 	 * @param	db, oldVersion, newVersion)
 	 */
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
-	}
-
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 	/**
-	 *
+	 * Description doesn't rea;;y create the database. But moves it copies it from the asset directory
 	 * @param mContext context
 	 * @throws IOException exception
 	 */
 	public void createDatabase(Context mContext) throws IOException {
 		boolean dbExists = checkForDatabase(mContext);
-
 		if(dbExists) {
-
+			//Don't do anything
 		} else {
 			this.getReadableDatabase();
 			try {
@@ -73,10 +70,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public boolean checkForDatabase(Context mContext) {
 		SQLiteDatabase tempDB = null;
 		try {
-
 			String packageName = mContext.getPackageName();
-			String fullPath = "/data/data/" + packageName + "/databases/" + FamilyMealContracts.DATABASE_NAME;
-
+			String fullPath = "/data/data/" + packageName + "/databases/" + DATABASE_NAME;
 			tempDB = SQLiteDatabase.openDatabase(fullPath, null, SQLiteDatabase.OPEN_READWRITE);
 		} catch (SQLiteException e) {
 			Log.e("dbFMeal -check", e.getMessage());
@@ -95,10 +90,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 */
 	public void copyDB(Context mContext) throws IOException {
 		try {
-			InputStream databaseInput = mContext.getAssets().open(FamilyMealContracts.DATABASE_NAME);
+			InputStream databaseInput = mContext.getAssets().open(DATABASE_NAME);
 			String packageName = mContext.getPackageName();
-			String fullPath = "/data/data/" + packageName + "/databases/" + FamilyMealContracts.DATABASE_NAME;
-			OutputStream databaseOutput = new FileOutputStream(fullPath);
+			String fullPath = "/data/data/" + packageName + "/databases/" + DATABASE_NAME;
+			OutputStream databaseOutput = Files.newOutputStream(Paths.get(fullPath));
 
 			byte[] buffer = new byte[1024];
 			int length;

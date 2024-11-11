@@ -36,7 +36,7 @@ public class HistoryAdapter extends SimpleCursorAdapter {
 	public void bindView(final View view, Context arg1, Cursor cursor) {
 
 		 final String date = cursor.getString(cursor.getColumnIndexOrThrow(Historylist.HIS_DATE));
-		 final String product = cursor.getString(cursor.getColumnIndexOrThrow(FamilyMealContracts.Products.PRO_NAME));
+		 final String product = cursor.getString(cursor.getColumnIndexOrThrow(FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME));
 		 displayProduct(view, product);
 		 displayDate(view, date);		
 	}
