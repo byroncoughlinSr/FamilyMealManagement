@@ -44,48 +44,35 @@ public class GrocerylistActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTitle = getTitle();
         setContentView(R.layout.activity_grocerylist);
+        groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
+        mAdapter = new StableArrayAdapter(this, R.layout.grocerylist_item, new ArrayList<>(), mTouchListener);
+        mBackgroundContainer = findViewById(R.id.view1);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(mTitle);
-
-        // Initialize DrawerLayout and set the title
+        mTitle = getTitle();
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mDrawerTitle = "Navigational Drawer";
+        mGroceryListView = findViewById(R.id.grocerylistview);
+        mGroceryListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(mTitle);
+        String[] mDrawerContents = getResources().getStringArray(R.array.drawer_titles);
 
-        // Set up drawer toggle
-        setupDrawerToggle(); // Ensure this initializes mDrawerToggle
         mDrawerLayout.addDrawerListener(mDrawerToggle);
+        setupDrawerToggle();
 
-        // Set up ActionBar for drawer toggle
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
 
-        // Initialize Drawer List and set adapter
-        String[] mDrawerContents = getResources().getStringArray(R.array.drawer_titles);
         ListView mDrawerListView = findViewById(R.id.left_drawer);
         mDrawerListView.setAdapter(new ArrayAdapter<>(this, R.layout.item_drawer, R.id.drawer_item, mDrawerContents));
         mDrawerListView.setOnItemClickListener(this::onItemClick);
-
-        // Initialize other views
-        mBackgroundContainer = findViewById(R.id.view1);
-        mGroceryListView = findViewById(R.id.grocerylistview);
-        mGroceryListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-        // Handle the incoming intent
-        handleIntent(getIntent());
-
-        // Initialize ViewModel
         groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
 
-        // Set up adapter for the grocery list
-        mAdapter = new StableArrayAdapter(this, R.layout.grocerylist_item, new ArrayList<>(), mTouchListener);
+        handleIntent(getIntent());
         mGroceryListView.setAdapter(mAdapter);
-
-        // Observe products and update the adapter
         groceryListViewModel.getAllProducts().observe(this, products -> {
             mAdapter.setProducts(products);
         });

@@ -13,23 +13,18 @@ public class GroceryListRepository {
         productDao = db.productDao();
         allProducts = productDao.getAllProductsLive();
     }
-
     public LiveData<List<Product>> getAllProducts() {
         return allProducts;
     }
-
     public void insert(Product product) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.insert(product));
     }
-
     public void update(Product product) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.update(product));
     }
-
     public void delete(Product product) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.delete(product));
     }
-
     public void deleteAllProducts() {
         GroceryListDatabase.databaseWriteExecutor.execute(productDao::deleteAll);
     }
