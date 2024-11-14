@@ -19,6 +19,10 @@ public interface ProductDao {
     void delete(Product product);
     @Query("SELECT * FROM tblProduct ORDER BY proName ASC")
     LiveData<List<Product>> getAllProductsLive();
+    @Query(("SELECT * FROM tblProduct WHERE proSelected == 1 ORDER BY proName ASC"))
+    LiveData<List<Product>> getSelectedProductsLive();
+    @Query(("SELECT proName FROM tblProduct WHERE proSelected == 1 ORDER BY proName ASC"))
+    LiveData<List<String>> getSelectedProductsName();
     @Query("SELECT * FROM tblProduct WHERE _id = :id")
     Product getProductById(int id);
     @Query("DELETE FROM tblProduct")

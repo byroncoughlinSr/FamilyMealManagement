@@ -1,27 +1,36 @@
 package org.coughlin.grocerylist;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GroceryListViewModel extends AndroidViewModel {
     private final GroceryListRepository repository;
-    private final LiveData<List<Product>> allProducts;
+    private final LiveData<List<Product>> selectedProducts;
+    private final LiveData<List<String>> selectedProductNames;
     private final ProductDao productDao;
 
     public GroceryListViewModel(@NonNull Application application) {
         super(application);  // Passes the application to AndroidViewModel
         repository = new GroceryListRepository(application);
-        allProducts = repository.getAllProducts();
+        selectedProducts = repository.getSelectedProducts();
+        selectedProductNames = repository.getSelectedProductNames();
         GroceryListDatabase dbHelper = GroceryListDatabase.getDatabase(application);
-
         productDao = dbHelper.productDao();
     }
 
-    public LiveData<List<Product>> getAllProducts() {
-        return allProducts;
+    public LiveData<List<Product>> getSelectedProducts() {
+        return selectedProducts;
+    }
+    public LiveData<List<String>> getProductNames() {
+        return selectedProductNames;
     }
     public void addToList(String id) {
         // Perform the update in a background thread

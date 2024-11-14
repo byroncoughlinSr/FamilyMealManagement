@@ -1,9 +1,7 @@
 package org.coughlin.grocerylist;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +23,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 public class GrocerylistActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -40,42 +37,51 @@ public class GrocerylistActivity extends AppCompatActivity {
     private boolean mSwiping = false;
     private boolean mItemPressed = false;
     private static final int SWIPE_DURATION = 250;
+    private List<String> mProductNames = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocerylist);
-        groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
-        mAdapter = new StableArrayAdapter(this, R.layout.grocerylist_item, new ArrayList<>(), mTouchListener);
-        mBackgroundContainer = findViewById(R.id.view1);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         mTitle = getTitle();
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        mDrawerTitle = "Navigational Drawer";
+        handleIntent(getIntent());
+        mBackgroundContainer = findViewById(R.id.view1);
         mGroceryListView = findViewById(R.id.grocerylistview);
         mGroceryListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(mTitle);
-        String[] mDrawerContents = getResources().getStringArray(R.array.drawer_titles);
+        groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
+        groceryListViewModel.getProductNames().observe(this, productNames -> {
+            if (productNames != null) {
+                mProductNames = productNames;
+                updateAdapter();
+            }
+        });
+        mAdapter = new StableArrayAdapter(this, R.layout.grocerylist_item, mProductNames, mTouchListener);
+        mDrawerTitle = "Navigational Drawer";
 
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
-        setupDrawerToggle();
+        String[] mDrawerContents = getResources().getStringArray(R.array.drawer_titles);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        ListView mDrawerListView = findViewById(R.id.left_drawer);
+        mDrawerListView.setAdapter(new ArrayAdapter<>(this, R.layout.item_drawer, mDrawerContents));
+        mDrawerListView.setOnItemClickListener(this::onItemClick);
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle(mTitle);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+        setupDrawerToggle();
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
-        ListView mDrawerListView = findViewById(R.id.left_drawer);
-        mDrawerListView.setAdapter(new ArrayAdapter<>(this, R.layout.item_drawer, R.id.drawer_item, mDrawerContents));
-        mDrawerListView.setOnItemClickListener(this::onItemClick);
-        groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
-
-        handleIntent(getIntent());
-        mGroceryListView.setAdapter(mAdapter);
-        groceryListViewModel.getAllProducts().observe(this, products -> {
-            mAdapter.setProducts(products);
-        });
+    }
+    public void updateAdapter() {
+        // Make sure to update the adapter when the data changes
+        mAdapter.setProductNames(mProductNames);  // Assuming you have a setter method in your adapter
+        mAdapter.notifyDataSetChanged();
     }
 
     private void setupDrawerToggle() {
@@ -98,8 +104,6 @@ public class GrocerylistActivity extends AppCompatActivity {
                     invalidateOptionsMenu();
             }
         };
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
     }
 
     @Override
@@ -126,6 +130,7 @@ public class GrocerylistActivity extends AppCompatActivity {
             if (data != null) {
                 String id = data.getLastPathSegment();
                 if (id != null && !id.isEmpty()) {
+                    // You can call addToList() to add the item to the list (if needed)
                     groceryListViewModel.addToList(id);
                 }
             }
@@ -207,7 +212,7 @@ public class GrocerylistActivity extends AppCompatActivity {
         }
 
         private void toggleCheckedState(int position, CheckedTextView item) {
-            List<Product> products = groceryListViewModel.getAllProducts().getValue();
+            List<Product> products = groceryListViewModel.getSelectedProducts().getValue();
             if (products != null && position < products.size()) {
                 Product product = products.get(position);
                 product.setChecked(!product.isChecked());
@@ -253,7 +258,7 @@ public class GrocerylistActivity extends AppCompatActivity {
 
         private void animateRemoval(ListView listView, View v) {
             int position = listView.getPositionForView(v);
-            groceryListViewModel.delete(groceryListViewModel.getAllProducts().getValue().get(position));
+            groceryListViewModel.delete(Objects.requireNonNull(groceryListViewModel.getSelectedProducts().getValue()).get(position));
             mBackgroundContainer.hideBackground();
             listView.setEnabled(true);
         }
