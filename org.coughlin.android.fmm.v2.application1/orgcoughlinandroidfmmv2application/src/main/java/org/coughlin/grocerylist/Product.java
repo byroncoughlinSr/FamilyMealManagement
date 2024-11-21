@@ -8,6 +8,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 @Entity(tableName = "tblProduct")
 public class Product {
     public static final String TABLE_NAME = "tblProduct";
@@ -42,6 +44,9 @@ public class Product {
     public void setName(@NonNull String name) {
         this.name = name;
     }
+    public void updateChecked(boolean checked) {
+        this.checked = checked;
+    }
     public boolean isSelected() {
         return selected;
     }
@@ -53,5 +58,17 @@ public class Product {
     }
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id == product.id && name.equals(product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }
