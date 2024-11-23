@@ -22,8 +22,11 @@ public interface ProductDao {
     void update(Product product);
 
     // Mark a product as unselected (proSelected = 0)
-    @Query("UPDATE tblProduct SET proSelected = 0 WHERE _id = :id")
-    void unselectProduct(int id);  // Marks an item as unselected
+    @Query("UPDATE tblProduct SET proChecked = 0 WHERE _id = :id")
+    void uncheckProduct(int id);
+
+    @Query("UPDATE tblProduct SET proChecked = 1 WHERE _id = :id")
+    void checkProduct(int id);
 
     // Delete a specific product
     @Delete

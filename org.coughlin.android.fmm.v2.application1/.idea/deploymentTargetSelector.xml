@@ -15,10 +15,10 @@
       </SelectionState>
       <SelectionState runConfigName="GrocerylistActivity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-11-19T21:39:59.441781393Z">
+        <DropdownSelection timestamp="2024-11-21T19:37:03.675733295Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/home/byron/.android/avd/Galaxy_S20_FE_API_30.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=RFCR60VBGYP" />
             </handle>
           </Target>
         </DropdownSelection>

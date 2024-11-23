@@ -5,11 +5,14 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import java.io.IOException;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Database(entities = {Product.class}, version = 1, exportSchema = false)
 public abstract class GroceryListDatabase extends RoomDatabase {
-    public static Executor databaseWriteExecutor;
+    // Define the executor as an ExecutorService for background operations
+    public static final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(4); // Adjust thread count as needed
 
     public abstract ProductDao productDao();
 
@@ -23,7 +26,7 @@ public abstract class GroceryListDatabase extends RoomDatabase {
                     // Ensure database copy is completed before Room initializes
                     DatabaseHelper dbHelper = new DatabaseHelper(context);
                     try {
-                        dbHelper.createDatabase(context);
+                        dbHelper.createDatabase(context); // Copy the prebuilt database
                     } catch (IOException e) {
                         throw new RuntimeException("Error copying database from assets", e);
                     }

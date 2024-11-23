@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:layout_gravity="start"
+    android:textColor="#100E0E"
     android:checked="false"
+    android:checkMarkTint="#100E0E"
     android:checkMark="?android:attr/listChoiceIndicatorMultiple"
     android:gravity="start" />
 

@@ -19,6 +19,9 @@ public class GroceryListViewModel extends AndroidViewModel {
     public LiveData<List<String>> getSelectedProductNames() {
         return productDao.getSelectedProductsName();
     }
+    public LiveData<List<Product>> getSelectedProductsLive() {
+        return productDao.getSelectedProductsLive();
+    }
     public LiveData<List<Product>> searchSelectedProducts(String query) {
         return productDao.searchSelectedProducts(query);
     }
@@ -32,6 +35,13 @@ public class GroceryListViewModel extends AndroidViewModel {
                 productDao.update(product);  // Update the product in the database
             }
         }).start();
+    }
+    public void selectProduct(int id) {
+        repository.checkProduct(id);
+    }
+
+    public void unselectProduct(int id) {
+        repository.unCheckProduct(id);
     }
     public void removeProduct(String productName) {
         // Call the repository to delete the product

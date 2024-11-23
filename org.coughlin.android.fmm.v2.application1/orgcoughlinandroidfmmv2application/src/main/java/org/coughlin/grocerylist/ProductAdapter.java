@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
-    private List<String> productNames;
+    private final List<Product> productList;
+    private final GroceryListViewModel viewModel;
     private final SparseBooleanArray checkedStates = new SparseBooleanArray();
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         private final CheckedTextView productNameTextView;
@@ -23,8 +24,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
     }
     // Constructor
-    public ProductAdapter(@NonNull List<String> productList) {
-        this.productNames = productList;
+    public ProductAdapter(@NonNull List<Product> productList, @NonNull GroceryListViewModel viewModel) {
+        this.productList = productList;
+        this.viewModel = viewModel;
     }
     @NonNull
     @Override
@@ -35,10 +37,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        holder.getTextView().setText(productNames.get(position));
+        Product product = productList.get(position);
+        holder.getTextView().setText(product.getName());
+        holder.getTextView().setChecked(product.isChecked());
+
+        holder.getTextView().setOnClickListener(view -> {
+            boolean isChecked = !holder.getTextView().isChecked();
+            holder.getTextView().setChecked(isChecked);
+
+            // Save the state to the database via ViewModel
+            if (isChecked) {
+                viewModel.selectProduct(product.getId());
+            } else {
+                viewModel.unselectProduct(product.getId());
+            }
+        });
     }
     @Override
     public int getItemCount() {
-        return productNames.size();
+        return productList.size();
     }
 }

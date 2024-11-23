@@ -58,9 +58,9 @@ public class GrocerylistActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         // Setup product adapter and ViewModel
-        groceryListViewModel.getSelectedProductNames().observe(this, productNames -> {
+        groceryListViewModel.getSelectedProductsLive().observe(this, productNames -> {
             if (productNames != null) {
-                mProductAdapter = new ProductAdapter(productNames);
+                mProductAdapter = new ProductAdapter(productNames, groceryListViewModel);
                 mGroceryListView.setAdapter(mProductAdapter);
             }
         });

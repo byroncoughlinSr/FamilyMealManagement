@@ -7,10 +7,18 @@ import java.util.List;
 
 public class GroceryListRepository {
     private final ProductDao productDao;
+    private final GroceryListDatabase db;
 
     public GroceryListRepository(Application application) {
-        GroceryListDatabase db = GroceryListDatabase.getDatabase(application);
+        db = GroceryListDatabase.getDatabase(application);
         productDao = db.productDao();
+    }
+    public void checkProduct(int id) {
+        GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.checkProduct(id));
+    }
+
+    public void unCheckProduct(int id) {
+        GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.uncheckProduct(id));
     }
     public void insert(Product product) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.insert(product));
