@@ -9,31 +9,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ProductViewHolder> {
+    private final List<Product> productList;
     private final GroceryListViewModel viewModel;
     private final SparseBooleanArray checkedStates = new SparseBooleanArray();
-    private List<Product> productList;
-
-    // ViewHolder class
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         private final CheckedTextView productNameTextView;
-
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             productNameTextView = itemView.findViewById(R.id.item);
         }
-
         public CheckedTextView getTextView() {
             return productNameTextView;
         }
     }
-
     // Constructor
-    public ProductAdapter(@NonNull List<Product> productList, @NonNull GroceryListViewModel viewModel) {
+    public SearchAdapter(@NonNull List<Product> productList, @NonNull GroceryListViewModel viewModel) {
         this.productList = productList;
         this.viewModel = viewModel;
     }
-
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,7 +35,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 .inflate(R.layout.grocerylist_item, parent, false);
         return new ProductViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
@@ -60,15 +53,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return productList.size();
-    }
-
-    // Method to update the product list and refresh the RecyclerView
-    public void updateProducts(List<Product> newProducts) {
-        this.productList = newProducts; // Update the list
-        notifyDataSetChanged(); // Notify the RecyclerView to refresh
     }
 }

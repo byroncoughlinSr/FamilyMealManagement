@@ -27,6 +27,8 @@ public interface ProductDao {
 
     @Query("UPDATE tblProduct SET proChecked = 1 WHERE _id = :id")
     void checkProduct(int id);
+    @Query("UPDATE tblProduct SET proSelected = 1 where _id =:id")
+    void updateSelectProduct(int id);
 
     // Delete a specific product
     @Delete
@@ -39,8 +41,8 @@ public interface ProductDao {
     LiveData<List<String>> getSelectedProductsName();
 
     // Search selected products by a query string (e.g., when user searches in the toolbar)
-    @Query("SELECT * FROM tblProduct WHERE proName LIKE :query AND proSelected = 1 ORDER BY proName ASC")
-    LiveData<List<Product>> searchSelectedProducts(String query);  // Fetches filtered selected items by search query
+    @Query("SELECT * FROM tblProduct WHERE proName LIKE :query ORDER BY proName ASC")
+    List<Product> searchSelectedProducts(String query);  // Fetches filtered selected items by search query
 
     // Fetch a product by its ID
     @Query("SELECT * FROM tblProduct WHERE _id = :id")

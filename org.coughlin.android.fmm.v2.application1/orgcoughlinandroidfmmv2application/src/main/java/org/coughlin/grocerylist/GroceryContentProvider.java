@@ -31,14 +31,18 @@ public class GroceryContentProvider  extends ContentProvider {
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		List<Product> products;
+		String query = null;
 
+		// Check if the query is for search suggestions
 		if (SearchManager.SUGGEST_URI_PATH_QUERY.equals(uri.getLastPathSegment())) {
-			String query = selectionArgs != null && selectionArgs.length > 0 ? selectionArgs[0] : "";
-			products = repository.getProducts(query); // Get products from repository
-		} else {
-			products = repository.getProducts(""); // Default query
+			query = (selectionArgs != null && selectionArgs.length > 0) ? selectionArgs[0] : "";
 		}
+
+		// Ensure the query is not null
+		query = (query == null) ? "" : "%" + query + "%"; // Add wildcards for SQL LIKE
+
+		// Query the database for matching products
+		List<Product> products = repository.getFilteredProducts(query);
 
 		// Convert List<Product> to Cursor
 		MatrixCursor cursor = new MatrixCursor(new String[]{
@@ -54,10 +58,10 @@ public class GroceryContentProvider  extends ContentProvider {
 					"content://org.coughlin.provider.grocery/" + product.getId()
 			});
 		}
-
 		return cursor;
 	}
-		
+
+
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
 		// TODO Auto-generated method stub

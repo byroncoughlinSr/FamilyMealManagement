@@ -1,5 +1,6 @@
 package org.coughlin.grocerylist;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +27,7 @@ public class GrocerylistActivity extends AppCompatActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private ProductAdapter mProductAdapter;
+    private GroceryListViewModel groceryListViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +38,12 @@ public class GrocerylistActivity extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mGroceryListView = findViewById(R.id.grocerylistView);
         mGroceryListView.setLayoutManager(new LinearLayoutManager(this));
-        GroceryListViewModel groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
+        groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
         RecyclerView mDrawerListView = findViewById(R.id.left_drawer);
         mDrawerListView.setLayoutManager(new LinearLayoutManager(this));
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        handleIntent(getIntent());
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
@@ -67,6 +71,13 @@ public class GrocerylistActivity extends AppCompatActivity {
                 mGroceryListView.setAdapter(mProductAdapter);
             }
         });
+        groceryListViewModel.getSelectedProductsLive().observe(this, products -> {
+            if (products != null) {
+                mProductAdapter.updateProducts(products); // Update adapter data
+                mProductAdapter.notifyDataSetChanged(); // Notify changes
+            }
+        });
+
     }
     private void setupDrawerToggle() {
         mDrawerToggle = new ActionBarDrawerToggle(
@@ -92,6 +103,13 @@ public class GrocerylistActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.grocerylist, menu);
+        // Get the SearchView and set the searchable configuration.
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        // Assumes current activity is the searchable activity.
+        assert searchView != null;
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false); // Don't iconify the widget. Expand it by default.
         return true;
     }
     private void onDrawerItemClick(int position) {
@@ -121,25 +139,30 @@ public class GrocerylistActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+    private void handleIntent(Intent intent) {
+        String action = intent.getAction();
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if (Intent.ACTION_SEARCH.equals(action)) {
+            // Handle search query
             String query = intent.getStringExtra(SearchManager.QUERY);
-            GroceryListViewModel groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
-            groceryListViewModel.filterProducts(query); // Custom method in ViewModel to filter products
-        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            if (query != null) {
+                groceryListViewModel.filterProducts(query); // Pass query to ViewModel
+            }
+        } else if (Intent.ACTION_VIEW.equals(action)) {
+            // Handle item selection from search suggestions
             Uri data = intent.getData();
             if (data != null) {
-                String productId = data.getLastPathSegment();
-                // Open detail view or perform action based on the selected suggestion
-                //openProductDetail(productId);
+                String productId = data.getLastPathSegment(); // Extract product ID
+                groceryListViewModel.selectProductById(Integer.parseInt(productId)); // Select product
             }
         }
     }
 
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
 }
 
 

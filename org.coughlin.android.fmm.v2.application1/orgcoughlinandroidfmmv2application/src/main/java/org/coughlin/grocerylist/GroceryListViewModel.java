@@ -25,9 +25,13 @@ public class GroceryListViewModel extends AndroidViewModel {
     public LiveData<List<Product>> getSelectedProductsLive() {
         return productDao.getSelectedProductsLive();
     }
-    public LiveData<List<Product>> searchSelectedProducts(String query) {
-        return productDao.searchSelectedProducts(query);
+    public void selectProductById(int productId) {
+        repository.getProductById(productId); // Update product in repository
     }
+    public void updateSelectedProduct(int productId) {
+        productDao.updateSelectProduct(productId);
+    }
+
     public void filterProducts(String query) {
         if (query == null || query.isEmpty()) {
             // Reset to full list if no query
