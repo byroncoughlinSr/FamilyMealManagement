@@ -1,4 +1,7 @@
 package org.coughlin.grocerylist;
+import android.app.SearchManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -118,6 +121,25 @@ public class GrocerylistActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            GroceryListViewModel groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
+            groceryListViewModel.filterProducts(query); // Custom method in ViewModel to filter products
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri data = intent.getData();
+            if (data != null) {
+                String productId = data.getLastPathSegment();
+                // Open detail view or perform action based on the selected suggestion
+                //openProductDetail(productId);
+            }
+        }
+    }
+
+
 }
 
 

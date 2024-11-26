@@ -47,10 +47,10 @@ public interface ProductDao {
     Product getProductById(int id);
 
     // Fetch a product by its name (useful for adding from search)
-    @Query("SELECT * FROM tblProduct WHERE proName = :productName LIMIT 1")
-    Product getProductByName(String productName);
+    @Query("SELECT * FROM tblProduct WHERE proName = :productName")
+    List<Product> getProductByName(String productName);
 
     // Fetch all products, useful for initial loading and displaying all products
     @Query("SELECT * FROM tblProduct ORDER BY proName ASC")
-    LiveData<List<Product>> getAllProductsLive();
+    List<Product> getAllProductsLive();
 }

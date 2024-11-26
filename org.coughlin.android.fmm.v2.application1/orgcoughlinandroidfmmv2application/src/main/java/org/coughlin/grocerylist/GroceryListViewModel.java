@@ -4,11 +4,14 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.List;
 
 public class GroceryListViewModel extends AndroidViewModel {
     private final GroceryListRepository repository;
     private final ProductDao productDao;
+    private final MutableLiveData<List<Product>> selectedProductsLive = new MutableLiveData<>();
 
     public GroceryListViewModel(@NonNull Application application) {
         super(application);  // Passes the application to AndroidViewModel
@@ -25,6 +28,19 @@ public class GroceryListViewModel extends AndroidViewModel {
     public LiveData<List<Product>> searchSelectedProducts(String query) {
         return productDao.searchSelectedProducts(query);
     }
+    public void filterProducts(String query) {
+        if (query == null || query.isEmpty()) {
+            // Reset to full list if no query
+            selectedProductsLive.setValue(productDao.getAllProductsLive());
+        } else {
+            // Filter products based on the query
+            GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+                List<Product> filteredProducts = productDao.getProductByName(query);
+                selectedProductsLive.postValue(filteredProducts);
+            });
+        }
+    }
+
     public void addToList(String id) {
         // Perform the update in a background thread
         new Thread(() -> {
@@ -42,10 +58,6 @@ public class GroceryListViewModel extends AndroidViewModel {
 
     public void unselectProduct(int id) {
         repository.unCheckProduct(id);
-    }
-    public void removeProduct(String productName) {
-        // Call the repository to delete the product
-        repository.deleteProduct(productName);
     }
     public void insert(Product product) {
         repository.insert(product);

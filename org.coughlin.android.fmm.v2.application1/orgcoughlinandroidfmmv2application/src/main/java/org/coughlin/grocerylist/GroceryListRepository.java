@@ -13,6 +13,14 @@ public class GroceryListRepository {
         db = GroceryListDatabase.getDatabase(application);
         productDao = db.productDao();
     }
+    // Expose data for ContentProvider
+    public List<Product> getProducts(String query) {
+        return productDao.getAllProductsLive(); // DAO query returning List<Product>
+    }
+
+    public Product getProductById(int id) {
+        return productDao.getProductById(id); // DAO query to fetch product by ID
+    }
     public void checkProduct(int id) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.checkProduct(id));
     }
@@ -28,15 +36,5 @@ public class GroceryListRepository {
     }
     public void delete(Product product) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.delete(product));
-    }
-    public void deleteProduct(String productName) {
-        // You need to make sure you can find the product by its name,
-        // either by using an async task or calling it on a background thread.
-        new Thread(() -> {
-            Product product = productDao.getProductByName(productName);
-            if (product != null) {
-                productDao.delete(product);
-            }
-        }).start();
     }
 }
