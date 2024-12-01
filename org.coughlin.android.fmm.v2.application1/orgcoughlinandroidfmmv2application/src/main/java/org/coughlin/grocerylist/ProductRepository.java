@@ -7,10 +7,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.List;
 
-public class GroceryListRepository {
+public class ProductRepository {
     private final ProductDao productDao;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-    public GroceryListRepository(Application application) {
+    public ProductRepository(Application application) {
         GroceryListDatabase db = GroceryListDatabase.getDatabase(application);
         productDao = db.productDao();
     }
@@ -25,6 +25,9 @@ public class GroceryListRepository {
     }
     public void uncheckProduct(int productId) {
         executorService.execute(() -> productDao.uncheckProduct(productId));
+    }
+    public void insert(Product product) {
+        executorService.execute(() -> productDao.insert(product));
     }
     public void delete(Product product) {
         executorService.execute(() -> productDao.delete(product));

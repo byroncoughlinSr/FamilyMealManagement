@@ -6,10 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -18,18 +14,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.lifecycle.ViewModelProvider;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class GrocerylistActivity extends AppCompatActivity {
     private RecyclerView mGroceryListView;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle;
+    private DrawerHandler mDrawerHandler;
     private ProductAdapter mProductAdapter;
     private GroceryListViewModel groceryListViewModel;
 
@@ -39,32 +30,25 @@ public class GrocerylistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grocerylist);
         // Initialize variables
         mGroceryListView = findViewById(R.id.grocerylistView);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
+        DrawerLayout mDrawerLayout = findViewById(R.id.drawer_layout);
         mGroceryListView = findViewById(R.id.grocerylistView);
         mGroceryListView.setLayoutManager(new LinearLayoutManager(this));
         groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
         RecyclerView mDrawerListView = findViewById(R.id.left_drawer);
-        mDrawerTitle = "Navigational Drawer";
+        CharSequence mDrawerTitle = "Navigational Drawer";
         Toolbar toolbar = findViewById(R.id.toolbar);
         String[] drawerTitles = getResources().getStringArray(R.array.drawer_titles);
         List<String> drawerContents = Arrays.asList(drawerTitles);
-        mTitle = getTitle();
-
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
-        mDrawerListView.setLayoutManager(new LinearLayoutManager(this));
-        mDrawerToggle = new ActionBarDrawerToggle(
+        CharSequence mTitle = getTitle();
+        mDrawerHandler = new DrawerHandler(
                 this,
                 mDrawerLayout,
-                R.string.drawer_open,
-                R.string.drawer_close
+                mDrawerListView,
+                toolbar,
+                drawerContents,
+                mDrawerTitle,
+                mTitle
         );
-        DrawerAdapter drawerAdapter = new DrawerAdapter(drawerContents);
-        mDrawerListView.setAdapter(drawerAdapter);
-        setupDrawerToggle();
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
 
         ItemTouchHelper itemTouchHelper = groceryListViewModel.getItemTouchHelper();
         itemTouchHelper.attachToRecyclerView(mGroceryListView);
@@ -93,43 +77,7 @@ public class GrocerylistActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-    private void setupDrawerToggle() {
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                R.string.drawer_open,
-                R.string.drawer_close
-        ) {
-            @Override
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                Objects.requireNonNull(getSupportActionBar()).setTitle(mTitle);
-                invalidateOptionsMenu();
-            }
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                Objects.requireNonNull(getSupportActionBar()).setTitle(mDrawerTitle);
-                invalidateOptionsMenu();
-            }
-        };
-    }
-    private void onDrawerItemClick(int position) {
-        switch (position) {
-            case 0:
-                // Example: Open a fragment or activity for the first item
-                break;
-            case 1:
-                // Handle other items
-                break;
-            // Add more cases if you have more items
-            default:
-                break;
-        }
-        // Close the drawer
-        mDrawerLayout.closeDrawers();
+        mDrawerHandler.syncState();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,13 +88,6 @@ public class GrocerylistActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
         return true;
-    }
-    @Override
-    public  boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
@@ -166,7 +107,6 @@ public class GrocerylistActivity extends AppCompatActivity {
 
         }
     }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

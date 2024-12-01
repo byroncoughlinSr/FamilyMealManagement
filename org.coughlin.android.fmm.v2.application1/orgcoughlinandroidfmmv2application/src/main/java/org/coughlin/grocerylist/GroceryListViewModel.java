@@ -13,12 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class GroceryListViewModel extends AndroidViewModel {
     private final ItemTouchHelper itemTouchHelper;
     private final GroceryItemTouchHelperCallback itemTouchHelperCallback = new GroceryItemTouchHelperCallback();
-    private final GroceryListRepository repository;
+    private final ProductRepository repository;
     private final ProductDao productDao;
     private final MutableLiveData<List<Product>> selectedProductsLive = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<List<Product>> selectedProductLiveData = new MutableLiveData<>();
@@ -71,19 +70,17 @@ public class GroceryListViewModel extends AndroidViewModel {
         }
 
     }
-
         public GroceryListViewModel(@NonNull Application application) {
-        super(application);
-        itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
-        repository = new GroceryListRepository(application);
-        GroceryListDatabase dbHelper = GroceryListDatabase.getDatabase(application);
-        productDao = dbHelper.productDao();
-        GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+            super(application);
+            itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+            repository = new ProductRepository(application);
+            GroceryListDatabase dbHelper = GroceryListDatabase.getDatabase(application);
+            productDao = dbHelper.productDao();
+            GroceryListDatabase.databaseWriteExecutor.execute(() -> {
             List<Product> allProducts = productDao.getAllProductsSync();
             selectedProductsLive.postValue(allProducts != null ? allProducts : new ArrayList<>());
         });
     }
-
     public LiveData<List<Product>> getSelectedProductsLive() {
         return productDao.getSelectedProductsLive();
     }
@@ -99,8 +96,6 @@ public class GroceryListViewModel extends AndroidViewModel {
             selectedProductsLive.postValue(filteredProducts != null ? filteredProducts : new ArrayList<>());
         });
     }
-
-
     public void selectProductById(int productId) {
         repository.getProductById(productId, result -> {
             if (result != null) {

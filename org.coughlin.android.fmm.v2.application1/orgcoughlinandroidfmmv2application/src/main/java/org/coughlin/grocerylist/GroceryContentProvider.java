@@ -15,13 +15,13 @@ import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
 
 public class GroceryContentProvider  extends ContentProvider {
-	private GroceryListRepository repository;
+	private ProductRepository repository;
 	private DatabaseHelper database;
 
 	@Override
 	public boolean onCreate() {
 		Application application = (Application) Objects.requireNonNull(getContext()).getApplicationContext();
-		repository = new GroceryListRepository(application);
+		repository = new ProductRepository(application);
 		return true;
 	}
 	@Override
