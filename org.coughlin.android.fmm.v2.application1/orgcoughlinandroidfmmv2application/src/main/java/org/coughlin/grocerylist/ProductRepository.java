@@ -1,8 +1,7 @@
 package org.coughlin.grocerylist;
 
 import android.app.Application;
-import android.os.Handler;
-import android.os.Looper;
+import androidx.lifecycle.LiveData;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.List;
@@ -14,34 +13,43 @@ public class ProductRepository {
         GroceryListDatabase db = GroceryListDatabase.getDatabase(application);
         productDao = db.productDao();
     }
-    public List<Product> getFilteredProducts(String query) {
-        return productDao.searchSelectedProducts(query);
-    }
-    public void getProductById(int productId, Callback<Product> callback) {
-        executorService.execute(() -> {
-            Product product = productDao.getProductById(productId);
-            new Handler(Looper.getMainLooper()).post(() -> callback.onResult(product));
-        });
-    }
-    public void uncheckProduct(int productId) {
-        executorService.execute(() -> productDao.uncheckProduct(productId));
-    }
     public void insert(Product product) {
         executorService.execute(() -> productDao.insert(product));
     }
     public void delete(Product product) {
         executorService.execute(() -> productDao.delete(product));
     }
-    public interface Callback<T> {
-        void onResult(T result);
+    public void update(Product product) {
+        executorService.execute(() -> productDao.update(product));
+    }
+    public LiveData<List<Product>> getProductByName(String productName) {
+        return productDao.getProductByName(productName);
+    }
+    public LiveData<Product> getProductById(int productId) {
+        return productDao.getProductById(productId);
+    };
+    public Product getProductByIdSync(int productId) {
+        return productDao.getProductByIdSync(productId);
+    }
+    public List<Product> getFilteredProducts(String query) {
+        return productDao.searchSelectedProducts(query);
+    }
+    public List<Product> getAllProductsSync() {
+        return productDao.getAllProductsSync();
+    }
+    public LiveData<List<Product>> getAllProducts() {
+        return productDao.getAllProducts();
+    }
+    public List<Product> getSelectedProducts() {
+        return productDao.getSelectedProductsSync();
+    }
+    public void uncheckProduct(int productId) {
+        executorService.execute(() -> productDao.uncheckProduct(productId));
     }
     public void checkProduct(int id) {
-        GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.checkProduct(id));
+       executorService.execute(() -> productDao.checkProduct(id));
     }
     public void unCheckProduct(int id) {
-        GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.uncheckProduct(id));
-    }
-    public void update(Product product) {
-        GroceryListDatabase.databaseWriteExecutor.execute(() -> productDao.update(product));
+        executorService.execute(() -> productDao.uncheckProduct(id));
     }
 }

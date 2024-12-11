@@ -71,7 +71,7 @@ public class GroceryContentProvider  extends ContentProvider {
 					  String[] selectionArgs) {
 		SQLiteDatabase db = database.getWritableDatabase();
 		String where = Product.COLUMN_NAME_PRODUCT_ID + " = " + selection;
-		db.update(Product.TABLE_NAME, values, where, null);
+		db.update(Product.TABLE_NAME_PRODUCT, values, where, null);
 		return 0;
 	}
 

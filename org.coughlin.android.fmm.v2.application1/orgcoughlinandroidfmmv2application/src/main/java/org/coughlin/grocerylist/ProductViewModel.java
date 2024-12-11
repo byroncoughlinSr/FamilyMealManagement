@@ -9,8 +9,7 @@ public class ProductViewModel extends AndroidViewModel {
     public ProductViewModel(@NonNull Application application) {
         super(application);
         repository = new ProductRepository(application);
-        GroceryListDatabase dbHelper = GroceryListDatabase.getDatabase(application);
-        ProductDao productDao = dbHelper.productDao();
+        GroceryListDatabase.getDatabase(application);
     }
     public void insertNewProduct(String product) {
         boolean isChecked = false;
@@ -18,5 +17,4 @@ public class ProductViewModel extends AndroidViewModel {
         Product newProduct = new Product(product, isChecked, isSelected);
         repository.insert(newProduct);
     }
-
 }

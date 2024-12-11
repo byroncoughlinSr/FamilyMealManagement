@@ -60,6 +60,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
         });
     }
+    public Product getProductAtPosition(int position) {
+        return productList.get(position); // Replace 'currentList' with the name of your data list
+    }
+
 
     @Override
     public int getItemCount() {
@@ -67,8 +71,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     // Method to update the product list and refresh the RecyclerView
-    public void updateProducts(List<Product> newProducts) {
-        this.productList = newProducts; // Update the list
-        notifyDataSetChanged(); // Notify the RecyclerView to refresh
+    public void updateProducts(List<Product> products) {
+        this.productList.clear(); // Clear old data
+        this.productList.addAll(products); // Add new data
+        notifyDataSetChanged(); // Notify the adapter to refresh the UI
     }
+
 }

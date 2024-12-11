@@ -8,13 +8,14 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Product.class}, version = 1, exportSchema = false)
+@Database(entities = {Product.class, ProductHistory.class}, version = 1, exportSchema = false)
 public abstract class GroceryListDatabase extends RoomDatabase {
     // Define the executor as an ExecutorService for background operations
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(4); // Adjust thread count as needed
 
     public abstract ProductDao productDao();
+    public abstract HistoryDao historyDao();
 
     private static volatile GroceryListDatabase INSTANCE;
     private static final String DATABASE_NAME = "dbFamilyMeal";

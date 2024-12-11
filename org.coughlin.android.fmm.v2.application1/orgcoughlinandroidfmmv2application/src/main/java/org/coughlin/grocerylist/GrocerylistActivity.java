@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,22 +20,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GrocerylistActivity extends AppCompatActivity {
-    private RecyclerView mGroceryListView;
     private DrawerHandler mDrawerHandler;
     private ProductAdapter mProductAdapter;
     private GroceryListViewModel groceryListViewModel;
+    private ItemTouchHelper itemTouchHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grocerylist);
         // Initialize variables
-        mGroceryListView = findViewById(R.id.grocerylistView);
+        GroceryListDatabase dbHelper = GroceryListDatabase.getDatabase(getApplicationContext());
+        ProductDao productDao = dbHelper.productDao();
+        RecyclerView mGroceryListView = findViewById(R.id.grocerylistView);
         DrawerLayout mDrawerLayout = findViewById(R.id.drawer_layout);
-        mGroceryListView = findViewById(R.id.grocerylistView);
         mGroceryListView.setLayoutManager(new LinearLayoutManager(this));
         groceryListViewModel = new ViewModelProvider(this).get(GroceryListViewModel.class);
         RecyclerView mDrawerListView = findViewById(R.id.left_drawer);
+        HistoryViewModel historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
+        MutableLiveData<List<Product>> selectedProductsLive = groceryListViewModel.getSelectedProductLive();
         CharSequence mDrawerTitle = "Navigational Drawer";
         Toolbar toolbar = findViewById(R.id.toolbar);
         String[] drawerTitles = getResources().getStringArray(R.array.drawer_titles);
@@ -49,26 +53,30 @@ public class GrocerylistActivity extends AppCompatActivity {
                 mDrawerTitle,
                 mTitle
         );
-
-        ItemTouchHelper itemTouchHelper = groceryListViewModel.getItemTouchHelper();
-        itemTouchHelper.attachToRecyclerView(mGroceryListView);
-
-        groceryListViewModel.getSelectedProductsLive().observe(this, productNames -> {
-            if (productNames != null) {
-                mProductAdapter = new ProductAdapter(productNames, groceryListViewModel);
-                mGroceryListView.setAdapter(mProductAdapter);
-            }
-        });
-        groceryListViewModel.getSelectedProductsLive().observe(this, products -> {
-            if (products == null) {
-                mProductAdapter.updateProducts(new ArrayList<>()); // Pass an empty list
+        groceryListViewModel.getSelectedProducts().observe(this, products -> {
+            if (products != null && !products.isEmpty()) {
+                if (mProductAdapter == null) {
+                    mProductAdapter = new ProductAdapter(products, groceryListViewModel);
+                    mGroceryListView.setAdapter(mProductAdapter);
+                     itemTouchHelper = new ItemTouchHelper(new GroceryItemTouchHelperCallback(
+                            mProductAdapter,
+                            productDao,
+                            historyViewModel,
+                            selectedProductsLive
+                    ));
+                    itemTouchHelper.attachToRecyclerView(mGroceryListView);
+                } else {
+                    mProductAdapter.updateProducts(products);
+                }
             } else {
-                mProductAdapter = new ProductAdapter(products, groceryListViewModel);
-                mProductAdapter.updateProducts(products);
+                if (mProductAdapter != null) {
+                    mProductAdapter.updateProducts(new ArrayList<>()); // Pass an empty list
+                }
             }
         });
+
         groceryListViewModel.getSelectedProductLive().observe(this, product -> {
-            if(product != null) {
+            if (product != null && mProductAdapter != null) {
                 mProductAdapter.updateProducts(product);
             }
         });
@@ -95,7 +103,7 @@ public class GrocerylistActivity extends AppCompatActivity {
             // Handle search query
             String query = intent.getStringExtra(SearchManager.QUERY);
             if (query != null) {
-                groceryListViewModel.filterProducts(query);
+                groceryListViewModel.filterProducts( query);
             }
         } else if (Intent.ACTION_VIEW.equals(action)) {
             // Handle item selection from search suggestions
@@ -104,7 +112,6 @@ public class GrocerylistActivity extends AppCompatActivity {
                 int productId = Integer.parseInt(data.getLastPathSegment());
                 groceryListViewModel.selectProductById(productId);
             }
-
         }
     }
     @Override

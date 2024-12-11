@@ -1,7 +1,5 @@
 package org.coughlin.grocerylist;
 
-import static org.coughlin.grocerylist.FamilyMealContracts.BASE_CONTENT_URI;
-import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -13,11 +11,7 @@ import java.util.Objects;
 @Entity(tableName = "tblProduct")
 public class Product {
     public static final String COLUMN_NAME_PRODUCT_ID = "proId";       // Product ID
-    public static final String COLUMN_NAME_PRODUCT_NAME = "proName";   // Product Name
-    public static final String COLUMN_NAME_PRODUCT_SELECTED = "proSelected"; // Selected state
-    public static final String COLUMN_NAME_PRODUCT_CHECKED = "proChecked";   // Checked state
-    public static final String TABLE_NAME = "tblProduct";
-    public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, TABLE_NAME);
+    public static final String TABLE_NAME_PRODUCT = "tblProduct";
     public static final String DEFAULT_SORT_ORDER = "proName ASC";
     public Product(@NonNull String name, boolean selected, boolean checked) {
         this.name = name;
