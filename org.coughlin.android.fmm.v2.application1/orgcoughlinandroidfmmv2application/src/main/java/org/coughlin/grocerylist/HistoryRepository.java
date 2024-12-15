@@ -25,6 +25,9 @@ public class HistoryRepository {
     public LiveData<List<ProductHistory>> getAllHistory() {
         return historyDao.getAllHistory();
     }
+    public LiveData<Product> getProductNameById(int productId) {
+        return productDao.getProductById(productId);
+    }
 }
 
 

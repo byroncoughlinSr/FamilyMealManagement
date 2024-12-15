@@ -29,11 +29,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     // Constructor
-    public ProductAdapter(@NonNull List<Product> productList, @NonNull GroceryListViewModel viewModel) {
+    public ProductAdapter(@NonNull List<Product> productList,
+                          @NonNull GroceryListViewModel viewModel) {
         this.productList = productList;
         this.viewModel = viewModel;
     }
-
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -63,8 +63,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public Product getProductAtPosition(int position) {
         return productList.get(position); // Replace 'currentList' with the name of your data list
     }
-
-
     @Override
     public int getItemCount() {
         return productList.size();

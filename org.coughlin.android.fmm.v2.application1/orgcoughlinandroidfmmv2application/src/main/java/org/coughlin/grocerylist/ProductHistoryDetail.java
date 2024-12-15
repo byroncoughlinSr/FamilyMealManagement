@@ -1,24 +1,42 @@
 package org.coughlin.grocerylist;
+import androidx.room.ColumnInfo;
+import androidx.room.PrimaryKey;
+
+
 public class ProductHistoryDetail {
-    public String productName;
-    public String productDate;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
-    public ProductHistoryDetail(String productName, String productDate) {
-        this.productName = productName;
-        this.productDate = productDate;
-    }
-    public String getProductName() {
-        return productName;
-    }
-    public String getProductDate() {
-        return productDate;
+    @ColumnInfo(name = "hisDate")
+    private String hisDate;
+
+    @ColumnInfo(name = "productId")
+    private int productId;
+
+    // Add other fields as needed...
+
+    // Getters and Setters
+    public int getId() {
+        return id;
     }
 
-    public void setProductDate(String productDate) {
-        this.productDate = productDate;
+    public void setId(int id) {
+        this.id = id;
     }
-    public void setProductName(String productName) {
-        this.productName = productName;
+
+    public String getHisDate() {
+        return hisDate;
+    }
+
+    public void setHisDate(String hisDate) {
+        this.hisDate = hisDate;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 }
-

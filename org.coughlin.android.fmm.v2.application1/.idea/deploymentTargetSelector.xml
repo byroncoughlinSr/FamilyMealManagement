@@ -15,7 +15,7 @@
       </SelectionState>
       <SelectionState runConfigName="GrocerylistActivity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-01T02:01:50.967267951Z">
+        <DropdownSelection timestamp="2024-12-15T14:04:45.787298866Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="PhysicalDevice" identifier="serial=RFCR60VBGYP" />

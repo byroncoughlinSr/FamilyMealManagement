@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -53,6 +55,19 @@ public class GrocerylistActivity extends AppCompatActivity {
                 mDrawerTitle,
                 mTitle
         );
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
+
+        // Add the toggle to the DrawerLayout
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        // Sync the toggle state
+        mDrawerToggle.syncState();
         groceryListViewModel.getSelectedProducts().observe(this, products -> {
             if (products != null && !products.isEmpty()) {
                 if (mProductAdapter == null) {

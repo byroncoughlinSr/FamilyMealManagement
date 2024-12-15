@@ -3,20 +3,17 @@
  */
 package org.coughlin.grocerylist;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
-
-import android.content.Context;
-import android.database.Cursor;
+import java.util.Objects;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -24,13 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  */
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
-	private List<ProductHistoryDetail> historyList;
+	private List<ProductHistory> historyList;
 	private final HistoryViewModel viewModel;
 	View.OnTouchListener mTouchListener;
 	public static final String MONTH_DAY_YEAR = "mm-dd-yyyy";
 	public static final String YEAR_MONTH_DAY = "yyyy-mm-dd";
-	private Product product;
-	private HistoryRepository historyRepository;
+	private LiveData<Product> product;
 
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(YEAR_MONTH_DAY, Locale.US);
 	public static final SimpleDateFormat VIEW_DATE_FORMAT = new SimpleDateFormat(MONTH_DAY_YEAR, Locale.US);
@@ -44,11 +40,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 			return historyNameTextView;
 		}
 	}
-	public HistoryAdapter(@NonNull List<ProductHistoryDetail> historyList,
+	public HistoryAdapter(@NonNull List<ProductHistory> historyList,
 						  @NonNull HistoryViewModel viewModel) {
 		this.historyList = historyList;
 		this.viewModel = viewModel;
+
 	}
+
 	@NonNull
 	@Override
 	public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,21 +54,36 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 				.inflate(R.layout.historylist_item, parent, false);
 		return new HistoryViewHolder(view);
 	}
-
 	@Override
 	public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
 		// Get the current ProductHistory object
-		ProductHistoryDetail historyItem = historyList.get(position);
+		ProductHistory historyItem = historyList.get(position);
 
-		// Format the text to include the product name and history date
-		//String displayText = String.format("%s - %s", productName, historyItem.getHisDate());
+		// Fetch the LiveData<Product> for the given product ID
+		LiveData<Product> productLiveData = viewModel.getProductNameById(historyItem.getProId());
 
-		// Set the formatted text to the TextView
-		//holder.getTextView().setText(displayText);
+		// Observe the LiveData to handle updates
+		productLiveData.observeForever(new Observer<Product>() {
+			@Override
+			public void onChanged(Product product) {
+				String productName = (product != null && product.getName() != null)
+						? product.getName()
+						: "Unknown Product";
+
+				String hisDate = Objects.requireNonNullElse(historyItem.getHisDate(), "Unknown Date");
+				String displayText = String.format("%s - %s", productName, hisDate);
+
+				holder.getTextView().setText(displayText);
+
+				// Remove observer to avoid memory leaks
+				productLiveData.removeObserver(this);
+			}
+		});
 	}
 
-	public void updateHistorylist(List<ProductHistoryDetail> newProducts) {
-		this.historyList = newProducts;
+	public void updateHistorylist(List<ProductHistory> newProducts) {
+		this.historyList.clear();
+		this.historyList.addAll(newProducts);
 		notifyDataSetChanged(); // Notify RecyclerView to refresh
 	}
 
