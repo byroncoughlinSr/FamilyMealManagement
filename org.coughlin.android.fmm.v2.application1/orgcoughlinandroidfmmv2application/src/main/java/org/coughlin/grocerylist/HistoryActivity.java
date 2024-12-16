@@ -1,81 +1,90 @@
 package org.coughlin.grocerylist;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import android.app.SearchManager;
-import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import android.view.Menu;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class HistoryActivity extends AppCompatActivity {
-    DrawerHandler mDrawerHandler;
-	private HistoryAdapter mHistoryAdapter;
+	private DrawerHandler drawerHandler;
+	private HistoryAdapter historyAdapter;
+	private ItemTouchHelper itemTouchHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history);
-		//Initialize variables
 
-        final RecyclerView mHistroyListView = findViewById(R.id.historylistview);
-		DrawerLayout mDrawerLayout = findViewById(R.id.drawer_layout);
-		mHistroyListView.setLayoutManager(new LinearLayoutManager(this));
+		// Initialize RecyclerView
+		RecyclerView historyRecyclerView = findViewById(R.id.historylistview);
+		historyRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+		// Initialize ViewModel
 		HistoryViewModel historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
-		RecyclerView mDrawerListView = findViewById(R.id.left_drawer);
-		CharSequence mDrawerTitle = "Navigation Drawer";
+
+		// Initialize Adapter with empty list
+		historyAdapter = new HistoryAdapter(new ArrayList<>(), historyViewModel);
+		historyRecyclerView.setAdapter(historyAdapter);
+
+		// Attach ItemTouchHelper for swipe actions
+		itemTouchHelper = new ItemTouchHelper(new HistoryTouchHelperCallback(
+				historyAdapter,
+				historyViewModel.getHistoryDao(),
+				historyViewModel
+		));
+		itemTouchHelper.attachToRecyclerView(historyRecyclerView);
+
+		// Observe LiveData for updates
+		historyViewModel.getAllHistory().observe(this, historyList -> {
+			if (historyList != null) {
+				historyAdapter.updateHistorylist(historyList);
+			} else {
+				historyAdapter.updateHistorylist(new ArrayList<>()); // Handle empty list
+			}
+		});
+
+		// Setup navigation drawer
+		setupDrawer();
+	}
+
+	private void setupDrawer() {
+		DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+		RecyclerView drawerRecyclerView = findViewById(R.id.left_drawer);
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		String[] drawerTitles = getResources().getStringArray(R.array.drawer_titles);
 		List<String> drawerContents = Arrays.asList(drawerTitles);
-        CharSequence mTitle = getTitle();
-		mDrawerHandler = new DrawerHandler(
+		CharSequence drawerTitle = "Navigation Drawer";
+		CharSequence activityTitle = getTitle();
+
+		drawerHandler = new DrawerHandler(
 				this,
-				mDrawerLayout,
-				mDrawerListView,
+				drawerLayout,
+				drawerRecyclerView,
 				toolbar,
 				drawerContents,
-				mDrawerTitle,
-                mTitle
+				drawerTitle,
+				activityTitle
 		);
-		historyViewModel.getAllHistory().observe(this, historyList -> {
-			if (historyList != null && !historyList.isEmpty()) {
-				if (mHistoryAdapter == null) {
-					mHistoryAdapter = new HistoryAdapter(historyList, historyViewModel );
-					mHistroyListView.setAdapter(mHistoryAdapter);
-				} else {
-					mHistoryAdapter.updateHistorylist(historyList);
-				}
-			} else {
-				if (mHistoryAdapter != null) {
-					mHistoryAdapter.updateHistorylist(new ArrayList<>());
-				}
-			}
-		});
-		handleIntent(getIntent());
-	}
-	private void handleIntent(Intent intent) {
-		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			String query = intent.getStringExtra(SearchManager.QUERY);
-		}
-	}
-	@Override
-	public void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleIntent(intent);
-	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.history, menu);
-		return true;
-	}
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-	    mDrawerHandler.syncState();
+
+		ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
+				this,
+				drawerLayout,
+				toolbar,
+				R.string.navigation_drawer_open,
+				R.string.navigation_drawer_close
+		);
+
+		drawerLayout.addDrawerListener(drawerToggle);
+		drawerToggle.syncState();
 	}
 }

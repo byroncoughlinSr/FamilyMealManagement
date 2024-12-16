@@ -28,6 +28,9 @@ public class HistoryRepository {
     public LiveData<Product> getProductNameById(int productId) {
         return productDao.getProductById(productId);
     }
+    public void deleteHistoryById(int productId) {
+        historyDao.deleteByProductId(productId);
+    }
 }
 
 

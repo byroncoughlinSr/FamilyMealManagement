@@ -54,10 +54,7 @@ public class GroceryItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
             if (product != null) {
                 GroceryListDatabase.databaseWriteExecutor.execute(() -> {
-                    // Unselect the product in the database
                     productDao.unSelectProduct(product.getId());
-
-                    // Fetch the updated selected products from the database
                     LiveData<List<Product>> updatedSelectedProducts = productDao.getSelectedProducts();
 
                     // Post observation to the main thread

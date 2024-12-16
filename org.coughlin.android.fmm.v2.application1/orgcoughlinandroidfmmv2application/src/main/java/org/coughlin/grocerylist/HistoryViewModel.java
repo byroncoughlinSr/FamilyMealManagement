@@ -13,12 +13,14 @@ public class HistoryViewModel extends AndroidViewModel {
     private final HistoryRepository repository;
     private final HistoryDao historyDao;
     private ArrayList<String> historyListView = new ArrayList<>();
+    private final LiveData<List<ProductHistory>> allHistory;
 
     public HistoryViewModel(@NonNull Application application) {
         super(application);
         repository = new HistoryRepository(application);
         GroceryListDatabase dbHelper = GroceryListDatabase.getDatabase(application);
         historyDao = dbHelper.historyDao();
+        allHistory = historyDao.getAllHistory();
     }
     public void insertNewHistory(int proId, String proName) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -31,5 +33,12 @@ public class HistoryViewModel extends AndroidViewModel {
     }
     public LiveData<List<ProductHistory>> getAllHistory() {
         return repository.getAllHistory();
+    }
+    public void deleteHistoryById(int productId) {
+        repository.deleteHistoryById((productId));
+    }
+
+    public HistoryDao getHistoryDao() {
+        return historyDao;
     }
 }

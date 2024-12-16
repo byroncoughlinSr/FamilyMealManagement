@@ -80,11 +80,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 			}
 		});
 	}
+	public ProductHistory getProductAtPosition(int position) {
+		return historyList.get(position);
+	}
 
 	public void updateHistorylist(List<ProductHistory> newProducts) {
 		this.historyList.clear();
 		this.historyList.addAll(newProducts);
 		notifyDataSetChanged(); // Notify RecyclerView to refresh
+	}
+	public void setHistoryList(List<ProductHistory> historyList) {
+		this.historyList = historyList;
+		notifyDataSetChanged(); // Notify the adapter about the changes
 	}
 
 	@Override

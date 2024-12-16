@@ -61,7 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         });
     }
     public Product getProductAtPosition(int position) {
-        return productList.get(position); // Replace 'currentList' with the name of your data list
+        return productList.get(position);
     }
     @Override
     public int getItemCount() {
