@@ -11,13 +11,14 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Product.class, ProductHistory.class}, version = 2, exportSchema = false)
+@Database(entities = {Product.class, ProductHistory.class, DailyMenu.class}, version = 3, exportSchema = false)
 public abstract class GroceryListDatabase extends RoomDatabase {
 
     public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(4);
     public abstract ProductDao productDao();
     public abstract HistoryDao historyDao();
+    public abstract DailyMenuDao dailyMenuDao();
     private static volatile GroceryListDatabase INSTANCE;
     private static final String DATABASE_NAME = "dbFamilyMeal";
     public static GroceryListDatabase getDatabase(final Context context) {
@@ -31,7 +32,7 @@ public abstract class GroceryListDatabase extends RoomDatabase {
                                         GroceryListDatabase.class, DATABASE_NAME)
                                 .createFromAsset("databases/" + DATABASE_NAME) // Load prebuilt DB
                                 .addCallback(prepopulateCallback()) // Optional: Additional setup after DB is created
-                                .addMigrations(MIGRATION_1_2) // Add migrations
+                                .addMigrations(MIGRATION_1_2, MIGRATION_2_3) // Add migrations
                                 .build();
                     } catch (IOException e) {
                         throw new RuntimeException("Error copying database from assets", e);
@@ -56,6 +57,17 @@ public abstract class GroceryListDatabase extends RoomDatabase {
                     "SELECT _id, proId, hisDate FROM tblHistory");
             database.execSQL("DROP TABLE tblHistory");
             database.execSQL("ALTER TABLE tblHistory_new RENAME TO tblHistory");
+        }
+    };
+
+    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS tblDailyMenu (" +
+                    "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                    "menuDate TEXT NOT NULL, " +
+                    "mealType TEXT NOT NULL, " +
+                    "mealDescription TEXT NOT NULL)");
         }
     };
 

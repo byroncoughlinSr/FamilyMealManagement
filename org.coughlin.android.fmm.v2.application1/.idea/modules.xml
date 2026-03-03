@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.coughlin.android.fmm.v2.application1.iml" filepath="$PROJECT_DIR$/.idea/modules/org.coughlin.android.fmm.v2.application1.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/orgcoughlinandroidfmmv2application/org.coughlin.android.fmm.v2.application1.orgcoughlinandroidfmmv2application.iml" filepath="$PROJECT_DIR$/.idea/modules/orgcoughlinandroidfmmv2application/org.coughlin.android.fmm.v2.application1.orgcoughlinandroidfmmv2application.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/orgcoughlinandroidfmmv2application/org.coughlin.android.fmm.v2.application1.orgcoughlinandroidfmmv2application.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/orgcoughlinandroidfmmv2application/org.coughlin.android.fmm.v2.application1.orgcoughlinandroidfmmv2application.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/orgcoughlinandroidfmmv2application/org.coughlin.android.fmm.v2.application1.orgcoughlinandroidfmmv2application.main.iml" filepath="$PROJECT_DIR$/.idea/modules/orgcoughlinandroidfmmv2application/org.coughlin.android.fmm.v2.application1.orgcoughlinandroidfmmv2application.main.iml" />
