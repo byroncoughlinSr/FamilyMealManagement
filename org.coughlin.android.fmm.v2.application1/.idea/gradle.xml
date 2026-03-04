@@ -11,10 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/orgcoughlinandroidfmmv2application" />
-            <option value="$PROJECT_DIR$/orgcoughlinandroidgrocerylistapplication" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MenuGenerationWorker extends Worker {
     private static final String TAG = "MenuGenerationWorker";
-    private static final String OLLAMA_URL = "http://192.168.7.249:11434/api/generate";
+    private static final String OLLAMA_URL = "http://192.168.4.249:11434/api/generate";
     private static final String OLLAMA_MODEL = "llama3.1:8b";
     private static final DateTimeFormatter DB_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -47,12 +47,17 @@ public class MenuGenerationWorker extends Worker {
                     nextSunday.format(DB_FORMATTER) +
                     ". For each day provide breakfast, lunch, and dinner. " +
                     "Return ONLY valid JSON in this exact format, no other text: " +
-                    "[{\"date\":\"yyyy-MM-dd\",\"breakfast\":\"meal\"," +
-                    "\"lunch\":\"meal\",\"dinner\":\"meal\"}]";
+                    "{\"menu\":[{\"date\":\"yyyy-MM-dd\",\"breakfast\":\"meal\"," +
+                    "\"lunch\":\"meal\",\"dinner\":\"meal\"}]}" +
+                    "Two days out of the week include chicken for dinner. " +
+                    "One day fish and on sunday for breakfast is veggie omelettes with ham. " +
+                    "Dinners should also include two side dishes. " +
+                    "Ensure there are seven days of meals. Should have eggs four " +
+                    "times during the week";
 
+            Log.d(TAG, "Prompt: " + prompt);
             String response = callOllama(prompt);
-
-            JSONArray weekMenu = new JSONArray(response);
+            Log.d(TAG, "Response: " + response);
 
             GroceryListDatabase db = GroceryListDatabase.getDatabase(
                     getApplicationContext());
@@ -63,6 +68,22 @@ public class MenuGenerationWorker extends Worker {
                     nextSunday.format(DB_FORMATTER));
 
             List<DailyMenu> mealsToInsert = new ArrayList<>();
+            String trimmed = response.trim();
+            JSONArray weekMenu;
+
+            if (trimmed.startsWith("[")) {
+                weekMenu = new JSONArray(trimmed);
+            } else if (trimmed.startsWith("{")) {
+                JSONObject wrapper = new JSONObject(trimmed);
+                if (wrapper.has("menu")) {
+                    weekMenu = wrapper.getJSONArray("menu");
+                } else {
+                    throw new Exception("Unexpected JSON object format: " + trimmed);
+                }
+            } else {
+                throw new Exception("Unexpected JSON response: " + trimmed);
+            }
+
             for (int i = 0; i < weekMenu.length(); i++) {
                 JSONObject dayObj = weekMenu.getJSONObject(i);
                 String date = dayObj.getString("date");
@@ -92,7 +113,7 @@ public class MenuGenerationWorker extends Worker {
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
         conn.setConnectTimeout(30000);
-        conn.setReadTimeout(120000);
+        conn.setReadTimeout(300000);
 
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", OLLAMA_MODEL);

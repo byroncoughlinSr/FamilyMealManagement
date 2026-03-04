@@ -1,4 +1,3 @@
-include ':orgcoughlinandroidgrocerylistapplication'
 include ':orgcoughlinandroidfmmv2application'
 
 dependencyResolutionManagement {
