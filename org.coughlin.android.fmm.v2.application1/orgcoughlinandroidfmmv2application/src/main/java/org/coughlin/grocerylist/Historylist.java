@@ -22,7 +22,7 @@ public final class Historylist {
 	public static final String DATABASE_NAME = "dbFamilyMeal";
 	public static final int DATABASE_VERSION = 1;
 	
-	//History table definitions
+	//HistoryTable table definitions
 	public static final String HIS_TABLE_NAME = "tblHistory";	
 	protected static final String HIS_DATE="hisDate";
 	protected static final String ROW_ID = "_id";

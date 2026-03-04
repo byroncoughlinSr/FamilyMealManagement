@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_gravity="start"
-    android:background="@drawable/product_background">
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
-
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/productTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="120dp"
             android:background="#30F6ECEC"
             android:gravity="center_vertical"
             android:text="@string/add_product"
@@ -26,12 +32,11 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/newProductTxt"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="36dp"
             android:autofillHints="@string/add_new_product"
             android:background="@android:color/background_light"
             android:ems="10"
@@ -46,30 +51,22 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/productTxt" />
-
         <Button
             android:id="@+id/addProductBtn"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:text="@string/add_new_product"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/newProductTxt" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/left_drawer"
-        android:layout_width="240dp"
+        android:layout_width="180dp"
         android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
         android:layout_gravity="start"
-        android:background="#27261F"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp">
-    </ListView>
-
+        android:background="#111" />
 </androidx.drawerlayout.widget.DrawerLayout>

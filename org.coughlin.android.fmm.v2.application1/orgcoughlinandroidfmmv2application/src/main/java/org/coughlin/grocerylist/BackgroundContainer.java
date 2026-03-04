@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2013 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package org.coughlin.grocerylist;
 
 import android.content.Context;
@@ -29,7 +13,7 @@ public class BackgroundContainer extends FrameLayout {
     Drawable mShadowedBackground;
     int mOpenAreaTop, mOpenAreaHeight;
     boolean mUpdateBounds = false;
-    
+
     public BackgroundContainer(Context context) {
         super(context);
         init();
@@ -46,34 +30,37 @@ public class BackgroundContainer extends FrameLayout {
     }
 
     private void init() {
-        mShadowedBackground =
-                ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.shadowed_background, null);
+        mShadowedBackground = ResourcesCompat.getDrawable(
+                getContext().getResources(), R.drawable.shadowed_background, null
+        );
     }
 
-    public void showBackground(int top, int bottom) {
+    public void showBackground(int top, int height) {
         setWillNotDraw(false);
         mOpenAreaTop = top;
-        mOpenAreaHeight = bottom;
+        mOpenAreaHeight = height;
         mShowing = true;
         mUpdateBounds = true;
+        invalidate();  // Trigger a redraw to show the background immediately
     }
-    
+
     public void hideBackground() {
         setWillNotDraw(true);
         mShowing = false;
+        invalidate();  // Clear the background by triggering a redraw
     }
-    
+
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mShowing) {
-            	if (mUpdateBounds) {
+        if (mShowing && mShadowedBackground != null) {
+            if (mUpdateBounds) {
                 mShadowedBackground.setBounds(0, 0, getWidth(), mOpenAreaHeight);
-            	}
+                mUpdateBounds = false;  // Bounds only need to be set once when they change
+            }
             canvas.save();
             canvas.translate(0, mOpenAreaTop);
             mShadowedBackground.draw(canvas);
             canvas.restore();
         }
     }
-
 }

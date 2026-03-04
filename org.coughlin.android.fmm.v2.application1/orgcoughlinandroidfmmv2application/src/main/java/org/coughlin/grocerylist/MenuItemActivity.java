@@ -19,20 +19,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.Objects;
+
 public class MenuItemActivity extends Activity {
 
-	private DrawerLayout mDrawerLayout;	
-	private String[] mDrawerContents;
-	private ListView mDrawerListView;
+	private DrawerLayout mDrawerLayout;
+    private ListView mDrawerListView;
 	private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-	private Button button;
     private EditText text;
     private String menuItem;
     private DatabaseAdapter mDatabaseAdapter;
-	private String[] mProjections = {FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID, FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME};
-	private SQLiteQueryBuilder mSQLiteQueryBuilder = new SQLiteQueryBuilder();
+	private final String[] mProjections = {FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_ID, FamilyMealContracts.Products.COLUMN_NAME_PRODUCT_NAME};
+	private final SQLiteQueryBuilder mSQLiteQueryBuilder = new SQLiteQueryBuilder();
 	private String mSelections;
 
 	/**				onCreate()
@@ -44,13 +44,13 @@ public class MenuItemActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu_item);
-		
-		//Setup the database 
+
+		//Setup the database
 	    mDatabaseAdapter = new DatabaseAdapter(this, mSQLiteQueryBuilder, mProjections, mSelections);
 
-		//Setup and create navigation drawer
-		mDrawerTitle = "Navigation Drawer";	
-		mDrawerContents = getResources().getStringArray(R.array.drawer_titles);
+        // Setup and create navigation drawer
+		mDrawerTitle = "Navigation Drawer";
+        String[] mDrawerContents = getResources().getStringArray(R.array.drawer_titles);
 		mDrawerListView = (ListView)findViewById(R.id.left_drawer);
 		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);			
 
@@ -89,7 +89,7 @@ public class MenuItemActivity extends Activity {
 		});	
 
 		// Set home icon as up to home display and set home button as enabled
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		Objects.requireNonNull(getActionBar()).setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 		
 		// Handle the drawer icon on the actionbar
@@ -107,7 +107,7 @@ public class MenuItemActivity extends Activity {
 			 */
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
-				getActionBar().setTitle(mTitle);
+				Objects.requireNonNull(getActionBar()).setTitle(mTitle);
 				invalidateOptionsMenu();
 			}
 
@@ -125,8 +125,8 @@ public class MenuItemActivity extends Activity {
 
 		// Set the drawer toggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
-		
-		button = (Button)findViewById(R.id.addMenuItemBtn);		
+
+        Button button = (Button) findViewById(R.id.addMenuItemBtn);
 
 		//Handle button
 		button.setOnClickListener(new OnClickListener() {
@@ -140,7 +140,7 @@ public class MenuItemActivity extends Activity {
 				text.setText("");
 				InputMethodManager inputMethodManager =(InputMethodManager) 
 						getSystemService(Context.INPUT_METHOD_SERVICE);
-				inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+				inputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(getCurrentFocus()).getWindowToken(),
 						InputMethodManager.HIDE_NOT_ALWAYS);				
 			}			
 		});
@@ -184,7 +184,7 @@ public class MenuItemActivity extends Activity {
 		// Pass the event to ActionBarDrawerToggle, if it returns
 	    // true, then it has handled the app icon touch event
 	    if (mDrawerToggle.onOptionsItemSelected(item)) {
-	    	return true;
+            return true;
 	    } 
 	    
 		return super.onOptionsItemSelected(item);

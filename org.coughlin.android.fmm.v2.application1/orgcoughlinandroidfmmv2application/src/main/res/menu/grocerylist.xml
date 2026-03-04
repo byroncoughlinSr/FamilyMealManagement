@@ -6,10 +6,10 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
-    <item android:id="@+id/search" 
-        android:icon="@drawable/ic_menu_search" 
+    <item android:id="@+id/search"
+        android:icon="@drawable/ic_menu_search"
         android:title="@string/search_title"
-        app:actionViewClass="android.widget.SearchView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView">
     </item>
 

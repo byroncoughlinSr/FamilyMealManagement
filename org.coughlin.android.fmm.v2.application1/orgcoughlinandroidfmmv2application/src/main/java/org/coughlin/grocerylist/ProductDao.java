@@ -17,10 +17,29 @@ public interface ProductDao {
     void update(Product product);
     @Delete
     void delete(Product product);
-    @Query("SELECT * FROM tblProduct ORDER BY proName ASC")
-    LiveData<List<Product>> getAllProductsLive();
+    @Query("UPDATE tblProduct SET proChecked = 1 WHERE _id = :id")
+    void checkProduct(int id);
+    @Query("UPDATE tblProduct SET proChecked = 0 WHERE _id = :id")
+    void uncheckProduct(int id);
+    @Query("UPDATE tblProduct SET proSelected = 1 where _id =:id")
+    void updateSelectProduct(int id);
+    @Query("UPDATE tblProduct SET proSelected = 0 where _id =:id")
+    void unSelectProduct(int id);
     @Query("SELECT * FROM tblProduct WHERE _id = :id")
-    Product getProductById(int id);
-    @Query("DELETE FROM tblProduct")
-    void deleteAll();
+    LiveData<Product> getProductById(int id);
+    @Query("SELECT * FROM tblProduct WHERE _id = :id")
+    Product getProductByIdSync(int id);
+    @Query("SELECT * FROM tblProduct WHERE proName = :productName")
+    LiveData<List<Product>> getProductByName(String productName);
+    @Query("SELECT * FROM tblProduct ORDER BY proName ASC")
+    LiveData<List<Product>> getAllProducts();
+    @Query("SELECT * FROM tblProduct ORDER BY proName ASC")
+    List<Product> getAllProductsSync();
+    @Query("SELECT * FROM tblProduct WHERE proSelected = 1 ORDER BY proName ASC")
+    LiveData<List<Product>> getSelectedProducts();
+    @Query("SELECT * FROM tblProduct WHERE proSelected = 1 ORDER BY proName ASC")
+    List<Product> getSelectedProductsSync();
+
+    @Query("SELECT * FROM tblProduct WHERE proName LIKE :query ORDER BY proName ASC")
+    List<Product> searchSelectedProducts(String query);
 }

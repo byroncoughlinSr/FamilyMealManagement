@@ -2,10 +2,6 @@
  */
 package org.coughlin.grocerylist;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -76,7 +72,7 @@ public class DatabaseAdapter {
 		Cursor cursor;
 		String sqlStr;
 		
-		sqlStr = "SELECT " + product.getName() + " FROM " + Product.TABLE_NAME + " WHERE " + product.getName() + "='" + product + "'";
+		sqlStr = "SELECT " + product.getName() + " FROM " + Product.TABLE_NAME_PRODUCT + " WHERE " + product.getName() + "='" + product + "'";
 		cursor = mDatabase.rawQuery(sqlStr, null);
 		cursor.moveToFirst();
 		cursor.close();
