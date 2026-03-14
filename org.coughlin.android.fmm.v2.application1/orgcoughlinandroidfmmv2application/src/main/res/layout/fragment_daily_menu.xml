@@ -15,9 +15,13 @@
         android:paddingBottom="24dp" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewBreakfast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,19 +36,39 @@
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textViewBreakfastContent"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="--"
-                android:paddingTop="4dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textViewBreakfastContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:paddingTop="4dp" />
+
+                <ImageButton
+                    android:id="@+id/btnEditBreakfast"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/edit_breakfast" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewLunch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,19 +83,39 @@
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textViewLunchContent"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="--"
-                android:paddingTop="4dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textViewLunchContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:paddingTop="4dp" />
+
+                <ImageButton
+                    android:id="@+id/btnEditLunch"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/edit_lunch" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewDinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,12 +130,28 @@
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textViewDinnerContent"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="--"
-                android:paddingTop="4dp" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textViewDinnerContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="--"
+                    android:paddingTop="4dp" />
+
+                <ImageButton
+                    android:id="@+id/btnEditDinner"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/edit_dinner" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -24,10 +24,14 @@ public class DailyMenu {
     @NonNull
     private String mealDescription;
 
+    @ColumnInfo(name = "manuallySet", defaultValue = "0")
+    private boolean manuallySet;
+
     public DailyMenu(@NonNull String menuDate, @NonNull String mealType, @NonNull String mealDescription) {
         this.menuDate = menuDate;
         this.mealType = mealType;
         this.mealDescription = mealDescription;
+        this.manuallySet = false;
     }
 
     public int getId() {
@@ -63,5 +67,13 @@ public class DailyMenu {
 
     public void setMealDescription(@NonNull String mealDescription) {
         this.mealDescription = mealDescription;
+    }
+
+    public boolean isManuallySet() {
+        return manuallySet;
+    }
+
+    public void setManuallySet(boolean manuallySet) {
+        this.manuallySet = manuallySet;
     }
 }

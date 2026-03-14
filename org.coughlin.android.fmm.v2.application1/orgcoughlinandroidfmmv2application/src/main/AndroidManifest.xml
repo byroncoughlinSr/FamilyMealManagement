@@ -57,6 +57,24 @@
             android:name=".MenuItemActivity"
             android:label="@string/title_activity_menu_item" >
         </activity>
+
+        <activity
+            android:name=".CreateRecipeActivity"
+            android:label="@string/create_recipe"
+            android:parentActivityName=".MenuActivity" >
+        </activity>
+
+        <activity
+            android:name=".MealSearchActivity"
+            android:label="@string/title_activity_meal_search"
+            android:parentActivityName=".MenuActivity" >
+        </activity>
+
+        <activity
+            android:name=".RecipeActivity"
+            android:label="@string/title_activity_recipe"
+            android:parentActivityName=".MenuActivity" >
+        </activity>
         <provider
             android:name=".GroceryContentProvider"
             android:authorities="org.coughlin.provider.grocery"

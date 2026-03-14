@@ -3,6 +3,7 @@ package org.coughlin.grocerylist;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -12,14 +13,23 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
+import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
     private DrawerHandler drawerHandler;
+    private View generatingOverlay;
+    private static final DateTimeFormatter DB_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +43,8 @@ public class MenuActivity extends AppCompatActivity {
         DailyMenuPagerAdapter pagerAdapter = new DailyMenuPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(pagerAdapter.getCenterPosition(), false);
+
+        generatingOverlay = findViewById(R.id.generatingOverlay);
 
         setupDrawer();
 
@@ -79,15 +91,64 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_generate_menu) {
-            OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(
+            OneTimeWorkRequest menuRequest = new OneTimeWorkRequest.Builder(
                     MenuGenerationWorker.class).build();
-            WorkManager.getInstance(this).enqueue(request);
-            Toast.makeText(this, "Generating menu...", Toast.LENGTH_SHORT).show();
+            WorkManager workManager = WorkManager.getInstance(this);
+            workManager.enqueue(menuRequest);
+
+            generatingOverlay.setVisibility(View.VISIBLE);
+
+            workManager.getWorkInfoByIdLiveData(menuRequest.getId())
+                    .observe(this, workInfo -> {
+                        if (workInfo != null && workInfo.getState().isFinished()) {
+                            generatingOverlay.setVisibility(View.GONE);
+                            if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                                Toast.makeText(this, "Menu generated! Recipes loading in background...",
+                                        Toast.LENGTH_SHORT).show();
+                                startRecipeGeneration();
+                            } else {
+                                Toast.makeText(this, "Menu generation failed",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
             return true;
         }
         if (drawerHandler.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startRecipeGeneration() {
+        // Compute the same date range the menu worker used
+        boolean isMonthly = false; // Must match MenuGenerationWorker toggle
+        LocalDate startDate;
+        LocalDate endDate;
+
+        if (isMonthly) {
+            LocalDate today = LocalDate.now();
+            startDate = today.getDayOfMonth() > 1 ? today : today.withDayOfMonth(1);
+            endDate = today.with(TemporalAdjusters.lastDayOfMonth());
+        } else {
+            startDate = LocalDate.now()
+                    .with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+            endDate = startDate.plusDays(6);
+        }
+
+        Data inputData = new Data.Builder()
+                .putString(RecipeGenerationWorker.KEY_START_DATE,
+                        startDate.format(DB_FORMATTER))
+                .putString(RecipeGenerationWorker.KEY_END_DATE,
+                        endDate.format(DB_FORMATTER))
+                .putInt(RecipeGenerationWorker.KEY_CURRENT_INDEX, 0)
+                .build();
+
+        OneTimeWorkRequest recipeRequest = new OneTimeWorkRequest.Builder(
+                RecipeGenerationWorker.class)
+                .setInputData(inputData)
+                .build();
+
+        WorkManager.getInstance(this).enqueue(recipeRequest);
     }
 }

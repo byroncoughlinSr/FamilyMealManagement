@@ -31,6 +31,12 @@ public interface ProductDao {
     Product getProductByIdSync(int id);
     @Query("SELECT * FROM tblProduct WHERE proName = :productName")
     LiveData<List<Product>> getProductByName(String productName);
+    @Query("SELECT * FROM tblProduct WHERE proName = :productName LIMIT 1")
+    Product getProductByNameSync(String productName);
+    
+    @Query("SELECT * FROM tblProduct WHERE LOWER(proName) = LOWER(:productName) LIMIT 1")
+    Product getProductByNameIgnoreCaseSync(String productName);
+
     @Query("SELECT * FROM tblProduct ORDER BY proName ASC")
     LiveData<List<Product>> getAllProducts();
     @Query("SELECT * FROM tblProduct ORDER BY proName ASC")
@@ -42,4 +48,7 @@ public interface ProductDao {
 
     @Query("SELECT * FROM tblProduct WHERE proName LIKE :query ORDER BY proName ASC")
     List<Product> searchSelectedProducts(String query);
+
+    @Query("SELECT * FROM tblProduct WHERE proName LIKE :query ORDER BY proName ASC LIMIT 20")
+    List<Product> searchProductsByName(String query);
 }
