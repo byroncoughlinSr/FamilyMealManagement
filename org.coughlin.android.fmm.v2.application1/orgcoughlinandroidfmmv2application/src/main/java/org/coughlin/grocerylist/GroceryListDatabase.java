@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Product.class, ProductHistory.class, DailyMenu.class}, version = 3, exportSchema = false)
+@Database(entities = {Product.class, ProductHistory.class, DailyMenu.class, Recipe.class, RecipeIngredient.class}, version = 5, exportSchema = false)
 public abstract class GroceryListDatabase extends RoomDatabase {
 
     public static final ExecutorService databaseWriteExecutor =
@@ -19,6 +19,8 @@ public abstract class GroceryListDatabase extends RoomDatabase {
     public abstract ProductDao productDao();
     public abstract HistoryDao historyDao();
     public abstract DailyMenuDao dailyMenuDao();
+    public abstract RecipeDao recipeDao();
+    public abstract RecipeIngredientDao recipeIngredientDao();
     private static volatile GroceryListDatabase INSTANCE;
     private static final String DATABASE_NAME = "dbFamilyMeal";
     public static GroceryListDatabase getDatabase(final Context context) {
@@ -32,7 +34,7 @@ public abstract class GroceryListDatabase extends RoomDatabase {
                                         GroceryListDatabase.class, DATABASE_NAME)
                                 .createFromAsset("databases/" + DATABASE_NAME) // Load prebuilt DB
                                 .addCallback(prepopulateCallback()) // Optional: Additional setup after DB is created
-                                .addMigrations(MIGRATION_1_2, MIGRATION_2_3) // Add migrations
+                                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5) // Add migrations
                                 .build();
                     } catch (IOException e) {
                         throw new RuntimeException("Error copying database from assets", e);
@@ -68,6 +70,33 @@ public abstract class GroceryListDatabase extends RoomDatabase {
                     "menuDate TEXT NOT NULL, " +
                     "mealType TEXT NOT NULL, " +
                     "mealDescription TEXT NOT NULL)");
+        }
+    };
+
+    static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS tblRecipe (" +
+                    "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                    "dailyMenuId INTEGER NOT NULL, " +
+                    "imageUrl TEXT NOT NULL DEFAULT '', " +
+                    "procedure TEXT NOT NULL DEFAULT '', " +
+                    "FOREIGN KEY(dailyMenuId) REFERENCES tblDailyMenu(_id) ON DELETE CASCADE)");
+            database.execSQL("CREATE INDEX IF NOT EXISTS index_tblRecipe_dailyMenuId ON tblRecipe(dailyMenuId)");
+            database.execSQL("CREATE TABLE IF NOT EXISTS tblRecipeIngredient (" +
+                    "_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                    "recipeId INTEGER NOT NULL, " +
+                    "name TEXT NOT NULL, " +
+                    "quantity TEXT NOT NULL, " +
+                    "FOREIGN KEY(recipeId) REFERENCES tblRecipe(_id) ON DELETE CASCADE)");
+            database.execSQL("CREATE INDEX IF NOT EXISTS index_tblRecipeIngredient_recipeId ON tblRecipeIngredient(recipeId)");
+        }
+    };
+
+    static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE tblDailyMenu ADD COLUMN manuallySet INTEGER NOT NULL DEFAULT 0");
         }
     };
 

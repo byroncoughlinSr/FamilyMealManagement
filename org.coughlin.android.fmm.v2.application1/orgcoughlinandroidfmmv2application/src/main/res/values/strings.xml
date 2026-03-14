@@ -61,5 +61,30 @@
     <string name="daily_menu">Daily Menu</string>
     <string name="no_meals_planned">No meals planned for this day</string>
     <string name="generate_menu">Generate Menu</string>
+    <string name="title_activity_recipe">Recipe</string>
+    <string name="no_recipe_available">No recipe available.</string>
+    <string name="title_activity_meal_search">Search Meals</string>
+    <string name="search_meals_hint">Search past meals…</string>
+    <string name="no_results_found">No results found</string>
+    <string name="edit_breakfast">Edit breakfast</string>
+    <string name="edit_lunch">Edit lunch</string>
+    <string name="edit_dinner">Edit dinner</string>
+    <string name="enter_meal_description">Enter meal name</string>
+    <string name="ingredients_hint">One ingredient per line (e.g. 2 cups flour)</string>
+    <string name="enter_ingredients_hint">2 cups flour\n1 tsp salt\n3 eggs</string>
+    <string name="steps_hint">Enter each step on a new line</string>
+    <string name="enter_steps_hint">Step 1: Preheat oven\nStep 2: Mix ingredients</string>
+    <string name="save_recipe">Save</string>
+    <string name="meal_description_required">Meal name is required</string>
+    <string name="quantity_hint">Qty</string>
+    <string name="search_ingredient_hint">Search ingredient…</string>
+    <string name="add_ingredient">Add ingredient</string>
+    <string name="remove_ingredient">Remove ingredient</string>
+    <string name="ingredient_name_required">Ingredient name is required</string>
+    <string name="edit_recipe">Edit Recipe</string>
+    <string name="generate_recipe_ai">Generate Recipe with AI</string>
+    <string name="generating_recipe">Generating recipe…</string>
+    <string name="recipe_generation_failed">Failed to generate recipe. Please try again.</string>
+    <string name="generated_recipe_preview">Generated Recipe</string>
 
 </resources>

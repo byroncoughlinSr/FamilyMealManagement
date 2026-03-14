@@ -39,18 +39,19 @@
         <!-- BackgroundContainer with RecyclerView -->
         <org.coughlin.grocerylist.BackgroundContainer
             android:id="@+id/backgroundContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_margin="16dp"
             android:background="@drawable/rounded_corners"
             app:layout_constraintTop_toBottomOf="@id/textView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/grocerylistView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textAlignment="textStart"
                 tools:layout_editor_absoluteX="20dp"
                 tools:layout_editor_absoluteY="10dp" />
@@ -64,6 +65,7 @@
         android:layout_width="180dp"
         android:layout_height="match_parent"
         android:layout_marginTop="55dp"
+        android:layout_marginBottom="30dp"
         android:layout_gravity="start"
         android:background="#111" />
 </androidx.drawerlayout.widget.DrawerLayout>
