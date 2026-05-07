@@ -20,7 +20,10 @@ public class MenuGenerationScheduler {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
-        long initialDelay = calculateDelayToNextFridayMidnight();
+        int day = AppSettings.getScheduleDay(context);
+        int hour = AppSettings.getScheduleHour(context);
+        int minute = AppSettings.getScheduleMinute(context);
+        long initialDelay = calculateDelayToNext(day, hour, minute);
 
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
                 MenuGenerationWorker.class, 7, TimeUnit.DAYS)
@@ -37,21 +40,20 @@ public class MenuGenerationScheduler {
         );
     }
 
-    private static long calculateDelayToNextFridayMidnight() {
+    private static long calculateDelayToNext(int targetDayOfWeek, int targetHour, int targetMinute) {
         Calendar now = Calendar.getInstance();
-        Calendar nextFridayMidnight = Calendar.getInstance();
-        
-        // Friday night midnight is technically Saturday at 00:00
-        nextFridayMidnight.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        nextFridayMidnight.set(Calendar.HOUR_OF_DAY, 0);
-        nextFridayMidnight.set(Calendar.MINUTE, 0);
-        nextFridayMidnight.set(Calendar.SECOND, 0);
-        nextFridayMidnight.set(Calendar.MILLISECOND, 0);
+        Calendar target = Calendar.getInstance();
 
-        if (nextFridayMidnight.before(now) || nextFridayMidnight.equals(now)) {
-            nextFridayMidnight.add(Calendar.WEEK_OF_YEAR, 1);
+        target.set(Calendar.DAY_OF_WEEK, targetDayOfWeek);
+        target.set(Calendar.HOUR_OF_DAY, targetHour);
+        target.set(Calendar.MINUTE, targetMinute);
+        target.set(Calendar.SECOND, 0);
+        target.set(Calendar.MILLISECOND, 0);
+
+        if (target.before(now) || target.equals(now)) {
+            target.add(Calendar.WEEK_OF_YEAR, 1);
         }
 
-        return nextFridayMidnight.getTimeInMillis() - now.getTimeInMillis();
+        return target.getTimeInMillis() - now.getTimeInMillis();
     }
 }

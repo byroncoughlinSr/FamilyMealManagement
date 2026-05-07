@@ -2,6 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_generate_menu"
+        android:icon="@drawable/utensils"
         android:title="@string/generate_menu"
         app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/action_clear_next_week"
+        android:icon="@drawable/ic_clear_menu"
+        android:title="@string/clear_next_week"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom" />
 </menu>

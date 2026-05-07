@@ -1,10 +1,12 @@
 package org.coughlin.grocerylist;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
+import android.util.Log;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.Menu;
@@ -21,8 +23,9 @@ import android.widget.ListView;
 
 import java.util.Objects;
 
-public class MenuItemActivity extends Activity {
+public class MenuItemActivity extends AppCompatActivity {
 
+	private static final String TAG = "MenuItemActivity";
 	private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -45,14 +48,23 @@ public class MenuItemActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_menu_item);
 
+		Log.d(TAG, "onCreate: starting");
+
 		//Setup the database
 	    mDatabaseAdapter = new DatabaseAdapter(this, mSQLiteQueryBuilder, mProjections, mSelections);
+
+		// Setup toolbar as action bar
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		Log.d(TAG, "onCreate: toolbar=" + toolbar);
+		setSupportActionBar(toolbar);
+		Log.d(TAG, "onCreate: supportActionBar=" + getSupportActionBar());
 
         // Setup and create navigation drawer
 		mDrawerTitle = "Navigation Drawer";
         String[] mDrawerContents = getResources().getStringArray(R.array.drawer_titles);
 		mDrawerListView = (ListView)findViewById(R.id.left_drawer);
-		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);			
+		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+		Log.d(TAG, "onCreate: drawerLayout=" + mDrawerLayout + ", drawerListView=" + mDrawerListView);
 
 		//Create Adapter and set to DrawerListView
 		mDrawerListView.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, mDrawerContents));
@@ -89,14 +101,19 @@ public class MenuItemActivity extends Activity {
 		});	
 
 		// Set home icon as up to home display and set home button as enabled
-		Objects.requireNonNull(getActionBar()).setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-		
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setHomeButtonEnabled(true);
+			Log.d(TAG, "onCreate: action bar configured successfully");
+		} else {
+			Log.e(TAG, "onCreate: getSupportActionBar() returned null - toolbar not set");
+		}
+
 		// Handle the drawer icon on the actionbar
 		mDrawerToggle = new ActionBarDrawerToggle(
 				this,                  /* host Activity */
 				mDrawerLayout,         /* DrawerLayout object */
-				null,  /* nav drawer icon to replace 'Up' caret */
+				toolbar,               /* Toolbar */
 				R.string.drawer_open,  /* "open drawer" description */
 				R.string.drawer_close  /* "close drawer" description */
 				) {
@@ -107,7 +124,9 @@ public class MenuItemActivity extends Activity {
 			 */
 			public void onDrawerClosed(View view) {
 				super.onDrawerClosed(view);
-				Objects.requireNonNull(getActionBar()).setTitle(mTitle);
+				if (getSupportActionBar() != null) {
+					getSupportActionBar().setTitle(mTitle);
+				}
 				invalidateOptionsMenu();
 			}
 
@@ -118,7 +137,7 @@ public class MenuItemActivity extends Activity {
 			 */
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
-				getActionBar().setTitle(mDrawerTitle);
+				getSupportActionBar().setTitle(mDrawerTitle);
 				invalidateOptionsMenu();
 			}
 		};	
@@ -149,7 +168,9 @@ public class MenuItemActivity extends Activity {
 	@Override
 	public void setTitle(CharSequence title) {
 		mTitle = title;
-		getActionBar().setTitle(mTitle);
+		if (getSupportActionBar() != null) {
+			getSupportActionBar().setTitle(mTitle);
+		}
 	}
 
 	@Override

@@ -51,4 +51,7 @@ public interface ProductDao {
 
     @Query("SELECT * FROM tblProduct WHERE proName LIKE :query ORDER BY proName ASC LIMIT 20")
     List<Product> searchProductsByName(String query);
+
+    @Query("UPDATE tblProduct SET proSelected = 0 WHERE proSelected = 1")
+    void unselectAllProducts();
 }

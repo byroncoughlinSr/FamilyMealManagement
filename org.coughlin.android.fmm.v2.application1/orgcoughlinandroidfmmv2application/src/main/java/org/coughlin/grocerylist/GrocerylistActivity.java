@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -111,6 +114,22 @@ public class GrocerylistActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false);
         return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_clear_grocery_list) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Clear Grocery List")
+                    .setMessage("Remove all items from the grocery list?")
+                    .setPositiveButton("Clear", (dialog, which) -> {
+                        groceryListViewModel.clearGroceryList();
+                        Toast.makeText(this, "Grocery list cleared", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     private void handleIntent(Intent intent) {
         String action = intent.getAction();

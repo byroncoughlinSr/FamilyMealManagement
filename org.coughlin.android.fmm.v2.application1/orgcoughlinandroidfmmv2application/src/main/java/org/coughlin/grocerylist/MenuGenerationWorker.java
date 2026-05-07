@@ -14,11 +14,6 @@ import androidx.work.WorkerParameters;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,8 +28,6 @@ import java.util.Set;
 
 public class MenuGenerationWorker extends Worker {
     private static final String TAG = "MenuGenerationWorker";
-    static final String OLLAMA_URL = "http://192.168.4.249:11434/api/generate";
-    static final String OLLAMA_MODEL = "llama3.1:8b";
     static final DateTimeFormatter DB_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -112,23 +105,7 @@ public class MenuGenerationWorker extends Worker {
                 dateList.append("\n");
             }
 
-            String preferences;
-            if (isMonthly) {
-                preferences = "Two days out of the week include chicken for dinner. " +
-                        "One day fish and on every Sunday for breakfast is veggie omelettes with ham. " +
-                        "Dinners should also include two side dishes. " +
-                        "Ensure there are 7 days of meals per week. " +
-                        "Should have eggs for  four times during the week. " +
-                        "Include pizza for dinner twice a month on fridays. " +
-                        "Include pasta twice a month for dinner, one pasta with red sauce " +
-                        "and the other with white sauce.";
-            } else {
-                preferences = "Two days out of the week include chicken for dinner. " +
-                        "One day fish and on sunday for breakfast is veggie omelettes with ham. " +
-                        "Dinners should also include two side dishes. " +
-                        "Ensure there are seven days of meals. Should have eggs four " +
-                        "times during the week";
-            }
+            String preferences = AppSettings.getMenuPrompt(getApplicationContext());
 
             prompt = "Generate a meal plan for the following dates:\n" + dateList +
                     "For each date, provide the meals that are NOT already listed above. " +
@@ -138,7 +115,7 @@ public class MenuGenerationWorker extends Worker {
                     preferences;
 
             Log.d(TAG, "Prompt: " + prompt);
-            String response = callOllama(prompt);
+            String response = LlmClient.callLlm(getApplicationContext(), prompt);
             if (isStopped()) return Result.retry();
             Log.d(TAG, "Response: " + response);
 
@@ -192,6 +169,13 @@ public class MenuGenerationWorker extends Worker {
 
             return Result.success();
 
+        } catch (LlmApiException e) {
+            Log.e(TAG, "Failed to generate menu", e);
+            if (e.isClientError()) {
+                Log.e(TAG, "Client error (HTTP " + e.getStatusCode() + "), not retrying");
+                return Result.failure();
+            }
+            return Result.retry();
         } catch (Exception e) {
             Log.e(TAG, "Failed to generate menu", e);
             return Result.retry();
@@ -220,61 +204,4 @@ public class MenuGenerationWorker extends Worker {
         Log.i(TAG, "Triggered unique recipe generation chain for " + startDate + " to " + endDate);
     }
 
-    /**
-     * Shared Ollama API call method, used by both MenuGenerationWorker and RecipeGenerationWorker.
-     */
-    static String callOllama(String prompt) throws Exception {
-        HttpURLConnection conn = null;
-        try {
-            URL url = new URL(OLLAMA_URL);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Connection", "close");
-            conn.setDoOutput(true);
-            conn.setConnectTimeout(60000); // 60 seconds connect timeout
-            conn.setReadTimeout(600000);   // 10 minutes read timeout (recipes can take a while)
-
-            JSONObject requestBody = new JSONObject();
-            requestBody.put("model", OLLAMA_MODEL);
-            requestBody.put("prompt", prompt);
-            requestBody.put("stream", false);
-            requestBody.put("format", "json");
-
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(requestBody.toString().getBytes("UTF-8"));
-                os.flush();
-            }
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                StringBuilder errorBody = new StringBuilder();
-                try (BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(conn.getErrorStream()))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        errorBody.append(line);
-                    }
-                } catch (Exception ignored) {}
-                Log.e("MenuGenerationWorker", "Ollama API error " + responseCode + ": " + errorBody);
-                throw new Exception("Ollama API error: " + responseCode + " - " + errorBody);
-            }
-
-            StringBuilder responseBuilder = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(conn.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    responseBuilder.append(line);
-                }
-            }
-
-            JSONObject ollamaResponse = new JSONObject(responseBuilder.toString());
-            return ollamaResponse.getString("response");
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-    }
 }

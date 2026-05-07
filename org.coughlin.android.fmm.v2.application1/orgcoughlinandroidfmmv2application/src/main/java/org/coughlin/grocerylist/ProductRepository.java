@@ -52,4 +52,10 @@ public class ProductRepository {
     public void unCheckProduct(int id) {
         executorService.execute(() -> productDao.uncheckProduct(id));
     }
+    public List<Product> searchProductsByName(String query) {
+        return productDao.searchProductsByName(query);
+    }
+    public void clearGroceryList() {
+        executorService.execute(() -> productDao.unselectAllProducts());
+    }
 }

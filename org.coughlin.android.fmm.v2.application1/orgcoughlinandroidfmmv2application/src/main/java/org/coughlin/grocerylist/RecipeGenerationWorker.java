@@ -5,7 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
-import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
@@ -88,7 +87,7 @@ public class RecipeGenerationWorker extends Worker {
 
                     if (isStopped()) return Result.retry();
 
-                    String recipeResponse = MenuGenerationWorker.callOllama(recipePrompt);
+                    String recipeResponse = LlmClient.callLlm(getApplicationContext(), recipePrompt);
                     Log.d(TAG, "Recipe response for " + dateToProcess + ": " + recipeResponse);
 
                     if (isStopped()) return Result.retry();
@@ -107,9 +106,15 @@ public class RecipeGenerationWorker extends Worker {
 
             return Result.success();
 
+        } catch (LlmApiException e) {
+            Log.e(TAG, "Failed to generate recipes for index " + currentIndex, e);
+            if (e.isClientError()) {
+                Log.e(TAG, "Client error (HTTP " + e.getStatusCode() + "), not retrying");
+                return Result.failure();
+            }
+            return Result.retry();
         } catch (Exception e) {
             Log.e(TAG, "Failed to generate recipes for index " + currentIndex, e);
-            // If it failed, we retry. WorkManager will handle the backoff.
             return Result.retry();
         }
     }
@@ -128,11 +133,12 @@ public class RecipeGenerationWorker extends Worker {
                     .addTag(WORK_NAME)
                     .build();
 
-            WorkManager.getInstance(getApplicationContext()).enqueueUniqueWork(
-                    WORK_NAME,
-                    ExistingWorkPolicy.REPLACE,
-                    nextRequest
-            );
+            // Use plain enqueue (not enqueueUniqueWork) for chained follow-ups.
+            // The unique work constraint on the initial trigger from MenuGenerationWorker
+            // already prevents duplicate chains. Using enqueueUniqueWork here with
+            // APPEND_OR_REPLACE causes the previous completed work to be replaced,
+            // which cancels any in-flight workers under the same unique name.
+            WorkManager.getInstance(getApplicationContext()).enqueue(nextRequest);
             Log.i(TAG, "Enqueued recipe generation for day " + (nextIndex + 1));
         } else {
             Log.i(TAG, "Recipe generation chain complete.");
@@ -154,9 +160,7 @@ public class RecipeGenerationWorker extends Worker {
         sb.append("  {\"mealType\":\"lunch\",\"ingredients\":[...],\"procedure\":\"...\"},\n");
         sb.append("  {\"mealType\":\"dinner\",\"ingredients\":[...],\"procedure\":\"...\"}\n");
         sb.append("]}\n");
-        sb.append("Keep the recipes practical for a family. List 5-10 ingredients per meal. ");
-        sb.append("Procedure should have 4-6 steps, each beginning with \"Step N:\". ");
-        sb.append("Ensure ingredient names are concise and standardized.");
+        sb.append(AppSettings.getRecipePrompt(getApplicationContext()));
 
         return sb.toString();
     }
