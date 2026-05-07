@@ -1,6 +1,7 @@
 package org.coughlin.grocerylist;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.os.Handler;
@@ -207,11 +208,45 @@ public class CreateRecipeActivity extends AppCompatActivity {
     }
 
     private void generateRecipeWithAI(EditText editMealDesc) {
+        if (!AppSettings.isProviderConfigured(this)) {
+            Toast.makeText(this, R.string.ai_not_configured, Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, SettingsActivity.class));
+            return;
+        }
         String mealName = editMealDesc.getText().toString().trim();
         if (mealName.isEmpty()) {
             editMealDesc.setError(getString(R.string.meal_description_required));
             return;
         }
+
+        String defaultPrompt = "Generate a recipe for \"" + mealName + "\". "
+                + "Requirements: practical family recipe, 5-10 ingredients, "
+                + "4-6 preparation steps each prefixed with 'Step N:', "
+                + "use standardized ingredient names.";
+
+        EditText promptInput = new EditText(this);
+        promptInput.setText(defaultPrompt);
+        promptInput.setMinLines(5);
+        promptInput.setPadding(48, 32, 48, 32);
+
+        new AlertDialog.Builder(this)
+                .setTitle("Edit AI Prompt")
+                .setView(promptInput)
+                .setPositiveButton("Generate", (dialog, which) -> {
+                    String userPrompt = promptInput.getText().toString().trim();
+                    if (!userPrompt.isEmpty()) {
+                        executeRecipeGeneration(userPrompt);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void executeRecipeGeneration(String userPrompt) {
+        String fullPrompt = userPrompt + " "
+                + "Return ONLY valid JSON (no markdown, no extra text) in this exact format: "
+                + "{\"ingredients\": [{\"name\": \"ingredient name\", \"quantity\": \"amount with unit\"}], "
+                + "\"procedure\": \"Step 1: First step\\nStep 2: Second step\"}";
 
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(getString(R.string.generating_recipe));
@@ -220,16 +255,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
         GroceryListDatabase.databaseWriteExecutor.execute(() -> {
             try {
-                String prompt = "Generate a recipe for \"" + mealName + "\". "
-                        + "Return ONLY valid JSON (no markdown, no extra text) in this exact format: "
-                        + "{\"ingredients\": [{\"name\": \"ingredient name\", \"quantity\": \"amount with unit\"}], "
-                        + "\"procedure\": \"Step 1: First step\\nStep 2: Second step\"} "
-                        + "Requirements: practical family recipe, 5-10 ingredients, "
-                        + "4-6 preparation steps each prefixed with 'Step N:', "
-                        + "use standardized ingredient names.";
-
-                Log.d(TAG, "Sending prompt to Ollama: " + prompt);
-                String response = MenuGenerationWorker.callOllama(prompt);
+                Log.d(TAG, "Sending prompt to Ollama: " + fullPrompt);
+                String response = LlmClient.callLlm(getApplicationContext(), fullPrompt);
                 Log.d(TAG, "Raw Ollama response: " + response);
 
                 String jsonStr = response.trim();

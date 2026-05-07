@@ -70,5 +70,8 @@ public class GroceryListViewModel extends AndroidViewModel {
     public void update(Product product) {
         repository.update(product);
     }
+    public void clearGroceryList() {
+        repository.clearGroceryList();
+    }
 }
 

@@ -7,7 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,18 +26,10 @@ public abstract class GroceryListDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (GroceryListDatabase.class) {
                 if (INSTANCE == null) {
-                    try {
-                        DatabaseHelper dbHelper = new DatabaseHelper(context);
-                        dbHelper.createDatabase();
-                        INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                        GroceryListDatabase.class, DATABASE_NAME)
-                                .createFromAsset("databases/" + DATABASE_NAME) // Load prebuilt DB
-                                .addCallback(prepopulateCallback()) // Optional: Additional setup after DB is created
-                                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5) // Add migrations
-                                .build();
-                    } catch (IOException e) {
-                        throw new RuntimeException("Error copying database from assets", e);
-                    }
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                                    GroceryListDatabase.class, DATABASE_NAME)
+                            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                            .build();
                 }
             }
         }
@@ -100,23 +91,4 @@ public abstract class GroceryListDatabase extends RoomDatabase {
         }
     };
 
-    /**
-     * Optional: Callback to run code after the database is created.
-     * Useful for inserting default data or performing initial setup.
-     */
-    private static RoomDatabase.Callback prepopulateCallback() {
-        return new RoomDatabase.Callback() {
-            @Override
-            public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                super.onCreate(db);
-                // Prepopulate data if needed
-                databaseWriteExecutor.execute(() -> {
-                    GroceryListDatabase database = INSTANCE;
-                    if (database != null) {
-                        ProductDao productDao = database.productDao();
-                    }
-                });
-            }
-        };
-    }
 }

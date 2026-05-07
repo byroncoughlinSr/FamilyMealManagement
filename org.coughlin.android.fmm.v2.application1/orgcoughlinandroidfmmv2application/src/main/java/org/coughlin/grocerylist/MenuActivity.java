@@ -1,10 +1,13 @@
 package org.coughlin.grocerylist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -91,33 +94,105 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_generate_menu) {
-            OneTimeWorkRequest menuRequest = new OneTimeWorkRequest.Builder(
-                    MenuGenerationWorker.class).build();
-            WorkManager workManager = WorkManager.getInstance(this);
-            workManager.enqueue(menuRequest);
-
-            generatingOverlay.setVisibility(View.VISIBLE);
-
-            workManager.getWorkInfoByIdLiveData(menuRequest.getId())
-                    .observe(this, workInfo -> {
-                        if (workInfo != null && workInfo.getState().isFinished()) {
-                            generatingOverlay.setVisibility(View.GONE);
-                            if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-                                Toast.makeText(this, "Menu generated! Recipes loading in background...",
-                                        Toast.LENGTH_SHORT).show();
-                                startRecipeGeneration();
-                            } else {
-                                Toast.makeText(this, "Menu generation failed",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            showGenerateMenuConfirmation();
+            return true;
+        }
+        if (item.getItemId() == R.id.action_clear_next_week) {
+            showClearNextWeekConfirmation();
+            return true;
+        }
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
         if (drawerHandler.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showGenerateMenuConfirmation() {
+        if (!AppSettings.isProviderConfigured(this)) {
+            Toast.makeText(this, R.string.ai_not_configured, Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, SettingsActivity.class));
+            return;
+        }
+        boolean isMonthly = false;
+        LocalDate startDate;
+        LocalDate endDate;
+
+        if (isMonthly) {
+            LocalDate today = LocalDate.now();
+            startDate = today.getDayOfMonth() > 1 ? today : today.withDayOfMonth(1);
+            endDate = today.with(TemporalAdjusters.lastDayOfMonth());
+        } else {
+            startDate = LocalDate.now()
+                    .with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+            endDate = startDate.plusDays(6);
+        }
+
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+        String message = "This will generate new menu items from "
+                + startDate.format(displayFormatter) + " to "
+                + endDate.format(displayFormatter) + ". Continue?";
+
+        new AlertDialog.Builder(this)
+                .setTitle("Generate Menu")
+                .setMessage(message)
+                .setPositiveButton("Continue", (dialog, which) -> executeMenuGeneration())
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void showClearNextWeekConfirmation() {
+        LocalDate startDate = LocalDate.now()
+                .with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+        LocalDate endDate = startDate.plusDays(6);
+
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+        String message = "This will clear all menu items from "
+                + startDate.format(displayFormatter) + " to "
+                + endDate.format(displayFormatter) + ". Continue?";
+
+        new AlertDialog.Builder(this)
+                .setTitle("Clear Next Week's Menu")
+                .setMessage(message)
+                .setPositiveButton("Clear", (dialog, which) ->
+                        executeClearNextWeek(startDate, endDate))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void executeClearNextWeek(LocalDate startDate, LocalDate endDate) {
+        DailyMenuRepository repository = new DailyMenuRepository(getApplication());
+        repository.deleteMealsForDateRange(
+                startDate.format(DB_FORMATTER),
+                endDate.format(DB_FORMATTER));
+        Toast.makeText(this, "Next week's menu cleared", Toast.LENGTH_SHORT).show();
+    }
+
+    private void executeMenuGeneration() {
+        OneTimeWorkRequest menuRequest = new OneTimeWorkRequest.Builder(
+                MenuGenerationWorker.class).build();
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.enqueue(menuRequest);
+
+        generatingOverlay.setVisibility(View.VISIBLE);
+
+        workManager.getWorkInfoByIdLiveData(menuRequest.getId())
+                .observe(this, workInfo -> {
+                    if (workInfo != null && workInfo.getState().isFinished()) {
+                        generatingOverlay.setVisibility(View.GONE);
+                        if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                            Toast.makeText(this, "Menu generated! Recipes loading in background...",
+                                    Toast.LENGTH_SHORT).show();
+                            startRecipeGeneration();
+                        } else {
+                            Toast.makeText(this, "Menu generation failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void startRecipeGeneration() {

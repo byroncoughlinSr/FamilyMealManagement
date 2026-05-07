@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_background">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ToolbarPopupTheme" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Getting Started -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Getting Started"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="Family Meal Management helps you plan weekly meals, manage your grocery list, and generate recipes using AI. Use the navigation drawer (swipe from the left or tap the menu icon) to access all sections of the app." />
+
+            <!-- Grocery List -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grocery List"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="Your grocery list shows all selected products. Tap an item to check it off as purchased. Swipe right on an item to remove it from the list and log it to your purchase history. Use the search icon in the toolbar to filter products by name." />
+
+            <!-- Add Product -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Product"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="Type a product name to add it to the database. As you type (2 or more characters), matching products will appear as suggestions. Tap a suggestion to fill in the name. Long-press a suggestion to delete it from the database (useful for removing duplicates). Press the Add Product button to save." />
+
+            <!-- History -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="History"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="View your purchase history. When you swipe a product off the grocery list, it is logged here with the date. This helps you track what you have bought over time." />
+
+            <!-- Weekly Menu -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weekly Menu"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="Swipe left and right to browse each day of the week. Each day shows breakfast, lunch, and dinner slots. Tap a meal to view its recipe. Use the Generate Menu button to have the AI fill in empty meal slots for the upcoming week. You can also search past meals to reuse them." />
+
+            <!-- Add Menu Item -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Menu Item"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="Manually add a meal to a specific date and meal type (breakfast, lunch, or dinner). Enter a meal name, add ingredients, and write preparation steps. You can also generate a recipe using AI by tapping the Generate Recipe with AI button." />
+
+            <!-- Recipes -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recipes"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="Each meal can have an associated recipe with ingredients, preparation steps, and an image. Recipes can be created manually or generated by AI. When viewing a meal, tap to see its full recipe details." />
+
+            <!-- LLM / API Configuration -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LLM / API Configuration"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"
+                android:text="To use AI-powered menu and recipe generation, configure an LLM provider in Settings (accessible from the toolbar menu on the Menu List page)." />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold"
+                android:text="Ollama (Local)" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"
+                android:text="Run an LLM on your local network. Enter the server URL (e.g., http://192.168.x.x:11434/api/generate) and model name (e.g., llama3.1:8b). Your device must be on the same network as the Ollama server. Use the Test Connection button to verify." />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold"
+                android:text="Gemini" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"
+                android:text="Use Google Gemini. Enter your API key from Google AI Studio and choose a model (e.g., gemini-2.0-flash)." />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold"
+                android:text="Claude" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="Use Anthropic Claude. Enter your API key from the Anthropic console and choose a model (e.g., claude-sonnet-4-20250514)." />
+
+            <!-- Generation Schedule -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Automatic Generation Schedule"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="In Settings, you can schedule automatic menu generation. Choose a day of the week and time, and the app will automatically generate meals for the upcoming week using your configured LLM provider and prompt preferences." />
+
+            <!-- Tips -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tips"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="- Customize the menu generation prompt in Settings to match your family\'s dietary preferences and restrictions.\n\n- Meals marked as manually set will not be overwritten by automatic generation.\n\n- Use the meal search feature to reuse past meals you enjoyed.\n\n- Check your purchase history to see buying patterns and plan ahead." />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

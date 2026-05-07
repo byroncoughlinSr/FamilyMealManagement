@@ -6,6 +6,11 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_clear_grocery_list"
+        android:icon="@drawable/ic_clear_menu"
+        android:title="@string/clear_grocery_list"
+        app:showAsAction="never" />
     <item android:id="@+id/search"
         android:icon="@drawable/ic_menu_search"
         android:title="@string/search_title"

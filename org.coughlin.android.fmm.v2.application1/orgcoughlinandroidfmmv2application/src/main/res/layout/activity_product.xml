@@ -17,7 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:popupTheme="@style/ToolbarPopupTheme"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView
             android:id="@+id/productTxt"
@@ -51,16 +51,27 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/productTxt" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/suggestionsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="#80000000"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/newProductTxt"
+            app:layout_constraintStart_toStartOf="@+id/newProductTxt"
+            app:layout_constraintTop_toBottomOf="@+id/newProductTxt"
+            app:layout_constraintHeight_max="200dp" />
         <Button
             android:id="@+id/addProductBtn"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:text="@string/add_new_product"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newProductTxt" />
+            app:layout_constraintTop_toBottomOf="@+id/suggestionsRecyclerView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/left_drawer"

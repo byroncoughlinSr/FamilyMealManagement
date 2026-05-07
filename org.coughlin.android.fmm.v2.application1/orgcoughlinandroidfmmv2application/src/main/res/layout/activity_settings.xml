@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_background">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ToolbarPopupTheme" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_llm_provider_label"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <Spinner
+                android:id="@+id/spinnerLlmProvider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <LinearLayout
+                android:id="@+id/ollamaFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_ollama_url"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editOllamaUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="http://your-server:11434/api/generate"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_ollama_model"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editOllamaModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="llama3.1:8b"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp" />
+
+                <Button
+                    android:id="@+id/btnTestConnection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_test_connection"
+                    android:layout_marginBottom="24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/geminiFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_api_key"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextApiKey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="Enter API key"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_gemini_model"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextGeminiModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="gemini-2.0-flash"
+                    android:padding="8dp"
+                    android:layout_marginBottom="24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/claudeFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_claude_api_key"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextClaudeApiKey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="Enter Anthropic API key"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_claude_model"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextClaudeModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="claude-sonnet-4-20250514"
+                    android:padding="8dp"
+                    android:layout_marginBottom="24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/groqFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_groq_api_key"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextGroqApiKey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="Enter Groq API key"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_groq_model"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextGroqModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="llama-3.3-70b-versatile"
+                    android:padding="8dp"
+                    android:layout_marginBottom="24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/openaiFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_openai_api_key"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextOpenAiApiKey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="Enter OpenAI API key"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_openai_model"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextOpenAiModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="gpt-4o-mini"
+                    android:padding="8dp"
+                    android:layout_marginBottom="24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/grokFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_grok_api_key"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextGrokApiKey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="Enter xAI API key"
+                    android:padding="8dp"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_grok_model"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="4dp" />
+
+                <EditText
+                    android:id="@+id/editTextGrokModel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:background="@android:color/white"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:hint="grok-2-latest"
+                    android:padding="8dp"
+                    android:layout_marginBottom="24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/onDeviceFields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_on_device_info"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="24dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_prompt_label"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/editMenuPrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="5"
+                android:maxLines="12"
+                android:inputType="textMultiLine|textCapSentences"
+                android:gravity="top|start"
+                android:background="@android:color/white"
+                android:textColor="#000000"
+                android:textColorHint="#888888"
+                android:padding="8dp"
+                android:layout_marginBottom="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_recipe_prompt_label"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/editRecipePrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="4"
+                android:maxLines="10"
+                android:inputType="textMultiLine|textCapSentences"
+                android:gravity="top|start"
+                android:background="@android:color/white"
+                android:textColor="#000000"
+                android:textColorHint="#888888"
+                android:padding="8dp"
+                android:layout_marginBottom="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_schedule_label"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_schedule_day"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="4dp" />
+
+            <Spinner
+                android:id="@+id/spinnerScheduleDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_schedule_time"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="4dp" />
+
+            <TimePicker
+                android:id="@+id/timePickerSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp" />
+
+            <Button
+                android:id="@+id/btnSaveSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save_settings" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -86,19 +86,25 @@ public class DrawerHandler {
         // Navigate to the corresponding activity based on position
         switch (position) {
             case 0:
-                intent = new Intent(mActivity, GrocerylistActivity.class);
+                intent = new Intent(mActivity, HomeActivity.class);
                 break;
             case 1:
-                intent = new Intent(mActivity, ProductActivity.class);
+                intent = new Intent(mActivity, GrocerylistActivity.class);
                 break;
             case 2:
-                intent = new Intent(mActivity, HistoryActivity.class);
+                intent = new Intent(mActivity, ProductActivity.class);
                 break;
             case 3:
-                intent = new Intent(mActivity, MenuActivity.class);
+                intent = new Intent(mActivity, HistoryActivity.class);
                 break;
             case 4:
+                intent = new Intent(mActivity, MenuActivity.class);
+                break;
+            case 5:
                 intent = new Intent(mActivity, MenuItemActivity.class);
+                break;
+            case 6:
+                intent = new Intent(mActivity, HelpActivity.class);
                 break;
             default:
                 Log.d("DrawerHandler", "Unhandled drawer position: " + position);
