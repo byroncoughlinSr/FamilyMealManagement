@@ -27,9 +27,22 @@ import java.util.Map;
 import java.util.Set;
 
 public class MenuGenerationWorker extends Worker {
+    public static final String KEY_ERROR_MESSAGE = "error_message";
+    static final String KEY_START_DATE = "start_date";
+    static final String KEY_END_DATE = "end_date";
     private static final String TAG = "MenuGenerationWorker";
     static final DateTimeFormatter DB_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    /** Monday of the week containing today. */
+    static LocalDate currentWeekStart() {
+        return LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+    }
+
+    /** Monday of next week — the range the weekly scheduler plans ahead. */
+    static LocalDate nextWeekStart() {
+        return LocalDate.now().with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+    }
 
     public MenuGenerationWorker(@NonNull Context context,
                                 @NonNull WorkerParameters params) {
@@ -50,17 +63,26 @@ public class MenuGenerationWorker extends Worker {
             LocalDate endDate;
             String prompt;
 
-            // --- Toggle between WEEKLY and MONTHLY meal plans ---
-            boolean isMonthly = false; // Set to true for monthly, false for weekly
+            String requestedStart = getInputData().getString(KEY_START_DATE);
+            String requestedEnd = getInputData().getString(KEY_END_DATE);
 
-            if (isMonthly) {
-                LocalDate today = LocalDate.now();
-                startDate = today.getDayOfMonth() > 1 ? today : today.withDayOfMonth(1);
-                endDate = today.with(TemporalAdjusters.lastDayOfMonth());
+            if (requestedStart != null && requestedEnd != null) {
+                // Caller picked the range (e.g. regenerating the current week).
+                startDate = LocalDate.parse(requestedStart, DB_FORMATTER);
+                endDate = LocalDate.parse(requestedEnd, DB_FORMATTER);
             } else {
-                startDate = LocalDate.now()
-                        .with(TemporalAdjusters.next(DayOfWeek.MONDAY));
-                endDate = startDate.plusDays(6);
+                // No range supplied — the weekly scheduler runs this way. Plan ahead.
+                // --- Toggle between WEEKLY and MONTHLY meal plans ---
+                boolean isMonthly = false; // Set to true for monthly, false for weekly
+
+                if (isMonthly) {
+                    LocalDate today = LocalDate.now();
+                    startDate = today.getDayOfMonth() > 1 ? today : today.withDayOfMonth(1);
+                    endDate = today.with(TemporalAdjusters.lastDayOfMonth());
+                } else {
+                    startDate = nextWeekStart();
+                    endDate = startDate.plusDays(6);
+                }
             }
 
             String startDateStr = startDate.format(DB_FORMATTER);
@@ -159,7 +181,23 @@ public class MenuGenerationWorker extends Worker {
                 }
             }
 
-            dao.insertAllReturnIds(mealsToInsert);
+            List<Long> insertedIds = dao.insertAllReturnIds(mealsToInsert);
+
+            // Fetch and store a photo for each dinner item. Best-effort: image
+            // failures must not abort menu generation. insertAllReturnIds returns
+            // IDs in list order, so index i maps meal -> id.
+            for (int i = 0; i < mealsToInsert.size(); i++) {
+                if (isStopped()) return Result.retry();
+                DailyMenu meal = mealsToInsert.get(i);
+                if ("dinner".equals(meal.getMealType())) {
+                    int menuId = insertedIds.get(i).intValue();
+                    String imagePath = ImageSearchClient.fetchAndStoreDinnerImage(
+                            getApplicationContext(), meal.getMealDescription(), menuId);
+                    if (!imagePath.isEmpty()) {
+                        dao.updateImageUrl(menuId, imagePath);
+                    }
+                }
+            }
 
             Log.i(TAG, "Successfully generated menu from " +
                     startDateStr + " to " + endDateStr);
@@ -171,15 +209,15 @@ public class MenuGenerationWorker extends Worker {
 
         } catch (LlmApiException e) {
             Log.e(TAG, "Failed to generate menu", e);
-            if (e.isClientError()) {
-                Log.e(TAG, "Client error (HTTP " + e.getStatusCode() + "), not retrying");
-                return Result.failure();
-            }
-            return Result.retry();
+            return Result.failure(errorData("HTTP " + e.getStatusCode() + ": " + e.getMessage()));
         } catch (Exception e) {
             Log.e(TAG, "Failed to generate menu", e);
-            return Result.retry();
+            return Result.failure(errorData(e.getClass().getSimpleName() + ": " + e.getMessage()));
         }
+    }
+
+    private static Data errorData(String message) {
+        return new Data.Builder().putString(KEY_ERROR_MESSAGE, message).build();
     }
 
     private void triggerRecipeGeneration(String startDate, String endDate) {

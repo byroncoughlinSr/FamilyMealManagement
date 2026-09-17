@@ -108,14 +108,16 @@ public class RecipeGenerationWorker extends Worker {
 
         } catch (LlmApiException e) {
             Log.e(TAG, "Failed to generate recipes for index " + currentIndex, e);
-            if (e.isClientError()) {
-                Log.e(TAG, "Client error (HTTP " + e.getStatusCode() + "), not retrying");
-                return Result.failure();
-            }
-            return Result.retry();
+            return Result.failure(new Data.Builder()
+                    .putString(MenuGenerationWorker.KEY_ERROR_MESSAGE,
+                            "HTTP " + e.getStatusCode() + ": " + e.getMessage())
+                    .build());
         } catch (Exception e) {
             Log.e(TAG, "Failed to generate recipes for index " + currentIndex, e);
-            return Result.retry();
+            return Result.failure(new Data.Builder()
+                    .putString(MenuGenerationWorker.KEY_ERROR_MESSAGE,
+                            e.getClass().getSimpleName() + ": " + e.getMessage())
+                    .build());
         }
     }
 

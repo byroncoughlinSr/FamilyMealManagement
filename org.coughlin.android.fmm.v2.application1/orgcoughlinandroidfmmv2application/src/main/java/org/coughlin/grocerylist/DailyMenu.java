@@ -27,6 +27,10 @@ public class DailyMenu {
     @ColumnInfo(name = "manuallySet", defaultValue = "0")
     private boolean manuallySet;
 
+    @ColumnInfo(name = "imageUrl", defaultValue = "")
+    @NonNull
+    private String imageUrl = "";
+
     public DailyMenu(@NonNull String menuDate, @NonNull String mealType, @NonNull String mealDescription) {
         this.menuDate = menuDate;
         this.mealType = mealType;
@@ -75,5 +79,14 @@ public class DailyMenu {
 
     public void setManuallySet(boolean manuallySet) {
         this.manuallySet = manuallySet;
+    }
+
+    @NonNull
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(@NonNull String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

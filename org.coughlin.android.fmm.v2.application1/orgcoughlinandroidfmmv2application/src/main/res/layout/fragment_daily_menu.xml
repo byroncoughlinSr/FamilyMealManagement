@@ -130,6 +130,17 @@
                 android:textStyle="bold"
                 android:textSize="16sp" />
 
+            <ImageView
+                android:id="@+id/imageViewDinner"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:visibility="gone"
+                android:contentDescription="@string/dinner" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

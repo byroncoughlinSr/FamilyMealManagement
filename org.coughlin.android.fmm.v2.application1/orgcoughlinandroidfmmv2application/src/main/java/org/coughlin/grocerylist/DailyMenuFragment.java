@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,7 @@ public class DailyMenuFragment extends Fragment {
         TextView breakfastTextView = view.findViewById(R.id.textViewBreakfastContent);
         TextView lunchTextView = view.findViewById(R.id.textViewLunchContent);
         TextView dinnerTextView = view.findViewById(R.id.textViewDinnerContent);
+        ImageView dinnerImageView = view.findViewById(R.id.imageViewDinner);
 
         CardView cardBreakfast = view.findViewById(R.id.cardViewBreakfast);
         CardView cardLunch = view.findViewById(R.id.cardViewLunch);
@@ -80,6 +82,7 @@ public class DailyMenuFragment extends Fragment {
             breakfastTextView.setText("--");
             lunchTextView.setText("--");
             dinnerTextView.setText("--");
+            LocalImageLoader.load(dinnerImageView, null);
             breakfastMeal = null;
             lunchMeal = null;
             dinnerMeal = null;
@@ -98,6 +101,7 @@ public class DailyMenuFragment extends Fragment {
                         case "dinner":
                             dinnerTextView.setText(meal.getMealDescription());
                             dinnerMeal = meal;
+                            LocalImageLoader.load(dinnerImageView, meal.getImageUrl());
                             break;
                     }
                 }

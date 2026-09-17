@@ -10,7 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Product.class, ProductHistory.class, DailyMenu.class, Recipe.class, RecipeIngredient.class}, version = 5, exportSchema = false)
+@Database(entities = {Product.class, ProductHistory.class, DailyMenu.class, Recipe.class, RecipeIngredient.class}, version = 6, exportSchema = false)
 public abstract class GroceryListDatabase extends RoomDatabase {
 
     public static final ExecutorService databaseWriteExecutor =
@@ -28,7 +28,7 @@ public abstract class GroceryListDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     GroceryListDatabase.class, DATABASE_NAME)
-                            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
                             .build();
                 }
             }
@@ -88,6 +88,13 @@ public abstract class GroceryListDatabase extends RoomDatabase {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE tblDailyMenu ADD COLUMN manuallySet INTEGER NOT NULL DEFAULT 0");
+        }
+    };
+
+    static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE tblDailyMenu ADD COLUMN imageUrl TEXT NOT NULL DEFAULT ''");
         }
     };
 

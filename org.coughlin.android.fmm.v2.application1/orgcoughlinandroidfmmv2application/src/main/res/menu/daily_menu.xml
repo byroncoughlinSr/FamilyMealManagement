@@ -6,6 +6,11 @@
         android:title="@string/generate_menu"
         app:showAsAction="ifRoom|withText" />
     <item
+        android:id="@+id/action_regenerate_week"
+        android:icon="@drawable/utensils"
+        android:title="@string/regenerate_week"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_clear_next_week"
         android:icon="@drawable/ic_clear_menu"
         android:title="@string/clear_next_week"

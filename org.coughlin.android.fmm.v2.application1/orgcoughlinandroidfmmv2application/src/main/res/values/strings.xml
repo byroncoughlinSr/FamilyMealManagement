@@ -75,6 +75,7 @@
     <string name="daily_menu">Daily Menu</string>
     <string name="no_meals_planned">No meals planned for this day</string>
     <string name="generate_menu">Generate Menu</string>
+    <string name="regenerate_week">Regenerate This Week</string>
     <string name="clear_next_week">Clear Next Week</string>
     <string name="title_activity_recipe">Recipe</string>
     <string name="no_recipe_available">No recipe available.</string>
@@ -113,6 +114,8 @@
     <string name="settings_grok_api_key">API Key</string>
     <string name="settings_grok_model">Grok Model</string>
     <string name="settings_on_device_info">No setup needed. The app uses your phone\'s on-device model when available.</string>
+    <string name="settings_dinner_images_label">Dinner Images</string>
+    <string name="settings_pexels_api_key">Pexels API key (for dinner images)</string>
     <string name="settings_ollama_label">Ollama Server</string>
     <string name="settings_ollama_url">Server URL</string>
     <string name="settings_ollama_model">Model</string>
@@ -120,6 +123,10 @@
     <string name="settings_testing">Testing…</string>
     <string name="settings_prompt_label">Menu Generation Preferences</string>
     <string name="settings_recipe_prompt_label">Recipe Generation Requirements</string>
+    <string name="settings_dictate_menu_prompt">Dictate menu generation preferences</string>
+    <string name="settings_dictate_recipe_prompt">Dictate recipe generation requirements</string>
+    <string name="settings_speech_prompt">Speak your prompt text</string>
+    <string name="settings_speech_unavailable">Speech recognition is not available on this device</string>
     <string name="settings_schedule_label">Generation Schedule</string>
     <string name="settings_schedule_day">Day of week</string>
     <string name="settings_schedule_time">Time</string>
@@ -159,6 +166,12 @@
     <string name="provider_groq_desc">Fast inference of open-source models. Get a key at groq.com.</string>
     <string name="provider_setup_continue">Continue</string>
     <string name="ai_not_configured">Configure an AI provider in Settings first.</string>
+
+    <string-array name="grok_models">
+        <item>grok-4.6</item>
+        <item>grok-4.5</item>
+        <item>grok-4.3</item>
+    </string-array>
 
     <string-array name="days_of_week">
         <item>Sunday</item>

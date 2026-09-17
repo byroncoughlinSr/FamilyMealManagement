@@ -57,4 +57,7 @@ public interface DailyMenuDao {
 
     @Query("SELECT * FROM tblDailyMenu WHERE _id = :id LIMIT 1")
     DailyMenu getMenuByIdSync(int id);
+
+    @Query("UPDATE tblDailyMenu SET imageUrl = :imageUrl WHERE _id = :id")
+    void updateImageUrl(int id, String imageUrl);
 }

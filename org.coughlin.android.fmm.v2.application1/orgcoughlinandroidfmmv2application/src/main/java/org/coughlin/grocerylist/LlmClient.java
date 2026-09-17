@@ -205,7 +205,7 @@ public class LlmClient {
 
             JSONObject requestBody = new JSONObject();
             requestBody.put("model", model);
-            requestBody.put("max_tokens", 4096);
+            requestBody.put("max_tokens", 16000);
             requestBody.put("messages", messages);
 
             try (OutputStream os = conn.getOutputStream()) {
@@ -238,7 +238,15 @@ public class LlmClient {
 
             JSONObject claudeResponse = new JSONObject(responseBuilder.toString());
             JSONArray content = claudeResponse.getJSONArray("content");
-            return content.getJSONObject(0).getString("text");
+            // Current models think by default, so the reply can open with a thinking
+            // block; the answer is the first text block, not necessarily the first block.
+            for (int i = 0; i < content.length(); i++) {
+                JSONObject block = content.getJSONObject(i);
+                if ("text".equals(block.optString("type"))) {
+                    return block.getString("text");
+                }
+            }
+            throw new Exception("Claude response contained no text block");
         } finally {
             if (conn != null) {
                 conn.disconnect();

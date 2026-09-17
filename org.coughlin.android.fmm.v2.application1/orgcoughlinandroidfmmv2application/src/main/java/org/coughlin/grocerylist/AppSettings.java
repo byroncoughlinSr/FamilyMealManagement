@@ -3,7 +3,10 @@ package org.coughlin.grocerylist;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AppSettings {
 
@@ -27,6 +30,7 @@ public class AppSettings {
     public static final String KEY_OPENAI_MODEL = "openai_model";
     public static final String KEY_GROK_API_KEY = "grok_api_key";
     public static final String KEY_GROK_MODEL = "grok_model";
+    public static final String KEY_PEXELS_API_KEY = "pexels_api_key";
 
     public static final String PROVIDER_OLLAMA = "ollama";
     public static final String PROVIDER_GEMINI = "gemini";
@@ -50,15 +54,44 @@ public class AppSettings {
             "4-6 preparation steps each prefixed with 'Step N:', " +
             "use standardized ingredient names.";
 
-    public static final String DEFAULT_GEMINI_MODEL = "gemini-2.5-flash";
-    public static final String DEFAULT_CLAUDE_MODEL = "claude-sonnet-4-20250514";
+    public static final String DEFAULT_GEMINI_MODEL = "gemini-3.8-flash";
+    public static final String DEFAULT_CLAUDE_MODEL = "claude-haiku-4-5";
     public static final String DEFAULT_GROQ_MODEL = "llama-3.3-70b-versatile";
-    public static final String DEFAULT_OPENAI_MODEL = "gpt-4o-mini";
-    public static final String DEFAULT_GROK_MODEL = "grok-2-latest";
+    public static final String DEFAULT_OPENAI_MODEL = "gpt-5.6-luna";
+    public static final String DEFAULT_GROK_MODEL = "grok-4.6";
 
     public static final int DEFAULT_SCHEDULE_DAY = Calendar.SATURDAY;
     public static final int DEFAULT_SCHEDULE_HOUR = 0;
     public static final int DEFAULT_SCHEDULE_MINUTE = 0;
+
+    /** Grok model ids xAI has retired; requests naming them fail with HTTP 404. */
+    private static final Set<String> RETIRED_GROK_MODELS = new HashSet<>(Arrays.asList(
+            "grok-2", "grok-2-latest", "grok-2-1212",
+            "grok-3", "grok-3-latest", "grok-3-mini", "grok-3-mini-latest",
+            "grok-4", "grok-4-latest", "grok-4-0709", "grok-beta"));
+
+    /** Claude model ids Anthropic has retired; requests naming them fail with HTTP 404. */
+    private static final Set<String> RETIRED_CLAUDE_MODELS = new HashSet<>(Arrays.asList(
+            "claude-sonnet-4-20250514", "claude-opus-4-20250514", "claude-opus-4-1-20250805",
+            "claude-3-7-sonnet-20250219", "claude-3-5-sonnet-20240620",
+            "claude-3-5-sonnet-20241022", "claude-3-sonnet-20240229",
+            "claude-3-5-haiku-20241022", "claude-3-haiku-20240307",
+            "claude-3-opus-20240229", "claude-2.0", "claude-2.1"));
+
+    /**
+     * Reads a saved model id, replacing it with {@code currentDefault} when the provider has
+     * retired it. A model saved before its retirement would otherwise fail with a 404 forever,
+     * since these ids are only rewritten when the user re-saves Settings.
+     */
+    private static String currentModel(Context context, String key,
+                                       Set<String> retired, String currentDefault) {
+        String model = getPrefs(context).getString(key, currentDefault);
+        if (model.isEmpty() || retired.contains(model)) {
+            getPrefs(context).edit().putString(key, currentDefault).apply();
+            return currentDefault;
+        }
+        return model;
+    }
 
     public static SharedPreferences getPrefs(Context context) {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -139,7 +172,7 @@ public class AppSettings {
     }
 
     public static String getClaudeModel(Context context) {
-        return getPrefs(context).getString(KEY_CLAUDE_MODEL, DEFAULT_CLAUDE_MODEL);
+        return currentModel(context, KEY_CLAUDE_MODEL, RETIRED_CLAUDE_MODELS, DEFAULT_CLAUDE_MODEL);
     }
 
     public static void setClaudeModel(Context context, String model) {
@@ -187,10 +220,18 @@ public class AppSettings {
     }
 
     public static String getGrokModel(Context context) {
-        return getPrefs(context).getString(KEY_GROK_MODEL, DEFAULT_GROK_MODEL);
+        return currentModel(context, KEY_GROK_MODEL, RETIRED_GROK_MODELS, DEFAULT_GROK_MODEL);
     }
 
     public static void setGrokModel(Context context, String model) {
         getPrefs(context).edit().putString(KEY_GROK_MODEL, model).apply();
+    }
+
+    public static String getPexelsApiKey(Context context) {
+        return getPrefs(context).getString(KEY_PEXELS_API_KEY, "");
+    }
+
+    public static void setPexelsApiKey(Context context, String apiKey) {
+        getPrefs(context).edit().putString(KEY_PEXELS_API_KEY, apiKey).apply();
     }
 }

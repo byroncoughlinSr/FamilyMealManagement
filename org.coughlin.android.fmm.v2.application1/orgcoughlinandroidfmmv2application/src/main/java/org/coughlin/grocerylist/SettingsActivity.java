@@ -1,11 +1,17 @@
 package org.coughlin.grocerylist;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.speech.RecognizerIntent;
+import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.view.View;
@@ -13,12 +19,16 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -50,7 +60,8 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText openAiApiKeyEditText;
     private EditText openAiModelEditText;
     private EditText grokApiKeyEditText;
-    private EditText grokModelEditText;
+    private Spinner grokModelSpinner;
+    private EditText pexelsApiKeyEditText;
     private LinearLayout ollamaFields;
     private LinearLayout geminiFields;
     private LinearLayout claudeFields;
@@ -58,6 +69,15 @@ public class SettingsActivity extends AppCompatActivity {
     private LinearLayout openaiFields;
     private LinearLayout grokFields;
     private LinearLayout onDeviceFields;
+
+    // Prompt field that receives the next speech-to-text result.
+    private EditText speechTarget;
+    private ActivityResultLauncher<Intent> speechLauncher;
+
+    // Must match the order of R.array.grok_models.
+    private static final String[] GROK_MODELS = {
+            "grok-4.6", "grok-4.5", "grok-4.3"
+    };
 
     private static final int[] DAY_VALUES = {
             Calendar.SUNDAY, Calendar.MONDAY, Calendar.TUESDAY,
@@ -94,7 +114,13 @@ public class SettingsActivity extends AppCompatActivity {
         openAiApiKeyEditText = findViewById(R.id.editTextOpenAiApiKey);
         openAiModelEditText = findViewById(R.id.editTextOpenAiModel);
         grokApiKeyEditText = findViewById(R.id.editTextGrokApiKey);
-        grokModelEditText = findViewById(R.id.editTextGrokModel);
+        grokModelSpinner = findViewById(R.id.spinnerGrokModel);
+        pexelsApiKeyEditText = findViewById(R.id.editTextPexelsApiKey);
+
+        ArrayAdapter<CharSequence> grokModelAdapter = ArrayAdapter.createFromResource(
+                this, R.array.grok_models, R.layout.spinner_item);
+        grokModelAdapter.setDropDownViewResource(R.layout.spinner_item);
+        grokModelSpinner.setAdapter(grokModelAdapter);
         ollamaFields = findViewById(R.id.ollamaFields);
         geminiFields = findViewById(R.id.geminiFields);
         claudeFields = findViewById(R.id.claudeFields);
@@ -135,6 +161,72 @@ public class SettingsActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(v -> saveSettings());
         testButton.setOnClickListener(v -> testConnection());
+
+        enableInnerScrolling(promptEditText);
+        enableInnerScrolling(recipePromptEditText);
+
+        speechLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> onSpeechResult(result.getResultCode(), result.getData()));
+
+        ImageButton menuPromptMic = findViewById(R.id.btnMenuPromptMic);
+        ImageButton recipePromptMic = findViewById(R.id.btnRecipePromptMic);
+        menuPromptMic.setOnClickListener(v -> startSpeechToText(promptEditText));
+        recipePromptMic.setOnClickListener(v -> startSpeechToText(recipePromptEditText));
+    }
+
+    /**
+     * Lets a multi-line EditText scroll its own content when it is nested inside the
+     * page ScrollView. Without this the outer ScrollView steals the drag gesture.
+     */
+    private void enableInnerScrolling(EditText editText) {
+        editText.setOnTouchListener((v, event) -> {
+            if (v.canScrollVertically(1) || v.canScrollVertically(-1)) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                if (event.getActionMasked() == MotionEvent.ACTION_UP
+                        || event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                }
+            }
+            return false;
+        });
+    }
+
+    private void startSpeechToText(EditText target) {
+        speechTarget = target;
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.settings_speech_prompt));
+        try {
+            speechLauncher.launch(intent);
+        } catch (ActivityNotFoundException e) {
+            speechTarget = null;
+            Toast.makeText(this, R.string.settings_speech_unavailable, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void onSpeechResult(int resultCode, Intent data) {
+        EditText target = speechTarget;
+        speechTarget = null;
+        if (resultCode != Activity.RESULT_OK || data == null || target == null) return;
+
+        ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        if (matches == null || matches.isEmpty()) return;
+        String spoken = matches.get(0).trim();
+        if (spoken.isEmpty()) return;
+
+        // Insert at the cursor (or replace the selection); fall back to appending.
+        int start = Math.max(0, target.getSelectionStart());
+        int end = Math.max(0, target.getSelectionEnd());
+        if (start > end) { int t = start; start = end; end = t; }
+        CharSequence existing = target.getText();
+        boolean needsSpace = start > 0 && !Character.isWhitespace(existing.charAt(start - 1));
+        String insert = (needsSpace ? " " : "") + spoken;
+        target.getText().replace(start, end, insert);
+        target.setSelection(start + insert.length());
+        target.requestFocus();
     }
 
     private void loadSettings() {
@@ -149,7 +241,8 @@ public class SettingsActivity extends AppCompatActivity {
         openAiApiKeyEditText.setText(AppSettings.getOpenAiApiKey(this));
         openAiModelEditText.setText(AppSettings.getOpenAiModel(this));
         grokApiKeyEditText.setText(AppSettings.getGrokApiKey(this));
-        grokModelEditText.setText(AppSettings.getGrokModel(this));
+        grokModelSpinner.setSelection(grokModelIndex(AppSettings.getGrokModel(this)));
+        pexelsApiKeyEditText.setText(AppSettings.getPexelsApiKey(this));
 
         ollamaUrlEditText.setText(AppSettings.getOllamaUrl(this));
         ollamaModelEditText.setText(AppSettings.getOllamaModel(this));
@@ -190,7 +283,8 @@ public class SettingsActivity extends AppCompatActivity {
         String openAiApiKey = openAiApiKeyEditText.getText().toString().trim();
         String openAiModel = openAiModelEditText.getText().toString().trim();
         String grokApiKey = grokApiKeyEditText.getText().toString().trim();
-        String grokModel = grokModelEditText.getText().toString().trim();
+        String grokModel = GROK_MODELS[grokModelSpinner.getSelectedItemPosition()];
+        String pexelsApiKey = pexelsApiKeyEditText.getText().toString().trim();
 
         String prompt = promptEditText.getText().toString().trim();
         if (prompt.isEmpty()) {
@@ -220,6 +314,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .putString(AppSettings.KEY_OPENAI_MODEL, openAiModel)
                 .putString(AppSettings.KEY_GROK_API_KEY, grokApiKey)
                 .putString(AppSettings.KEY_GROK_MODEL, grokModel)
+                .putString(AppSettings.KEY_PEXELS_API_KEY, pexelsApiKey)
                 .putString(AppSettings.KEY_OLLAMA_URL, ollamaUrl)
                 .putString(AppSettings.KEY_OLLAMA_MODEL, ollamaModel)
                 .putString(AppSettings.KEY_MENU_PROMPT, prompt)
@@ -284,6 +379,13 @@ public class SettingsActivity extends AppCompatActivity {
             if (PROVIDER_ORDER[i].equals(provider)) return i;
         }
         return 0;
+    }
+
+    private int grokModelIndex(String model) {
+        for (int i = 0; i < GROK_MODELS.length; i++) {
+            if (GROK_MODELS[i].equals(model)) return i;
+        }
+        return 0; // default to first valid model (e.g. legacy/retired saved value)
     }
 
     private int dayIndexFromCalendarDay(int calendarDay) {

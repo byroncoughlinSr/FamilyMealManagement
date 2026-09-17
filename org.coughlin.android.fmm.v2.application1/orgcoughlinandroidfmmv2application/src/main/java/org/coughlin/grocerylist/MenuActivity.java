@@ -97,6 +97,10 @@ public class MenuActivity extends AppCompatActivity {
             showGenerateMenuConfirmation();
             return true;
         }
+        if (item.getItemId() == R.id.action_regenerate_week) {
+            showRegenerateWeekConfirmation();
+            return true;
+        }
         if (item.getItemId() == R.id.action_clear_next_week) {
             showClearNextWeekConfirmation();
             return true;
@@ -139,7 +143,33 @@ public class MenuActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Generate Menu")
                 .setMessage(message)
-                .setPositiveButton("Continue", (dialog, which) -> executeMenuGeneration())
+                .setPositiveButton("Continue", (dialog, which) ->
+                        executeMenuGeneration(startDate, endDate))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void showRegenerateWeekConfirmation() {
+        if (!AppSettings.isProviderConfigured(this)) {
+            Toast.makeText(this, R.string.ai_not_configured, Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, SettingsActivity.class));
+            return;
+        }
+
+        LocalDate startDate = MenuGenerationWorker.currentWeekStart();
+        LocalDate endDate = startDate.plusDays(6);
+
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+        String message = "This will replace the generated meals from "
+                + startDate.format(displayFormatter) + " to "
+                + endDate.format(displayFormatter)
+                + ", including days already past. Meals you set yourself are kept. Continue?";
+
+        new AlertDialog.Builder(this)
+                .setTitle("Regenerate This Week")
+                .setMessage(message)
+                .setPositiveButton("Regenerate", (dialog, which) ->
+                        executeMenuGeneration(startDate, endDate))
                 .setNegativeButton("Cancel", null)
                 .show();
     }
@@ -171,9 +201,18 @@ public class MenuActivity extends AppCompatActivity {
         Toast.makeText(this, "Next week's menu cleared", Toast.LENGTH_SHORT).show();
     }
 
-    private void executeMenuGeneration() {
+    private void executeMenuGeneration(LocalDate startDate, LocalDate endDate) {
+        Data inputData = new Data.Builder()
+                .putString(MenuGenerationWorker.KEY_START_DATE,
+                        startDate.format(DB_FORMATTER))
+                .putString(MenuGenerationWorker.KEY_END_DATE,
+                        endDate.format(DB_FORMATTER))
+                .build();
+
         OneTimeWorkRequest menuRequest = new OneTimeWorkRequest.Builder(
-                MenuGenerationWorker.class).build();
+                MenuGenerationWorker.class)
+                .setInputData(inputData)
+                .build();
         WorkManager workManager = WorkManager.getInstance(this);
         workManager.enqueue(menuRequest);
 
@@ -186,44 +225,18 @@ public class MenuActivity extends AppCompatActivity {
                         if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
                             Toast.makeText(this, "Menu generated! Recipes loading in background...",
                                     Toast.LENGTH_SHORT).show();
-                            startRecipeGeneration();
+                            // MenuGenerationWorker already chains RecipeGenerationWorker as
+                            // unique work for this range — don't enqueue a second chain.
                         } else {
-                            Toast.makeText(this, "Menu generation failed",
-                                    Toast.LENGTH_SHORT).show();
+                            String reason = workInfo.getOutputData().getString(
+                                    MenuGenerationWorker.KEY_ERROR_MESSAGE);
+                            String msg = reason != null && !reason.isEmpty()
+                                    ? "Menu generation failed: " + reason
+                                    : "Menu generation failed";
+                            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
 
-    private void startRecipeGeneration() {
-        // Compute the same date range the menu worker used
-        boolean isMonthly = false; // Must match MenuGenerationWorker toggle
-        LocalDate startDate;
-        LocalDate endDate;
-
-        if (isMonthly) {
-            LocalDate today = LocalDate.now();
-            startDate = today.getDayOfMonth() > 1 ? today : today.withDayOfMonth(1);
-            endDate = today.with(TemporalAdjusters.lastDayOfMonth());
-        } else {
-            startDate = LocalDate.now()
-                    .with(TemporalAdjusters.next(DayOfWeek.MONDAY));
-            endDate = startDate.plusDays(6);
-        }
-
-        Data inputData = new Data.Builder()
-                .putString(RecipeGenerationWorker.KEY_START_DATE,
-                        startDate.format(DB_FORMATTER))
-                .putString(RecipeGenerationWorker.KEY_END_DATE,
-                        endDate.format(DB_FORMATTER))
-                .putInt(RecipeGenerationWorker.KEY_CURRENT_INDEX, 0)
-                .build();
-
-        OneTimeWorkRequest recipeRequest = new OneTimeWorkRequest.Builder(
-                RecipeGenerationWorker.class)
-                .setInputData(inputData)
-                .build();
-
-        WorkManager.getInstance(this).enqueue(recipeRequest);
-    }
 }

@@ -325,17 +325,11 @@
                     android:textColor="@android:color/white"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/editTextGrokModel"
+                <Spinner
+                    android:id="@+id/spinnerGrokModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:singleLine="true"
                     android:background="@android:color/white"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:hint="grok-2-latest"
-                    android:padding="8dp"
                     android:layout_marginBottom="24dp" />
 
             </LinearLayout>
@@ -359,6 +353,35 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/settings_dinner_images_label"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_pexels_api_key"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="4dp" />
+
+            <EditText
+                android:id="@+id/editTextPexelsApiKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:background="@android:color/white"
+                android:textColor="#000000"
+                android:textColorHint="#888888"
+                android:hint="Enter Pexels API key"
+                android:padding="8dp"
+                android:layout_marginBottom="24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/settings_prompt_label"
                 android:textStyle="bold"
                 android:textSize="16sp"
@@ -373,11 +396,24 @@
                 android:maxLines="12"
                 android:inputType="textMultiLine|textCapSentences"
                 android:gravity="top|start"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="insideInset"
+                android:overScrollMode="always"
                 android:background="@android:color/white"
                 android:textColor="#000000"
                 android:textColorHint="#888888"
                 android:padding="8dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="4dp" />
+
+            <ImageButton
+                android:id="@+id/btnMenuPromptMic"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_mic"
+                android:contentDescription="@string/settings_dictate_menu_prompt"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginBottom="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -396,11 +432,24 @@
                 android:maxLines="10"
                 android:inputType="textMultiLine|textCapSentences"
                 android:gravity="top|start"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="insideInset"
+                android:overScrollMode="always"
                 android:background="@android:color/white"
                 android:textColor="#000000"
                 android:textColorHint="#888888"
                 android:padding="8dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="4dp" />
+
+            <ImageButton
+                android:id="@+id/btnRecipePromptMic"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_mic"
+                android:contentDescription="@string/settings_dictate_recipe_prompt"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginBottom="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
