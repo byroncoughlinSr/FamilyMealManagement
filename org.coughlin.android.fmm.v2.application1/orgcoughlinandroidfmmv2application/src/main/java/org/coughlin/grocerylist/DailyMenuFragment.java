@@ -1,5 +1,6 @@
 package org.coughlin.grocerylist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -118,7 +120,11 @@ public class DailyMenuFragment extends Fragment {
     }
 
     private void showMealOptionsDialog(String mealType, String dateStr) {
-        String[] options = {"Type a new meal", "Search past meals", "Clear meal"};
+        // Only offer calendar sharing when there's a meal to share.
+        String[] options = getMealForType(mealType) != null
+                ? new String[]{"Type a new meal", "Search past meals", "Clear meal",
+                        "Add to Google Calendar"}
+                : new String[]{"Type a new meal", "Search past meals", "Clear meal"};
         new AlertDialog.Builder(requireContext())
                 .setTitle("Edit " + mealType)
                 .setItems(options, (dialog, which) -> {
@@ -132,9 +138,21 @@ public class DailyMenuFragment extends Fragment {
                         case 2:
                             clearMeal(mealType);
                             break;
+                        case 3:
+                            addMealToCalendar(mealType);
+                            break;
                     }
                 })
                 .show();
+    }
+
+    private void addMealToCalendar(String mealType) {
+        DailyMenu meal = getMealForType(mealType);
+        if (meal == null) return;
+        if (!MealCalendarHelper.addMealToCalendar(requireContext(), meal)) {
+            Toast.makeText(requireContext(), R.string.calendar_app_missing,
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     private void launchCreateRecipe(String mealType, String dateStr) {
@@ -159,8 +177,13 @@ public class DailyMenuFragment extends Fragment {
     private void clearMeal(String mealType) {
         DailyMenu meal = getMealForType(mealType);
         if (meal != null) {
+            Context appContext = requireContext().getApplicationContext();
             GroceryListDatabase db = GroceryListDatabase.getDatabase(requireActivity().getApplication());
-            GroceryListDatabase.databaseWriteExecutor.execute(() -> db.dailyMenuDao().delete(meal));
+            GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+                db.dailyMenuDao().delete(meal);
+                // Removes the meal's calendar event now that the slot is empty.
+                MealCalendarHelper.autoSyncMeal(appContext, meal.getMenuDate(), mealType);
+            });
         }
     }
 

@@ -110,6 +110,7 @@ public class MenuGenerationWorker extends Worker {
 
             if (datesToGenerate.isEmpty()) {
                 Log.i(TAG, "All dates have manual meals, nothing to generate");
+                MealCalendarHelper.autoSyncRange(getApplicationContext(), startDate, endDate);
                 return Result.success();
             }
 
@@ -201,6 +202,13 @@ public class MenuGenerationWorker extends Worker {
 
             Log.i(TAG, "Successfully generated menu from " +
                     startDateStr + " to " + endDateStr);
+
+            // Put the new menu on the family's Google Calendar without any user action.
+            int synced = MealCalendarHelper.autoSyncRange(
+                    getApplicationContext(), startDate, endDate);
+            if (synced >= 0) {
+                Log.i(TAG, "Added " + synced + " meals to Google Calendar");
+            }
 
             // Automatically trigger recipe generation for this new menu
             triggerRecipeGeneration(startDateStr, endDateStr);

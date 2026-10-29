@@ -121,6 +121,8 @@ public class MealSearchActivity extends AppCompatActivity {
                 }
             }
 
+            MealCalendarHelper.autoSyncMeal(getApplicationContext(), targetDate, mealType);
+
             runOnUiThread(() -> {
                 Toast.makeText(this, "Meal set: " + sourceMeal.getMealDescription(),
                         Toast.LENGTH_SHORT).show();
