@@ -166,7 +166,16 @@ public class LlmClient {
             JSONObject firstCandidate = candidates.getJSONObject(0);
             JSONObject candidateContent = firstCandidate.getJSONObject("content");
             JSONArray candidateParts = candidateContent.getJSONArray("parts");
-            return candidateParts.getJSONObject(0).getString("text");
+            // Thinking models (e.g. Gemma) return their reasoning as parts flagged "thought";
+            // the answer is the remaining text parts.
+            StringBuilder answer = new StringBuilder();
+            for (int i = 0; i < candidateParts.length(); i++) {
+                JSONObject part = candidateParts.getJSONObject(i);
+                if (!part.optBoolean("thought") && part.has("text")) {
+                    answer.append(part.getString("text"));
+                }
+            }
+            return answer.toString();
         } finally {
             if (conn != null) {
                 conn.disconnect();

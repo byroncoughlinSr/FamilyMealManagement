@@ -56,7 +56,7 @@ public class AppSettings {
 
     public static final String DEFAULT_GEMINI_MODEL = "gemini-3.8-flash";
     public static final String DEFAULT_CLAUDE_MODEL = "claude-haiku-4-5";
-    public static final String DEFAULT_GROQ_MODEL = "llama-3.3-70b-versatile";
+    public static final String DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b";
     public static final String DEFAULT_OPENAI_MODEL = "gpt-5.6-luna";
     public static final String DEFAULT_GROK_MODEL = "grok-4.6";
 

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import android.widget.TimePicker;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -28,7 +31,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -44,7 +50,6 @@ public class SettingsActivity extends AppCompatActivity {
     };
 
     private EditText ollamaUrlEditText;
-    private EditText ollamaModelEditText;
     private EditText promptEditText;
     private EditText recipePromptEditText;
     private Spinner daySpinner;
@@ -52,15 +57,17 @@ public class SettingsActivity extends AppCompatActivity {
     private Button testButton;
     private Spinner llmProviderSpinner;
     private EditText apiKeyEditText;
-    private EditText geminiModelEditText;
     private EditText claudeApiKeyEditText;
-    private EditText claudeModelEditText;
     private EditText groqApiKeyEditText;
-    private EditText groqModelEditText;
     private EditText openAiApiKeyEditText;
-    private EditText openAiModelEditText;
     private EditText grokApiKeyEditText;
-    private Spinner grokModelSpinner;
+    private ModelPicker ollamaModelPicker;
+    private ModelPicker geminiModelPicker;
+    private ModelPicker claudeModelPicker;
+    private ModelPicker groqModelPicker;
+    private ModelPicker openAiModelPicker;
+    private ModelPicker grokModelPicker;
+    private ModelPicker[] modelPickers;
     private EditText pexelsApiKeyEditText;
     private LinearLayout ollamaFields;
     private LinearLayout geminiFields;
@@ -74,10 +81,8 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText speechTarget;
     private ActivityResultLauncher<Intent> speechLauncher;
 
-    // Must match the order of R.array.grok_models.
-    private static final String[] GROK_MODELS = {
-            "grok-4.6", "grok-4.5", "grok-4.3"
-    };
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final ExecutorService modelListExecutor = Executors.newSingleThreadExecutor();
 
     private static final int[] DAY_VALUES = {
             Calendar.SUNDAY, Calendar.MONDAY, Calendar.TUESDAY,
@@ -97,7 +102,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         ollamaUrlEditText = findViewById(R.id.editOllamaUrl);
-        ollamaModelEditText = findViewById(R.id.editOllamaModel);
         promptEditText = findViewById(R.id.editMenuPrompt);
         recipePromptEditText = findViewById(R.id.editRecipePrompt);
         daySpinner = findViewById(R.id.spinnerScheduleDay);
@@ -106,21 +110,41 @@ public class SettingsActivity extends AppCompatActivity {
         testButton = findViewById(R.id.btnTestConnection);
         llmProviderSpinner = findViewById(R.id.spinnerLlmProvider);
         apiKeyEditText = findViewById(R.id.editTextApiKey);
-        geminiModelEditText = findViewById(R.id.editTextGeminiModel);
         claudeApiKeyEditText = findViewById(R.id.editTextClaudeApiKey);
-        claudeModelEditText = findViewById(R.id.editTextClaudeModel);
         groqApiKeyEditText = findViewById(R.id.editTextGroqApiKey);
-        groqModelEditText = findViewById(R.id.editTextGroqModel);
         openAiApiKeyEditText = findViewById(R.id.editTextOpenAiApiKey);
-        openAiModelEditText = findViewById(R.id.editTextOpenAiModel);
         grokApiKeyEditText = findViewById(R.id.editTextGrokApiKey);
-        grokModelSpinner = findViewById(R.id.spinnerGrokModel);
         pexelsApiKeyEditText = findViewById(R.id.editTextPexelsApiKey);
 
-        ArrayAdapter<CharSequence> grokModelAdapter = ArrayAdapter.createFromResource(
-                this, R.array.grok_models, R.layout.spinner_item);
-        grokModelAdapter.setDropDownViewResource(R.layout.spinner_item);
-        grokModelSpinner.setAdapter(grokModelAdapter);
+        ollamaModelPicker = new ModelPicker(AppSettings.PROVIDER_OLLAMA, ollamaUrlEditText,
+                R.id.spinnerOllamaModel, R.id.spinnerOllamaModelStatus,
+                R.string.settings_models_need_url,
+                AppSettings.getOllamaModel(this), AppSettings.DEFAULT_OLLAMA_MODEL);
+        geminiModelPicker = new ModelPicker(AppSettings.PROVIDER_GEMINI, apiKeyEditText,
+                R.id.spinnerGeminiModel, R.id.spinnerGeminiModelStatus,
+                R.string.settings_models_need_key,
+                AppSettings.getGeminiModel(this), AppSettings.DEFAULT_GEMINI_MODEL);
+        claudeModelPicker = new ModelPicker(AppSettings.PROVIDER_CLAUDE, claudeApiKeyEditText,
+                R.id.spinnerClaudeModel, R.id.spinnerClaudeModelStatus,
+                R.string.settings_models_need_key,
+                AppSettings.getClaudeModel(this), AppSettings.DEFAULT_CLAUDE_MODEL);
+        groqModelPicker = new ModelPicker(AppSettings.PROVIDER_GROQ, groqApiKeyEditText,
+                R.id.spinnerGroqModel, R.id.spinnerGroqModelStatus,
+                R.string.settings_models_need_key,
+                AppSettings.getGroqModel(this), AppSettings.DEFAULT_GROQ_MODEL);
+        openAiModelPicker = new ModelPicker(AppSettings.PROVIDER_OPENAI, openAiApiKeyEditText,
+                R.id.spinnerOpenAiModel, R.id.spinnerOpenAiModelStatus,
+                R.string.settings_models_need_key,
+                AppSettings.getOpenAiModel(this), AppSettings.DEFAULT_OPENAI_MODEL);
+        grokModelPicker = new ModelPicker(AppSettings.PROVIDER_GROK, grokApiKeyEditText,
+                R.id.spinnerGrokModel, R.id.spinnerGrokModelStatus,
+                R.string.settings_models_need_key,
+                AppSettings.getGrokModel(this), AppSettings.DEFAULT_GROK_MODEL);
+        modelPickers = new ModelPicker[] {
+                ollamaModelPicker, geminiModelPicker, claudeModelPicker,
+                groqModelPicker, openAiModelPicker, grokModelPicker
+        };
+
         ollamaFields = findViewById(R.id.ollamaFields);
         geminiFields = findViewById(R.id.geminiFields);
         claudeFields = findViewById(R.id.claudeFields);
@@ -146,6 +170,9 @@ public class SettingsActivity extends AppCompatActivity {
                 openaiFields.setVisibility(AppSettings.PROVIDER_OPENAI.equals(provider) ? View.VISIBLE : View.GONE);
                 grokFields.setVisibility(AppSettings.PROVIDER_GROK.equals(provider) ? View.VISIBLE : View.GONE);
                 onDeviceFields.setVisibility(AppSettings.PROVIDER_ON_DEVICE.equals(provider) ? View.VISIBLE : View.GONE);
+                for (ModelPicker picker : modelPickers) {
+                    if (picker.provider.equals(provider)) picker.load();
+                }
             }
 
             @Override
@@ -173,6 +200,13 @@ public class SettingsActivity extends AppCompatActivity {
         ImageButton recipePromptMic = findViewById(R.id.btnRecipePromptMic);
         menuPromptMic.setOnClickListener(v -> startSpeechToText(promptEditText));
         recipePromptMic.setOnClickListener(v -> startSpeechToText(recipePromptEditText));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainHandler.removeCallbacksAndMessages(null);
+        modelListExecutor.shutdownNow();
     }
 
     /**
@@ -233,19 +267,13 @@ public class SettingsActivity extends AppCompatActivity {
         String provider = AppSettings.getLlmProvider(this);
         llmProviderSpinner.setSelection(providerIndex(provider));
         apiKeyEditText.setText(AppSettings.getApiKey(this));
-        geminiModelEditText.setText(AppSettings.getGeminiModel(this));
         claudeApiKeyEditText.setText(AppSettings.getClaudeApiKey(this));
-        claudeModelEditText.setText(AppSettings.getClaudeModel(this));
         groqApiKeyEditText.setText(AppSettings.getGroqApiKey(this));
-        groqModelEditText.setText(AppSettings.getGroqModel(this));
         openAiApiKeyEditText.setText(AppSettings.getOpenAiApiKey(this));
-        openAiModelEditText.setText(AppSettings.getOpenAiModel(this));
         grokApiKeyEditText.setText(AppSettings.getGrokApiKey(this));
-        grokModelSpinner.setSelection(grokModelIndex(AppSettings.getGrokModel(this)));
         pexelsApiKeyEditText.setText(AppSettings.getPexelsApiKey(this));
 
         ollamaUrlEditText.setText(AppSettings.getOllamaUrl(this));
-        ollamaModelEditText.setText(AppSettings.getOllamaModel(this));
         promptEditText.setText(AppSettings.getMenuPrompt(this));
         recipePromptEditText.setText(AppSettings.getRecipePrompt(this));
 
@@ -268,22 +296,17 @@ public class SettingsActivity extends AppCompatActivity {
             return;
         }
 
-        String ollamaModel = ollamaModelEditText.getText().toString().trim();
-        if (AppSettings.PROVIDER_OLLAMA.equals(selectedProvider) && ollamaModel.isEmpty()) {
-            ollamaModelEditText.setError(getString(R.string.settings_prompt_required));
-            return;
-        }
-
+        String ollamaModel = ollamaModelPicker.getSelectedModel();
         String apiKey = apiKeyEditText.getText().toString().trim();
-        String geminiModel = geminiModelEditText.getText().toString().trim();
+        String geminiModel = geminiModelPicker.getSelectedModel();
         String claudeApiKey = claudeApiKeyEditText.getText().toString().trim();
-        String claudeModel = claudeModelEditText.getText().toString().trim();
+        String claudeModel = claudeModelPicker.getSelectedModel();
         String groqApiKey = groqApiKeyEditText.getText().toString().trim();
-        String groqModel = groqModelEditText.getText().toString().trim();
+        String groqModel = groqModelPicker.getSelectedModel();
         String openAiApiKey = openAiApiKeyEditText.getText().toString().trim();
-        String openAiModel = openAiModelEditText.getText().toString().trim();
+        String openAiModel = openAiModelPicker.getSelectedModel();
         String grokApiKey = grokApiKeyEditText.getText().toString().trim();
-        String grokModel = GROK_MODELS[grokModelSpinner.getSelectedItemPosition()];
+        String grokModel = grokModelPicker.getSelectedModel();
         String pexelsApiKey = pexelsApiKeyEditText.getText().toString().trim();
 
         String prompt = promptEditText.getText().toString().trim();
@@ -348,7 +371,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         final String urlToTest = baseUrl;
-        Handler mainHandler = new Handler(Looper.getMainLooper());
 
         Executors.newSingleThreadExecutor().execute(() -> {
             String result;
@@ -381,18 +403,140 @@ public class SettingsActivity extends AppCompatActivity {
         return 0;
     }
 
-    private int grokModelIndex(String model) {
-        for (int i = 0; i < GROK_MODELS.length; i++) {
-            if (GROK_MODELS[i].equals(model)) return i;
-        }
-        return 0; // default to first valid model (e.g. legacy/retired saved value)
-    }
-
     private int dayIndexFromCalendarDay(int calendarDay) {
         for (int i = 0; i < DAY_VALUES.length; i++) {
             if (DAY_VALUES[i] == calendarDay) return i;
         }
         return 6; // default Saturday
+    }
+
+    /**
+     * A provider's model dropdown. Its choices are fetched from the provider using the key
+     * (or Ollama server URL) typed in {@code credentialField}, and refetched when that changes.
+     * Until a fetch succeeds it offers only the saved model, so saving never loses it.
+     * Each fetched model is shown with its price per million tokens when one is known.
+     */
+    private class ModelPicker {
+        final String provider;
+        private final EditText credentialField;
+        private final Spinner spinner;
+        private final TextView status;
+        private final int missingCredentialMessage;
+        private final String defaultModel;
+        private final List<String> models = new ArrayList<>();
+        // What the dropdown shows for each entry of models: the id plus its cost.
+        private final List<String> labels = new ArrayList<>();
+        private final ArrayAdapter<String> adapter;
+        private final Runnable loadTask = this::load;
+        // Credential the current list was fetched with, so revisiting a provider doesn't refetch.
+        private String loadedFor;
+        // Bumped per fetch; a response from an older fetch (stale key) is dropped.
+        private int requestId;
+
+        ModelPicker(String provider, EditText credentialField, int spinnerId, int statusId,
+                    int missingCredentialMessage, String savedModel, String defaultModel) {
+            this.provider = provider;
+            this.credentialField = credentialField;
+            this.spinner = findViewById(spinnerId);
+            this.status = findViewById(statusId);
+            this.missingCredentialMessage = missingCredentialMessage;
+            this.defaultModel = defaultModel;
+
+            models.add(savedModel.isEmpty() ? defaultModel : savedModel);
+            labels.add(models.get(0));
+            adapter = new ArrayAdapter<>(SettingsActivity.this, R.layout.spinner_item, labels);
+            adapter.setDropDownViewResource(R.layout.spinner_item);
+            spinner.setAdapter(adapter);
+
+            credentialField.addTextChangedListener(new TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                @Override public void afterTextChanged(Editable s) {
+                    // Wait for typing/pasting to settle before hitting the network.
+                    mainHandler.removeCallbacks(loadTask);
+                    mainHandler.postDelayed(loadTask, 800);
+                }
+            });
+        }
+
+        String getSelectedModel() {
+            int position = spinner.getSelectedItemPosition();
+            return position >= 0 && position < models.size() ? models.get(position) : defaultModel;
+        }
+
+        /** Fetches the model list if this provider is the selected one and its key changed. */
+        void load() {
+            mainHandler.removeCallbacks(loadTask);
+            int providerPos = llmProviderSpinner.getSelectedItemPosition();
+            if (providerPos < 0 || providerPos >= PROVIDER_ORDER.length
+                    || !PROVIDER_ORDER[providerPos].equals(provider)) {
+                return;
+            }
+
+            String credential = credentialField.getText().toString().trim();
+            if (credential.isEmpty()) {
+                requestId++;
+                loadedFor = null;
+                showStatus(getString(missingCredentialMessage));
+                return;
+            }
+            if (credential.equals(loadedFor)) return;
+
+            final int request = ++requestId;
+            showStatus(getString(R.string.settings_models_loading));
+            modelListExecutor.execute(() -> {
+                List<String> fetched = null;
+                Map<String, String> fetchedCosts = null;
+                String error = null;
+                try {
+                    fetched = ModelListClient.listModels(provider, credential);
+                    fetchedCosts = ModelPricing.describeCosts(
+                            getApplicationContext(), provider, fetched);
+                } catch (Exception e) {
+                    error = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+                }
+                final List<String> result = fetched;
+                final Map<String, String> costs = fetchedCosts;
+                final String failure = error;
+                mainHandler.post(() -> {
+                    if (request != requestId || isFinishing()) return;
+                    if (result == null) {
+                        // Keep the current choices so the saved model is still selectable.
+                        showStatus(getString(R.string.settings_models_failed, failure));
+                        return;
+                    }
+                    loadedFor = credential;
+                    if (result.isEmpty()) {
+                        showStatus(getString(R.string.settings_models_empty));
+                        return;
+                    }
+                    status.setVisibility(View.GONE);
+                    setModels(result, costs);
+                });
+            });
+        }
+
+        private void setModels(List<String> newModels, Map<String, String> costs) {
+            String current = getSelectedModel();
+            models.clear();
+            models.addAll(newModels);
+            labels.clear();
+            String unknownCost = getString(R.string.settings_model_cost_unknown);
+            for (String id : newModels) {
+                String cost = costs.get(id);
+                labels.add(id + "\n" + (cost != null ? cost : unknownCost));
+            }
+            adapter.notifyDataSetChanged();
+            // Keep the user's model if this key can use it, else fall back to the app default.
+            int index = models.indexOf(current);
+            if (index < 0) index = models.indexOf(defaultModel);
+            spinner.setSelection(Math.max(index, 0));
+        }
+
+        private void showStatus(String message) {
+            status.setText(message);
+            status.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

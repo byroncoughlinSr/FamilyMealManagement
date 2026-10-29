@@ -113,6 +113,22 @@
     <string name="settings_openai_model">OpenAI Model</string>
     <string name="settings_grok_api_key">API Key</string>
     <string name="settings_grok_model">Grok Model</string>
+    <string name="settings_models_loading">Loading available models…</string>
+    <string name="settings_models_need_key">Enter an API key to load available models.</string>
+    <string name="settings_models_need_url">Enter the server URL to load available models.</string>
+    <string name="settings_models_failed">Couldn\'t load models (%1$s). Check the key and connection.</string>
+    <string name="settings_models_empty">No models found for this key.</string>
+    <!-- Free-tier notes reflect provider plans as of October 2026; update when providers change them. -->
+    <string name="settings_free_tier_ollama">Free: runs on your own server.</string>
+    <string name="settings_free_tier_gemini">Free tier available: no card needed, with daily request limits per model. Going over a limit makes requests fail rather than charging you.</string>
+    <string name="settings_free_tier_groq">Free tier available: rate-limited (about 30 requests a minute), mainly open models like gpt-oss and Qwen. Going over a limit makes requests fail rather than charging you.</string>
+    <string name="settings_free_tier_claude">No free tier: new accounts may get a small one-time credit, then usage is billed.</string>
+    <string name="settings_free_tier_openai">No free tier: usage is billed to your OpenAI account.</string>
+    <string name="settings_free_tier_grok">No ongoing free tier: new accounts get sign-up credits, then usage is billed.</string>
+    <string name="settings_model_cost">%1$s in / %2$s out per 1M tokens</string>
+    <string name="settings_model_cost_free">Free</string>
+    <string name="settings_model_cost_local">Free — runs on your server</string>
+    <string name="settings_model_cost_unknown">Price not listed</string>
     <string name="settings_on_device_info">No setup needed. The app uses your phone\'s on-device model when available.</string>
     <string name="settings_dinner_images_label">Dinner Images</string>
     <string name="settings_pexels_api_key">Pexels API key (for dinner images)</string>
@@ -166,12 +182,6 @@
     <string name="provider_groq_desc">Fast inference of open-source models. Get a key at groq.com.</string>
     <string name="provider_setup_continue">Continue</string>
     <string name="ai_not_configured">Configure an AI provider in Settings first.</string>
-
-    <string-array name="grok_models">
-        <item>grok-4.6</item>
-        <item>grok-4.5</item>
-        <item>grok-4.3</item>
-    </string-array>
 
     <string-array name="days_of_week">
         <item>Sunday</item>
