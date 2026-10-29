@@ -371,6 +371,8 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 }
             }
 
+            MealCalendarHelper.autoSyncMeal(getApplicationContext(), dateStr, mealType);
+
             runOnUiThread(() -> {
                 Toast.makeText(this, "Meal saved: " + description,
                         Toast.LENGTH_SHORT).show();

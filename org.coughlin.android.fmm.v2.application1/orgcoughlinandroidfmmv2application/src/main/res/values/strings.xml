@@ -77,6 +77,11 @@
     <string name="generate_menu">Generate Menu</string>
     <string name="regenerate_week">Regenerate This Week</string>
     <string name="clear_next_week">Clear Next Week</string>
+    <string name="share_week_to_calendar">Add Week to Google Calendar</string>
+    <string name="calendar_auto_sync">Auto-add Menus to Calendar</string>
+    <string name="calendar_app_missing">No calendar app found. Install Google Calendar to share meals.</string>
+    <string name="calendar_permission_denied">Calendar permission is needed to add the week\'s meals.</string>
+    <string name="calendar_no_google_calendars">No Google calendars found. Add a Google account in Android settings.</string>
     <string name="title_activity_recipe">Recipe</string>
     <string name="no_recipe_available">No recipe available.</string>
     <string name="title_activity_meal_search">Search Meals</string>

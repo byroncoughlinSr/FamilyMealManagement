@@ -16,6 +16,15 @@
         android:title="@string/clear_next_week"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_share_week_to_calendar"
+        android:title="@string/share_week_to_calendar"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_calendar_auto_sync"
+        android:title="@string/calendar_auto_sync"
+        android:checkable="true"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/action_settings"

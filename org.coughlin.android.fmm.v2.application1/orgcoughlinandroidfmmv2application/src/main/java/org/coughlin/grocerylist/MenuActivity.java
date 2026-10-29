@@ -1,5 +1,6 @@
 package org.coughlin.grocerylist;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -31,8 +34,33 @@ import java.util.List;
 public class MenuActivity extends AppCompatActivity {
     private DrawerHandler drawerHandler;
     private View generatingOverlay;
+    private ViewPager2 viewPager;
+    private DailyMenuPagerAdapter pagerAdapter;
     private static final DateTimeFormatter DB_FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final String[] CALENDAR_PERMISSIONS = {
+            Manifest.permission.READ_CALENDAR,
+            Manifest.permission.WRITE_CALENDAR
+    };
+
+    // True when the permission request came from "Add Week", false for the one-time
+    // auto-sync prompt shown on first launch.
+    private boolean shareWeekAfterPermission;
+
+    private final ActivityResultLauncher<String[]> calendarPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+                    results -> {
+                        if (!hasCalendarPermission()) {
+                            if (shareWeekAfterPermission) {
+                                Toast.makeText(this, R.string.calendar_permission_denied,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } else if (shareWeekAfterPermission) {
+                            chooseCalendarAndShareWeek();
+                        } else {
+                            autoSyncUpcomingMeals();
+                        }
+                    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +70,8 @@ public class MenuActivity extends AppCompatActivity {
         DailyMenuViewModel viewModel =
                 new ViewModelProvider(this).get(DailyMenuViewModel.class);
 
-        ViewPager2 viewPager = findViewById(R.id.viewPagerDailyMenu);
-        DailyMenuPagerAdapter pagerAdapter = new DailyMenuPagerAdapter(this);
+        viewPager = findViewById(R.id.viewPagerDailyMenu);
+        pagerAdapter = new DailyMenuPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(pagerAdapter.getCenterPosition(), false);
 
@@ -52,6 +80,35 @@ public class MenuActivity extends AppCompatActivity {
         setupDrawer();
 
         MenuGenerationScheduler.scheduleWeeklyMenuGeneration(this);
+        askForCalendarAccessOnce();
+    }
+
+    /**
+     * Auto-sync runs in the background worker, which can't prompt, so ask for calendar
+     * access once up front. After that every generated menu lands on the calendar.
+     */
+    private void askForCalendarAccessOnce() {
+        if (!AppSettings.isCalendarAutoSync(this) || hasCalendarPermission()
+                || AppSettings.wasCalendarPermissionAsked(this)) {
+            return;
+        }
+        AppSettings.setCalendarPermissionAsked(this);
+        shareWeekAfterPermission = false;
+        calendarPermissionLauncher.launch(CALENDAR_PERMISSIONS);
+    }
+
+    /** Adds menus that were generated before calendar access was granted. */
+    private void autoSyncUpcomingMeals() {
+        LocalDate startDate = MenuGenerationWorker.currentWeekStart();
+        LocalDate endDate = startDate.plusDays(13);
+        GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+            int written = MealCalendarHelper.autoSyncRange(this, startDate, endDate);
+            if (written > 0) {
+                runOnUiThread(() -> Toast.makeText(this,
+                        "Added " + written + " meals to Google Calendar",
+                        Toast.LENGTH_SHORT).show());
+            }
+        });
     }
 
     private void setupDrawer() {
@@ -88,6 +145,8 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.daily_menu, menu);
+        menu.findItem(R.id.action_calendar_auto_sync)
+                .setChecked(AppSettings.isCalendarAutoSync(this));
         return true;
     }
 
@@ -103,6 +162,29 @@ public class MenuActivity extends AppCompatActivity {
         }
         if (item.getItemId() == R.id.action_clear_next_week) {
             showClearNextWeekConfirmation();
+            return true;
+        }
+        if (item.getItemId() == R.id.action_share_week_to_calendar) {
+            if (hasCalendarPermission()) {
+                chooseCalendarAndShareWeek();
+            } else {
+                shareWeekAfterPermission = true;
+                calendarPermissionLauncher.launch(CALENDAR_PERMISSIONS);
+            }
+            return true;
+        }
+        if (item.getItemId() == R.id.action_calendar_auto_sync) {
+            boolean enabled = !item.isChecked();
+            item.setChecked(enabled);
+            AppSettings.setCalendarAutoSync(this, enabled);
+            if (enabled) {
+                if (hasCalendarPermission()) {
+                    autoSyncUpcomingMeals();
+                } else {
+                    shareWeekAfterPermission = false;
+                    calendarPermissionLauncher.launch(CALENDAR_PERMISSIONS);
+                }
+            }
             return true;
         }
         if (item.getItemId() == R.id.action_settings) {
@@ -194,11 +276,79 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void executeClearNextWeek(LocalDate startDate, LocalDate endDate) {
-        DailyMenuRepository repository = new DailyMenuRepository(getApplication());
-        repository.deleteMealsForDateRange(
-                startDate.format(DB_FORMATTER),
-                endDate.format(DB_FORMATTER));
+        GroceryListDatabase db = GroceryListDatabase.getDatabase(getApplication());
+        GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+            db.dailyMenuDao().deleteMealsForDateRange(
+                    startDate.format(DB_FORMATTER),
+                    endDate.format(DB_FORMATTER));
+            // With the week empty this just removes its meal events from the calendar.
+            MealCalendarHelper.autoSyncRange(getApplicationContext(), startDate, endDate);
+        });
         Toast.makeText(this, "Next week's menu cleared", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean hasCalendarPermission() {
+        return MealCalendarHelper.hasCalendarPermission(this);
+    }
+
+    private void chooseCalendarAndShareWeek() {
+        // Share the Monday–Sunday week of the day currently on screen.
+        LocalDate startDate = pagerAdapter.getDateForPosition(viewPager.getCurrentItem())
+                .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate endDate = startDate.plusDays(6);
+
+        GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+            List<MealCalendarHelper.CalendarChoice> calendars =
+                    MealCalendarHelper.getWritableGoogleCalendars(this);
+            runOnUiThread(() -> {
+                if (isFinishing()) return;
+                if (calendars.isEmpty()) {
+                    Toast.makeText(this, R.string.calendar_no_google_calendars,
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String[] labels = new String[calendars.size()];
+                for (int i = 0; i < calendars.size(); i++) {
+                    MealCalendarHelper.CalendarChoice choice = calendars.get(i);
+                    labels[i] = choice.name.equals(choice.account)
+                            ? choice.name
+                            : choice.name + " (" + choice.account + ")";
+                }
+                DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM d");
+                new AlertDialog.Builder(this)
+                        .setTitle("Add " + startDate.format(displayFormatter) + " – "
+                                + endDate.format(displayFormatter) + " to")
+                        .setItems(labels, (dialog, which) -> {
+                            // Remember the pick so automatic syncs use the same calendar.
+                            AppSettings.setCalendarId(this, calendars.get(which).id);
+                            executeShareWeek(calendars.get(which).id, startDate, endDate);
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            });
+        });
+    }
+
+    private void executeShareWeek(long calendarId, LocalDate startDate, LocalDate endDate) {
+        GroceryListDatabase db = GroceryListDatabase.getDatabase(getApplication());
+        GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+            List<DailyMenu> meals = db.dailyMenuDao().getMealsInRangeSync(
+                    startDate.format(DB_FORMATTER), endDate.format(DB_FORMATTER));
+            String message;
+            if (meals.isEmpty()) {
+                message = "No meals planned for that week";
+            } else {
+                try {
+                    int written = MealCalendarHelper.syncMealsToCalendar(
+                            this, calendarId, startDate, endDate, meals);
+                    message = "Added " + written + " meals to Google Calendar";
+                } catch (SecurityException e) {
+                    message = getString(R.string.calendar_permission_denied);
+                }
+            }
+            String toast = message;
+            runOnUiThread(() -> Toast.makeText(this, toast, Toast.LENGTH_SHORT).show());
+        });
     }
 
     private void executeMenuGeneration(LocalDate startDate, LocalDate endDate) {

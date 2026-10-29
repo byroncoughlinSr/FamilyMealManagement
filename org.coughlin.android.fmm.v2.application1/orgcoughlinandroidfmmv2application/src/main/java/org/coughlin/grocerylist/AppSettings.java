@@ -31,6 +31,9 @@ public class AppSettings {
     public static final String KEY_GROK_API_KEY = "grok_api_key";
     public static final String KEY_GROK_MODEL = "grok_model";
     public static final String KEY_PEXELS_API_KEY = "pexels_api_key";
+    public static final String KEY_CALENDAR_AUTO_SYNC = "calendar_auto_sync";
+    public static final String KEY_CALENDAR_ID = "calendar_id";
+    public static final String KEY_CALENDAR_PERMISSION_ASKED = "calendar_permission_asked";
 
     public static final String PROVIDER_OLLAMA = "ollama";
     public static final String PROVIDER_GEMINI = "gemini";
@@ -233,5 +236,31 @@ public class AppSettings {
 
     public static void setPexelsApiKey(Context context, String apiKey) {
         getPrefs(context).edit().putString(KEY_PEXELS_API_KEY, apiKey).apply();
+    }
+
+    /** Whether newly generated menus are added to Google Calendar automatically. */
+    public static boolean isCalendarAutoSync(Context context) {
+        return getPrefs(context).getBoolean(KEY_CALENDAR_AUTO_SYNC, true);
+    }
+
+    public static void setCalendarAutoSync(Context context, boolean enabled) {
+        getPrefs(context).edit().putBoolean(KEY_CALENDAR_AUTO_SYNC, enabled).apply();
+    }
+
+    /** Calendar meals are synced to; -1 means use the primary Google calendar. */
+    public static long getCalendarId(Context context) {
+        return getPrefs(context).getLong(KEY_CALENDAR_ID, -1);
+    }
+
+    public static void setCalendarId(Context context, long calendarId) {
+        getPrefs(context).edit().putLong(KEY_CALENDAR_ID, calendarId).apply();
+    }
+
+    public static boolean wasCalendarPermissionAsked(Context context) {
+        return getPrefs(context).getBoolean(KEY_CALENDAR_PERMISSION_ASKED, false);
+    }
+
+    public static void setCalendarPermissionAsked(Context context) {
+        getPrefs(context).edit().putBoolean(KEY_CALENDAR_PERMISSION_ASKED, true).apply();
     }
 }

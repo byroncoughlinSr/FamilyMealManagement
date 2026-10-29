@@ -29,6 +29,11 @@ public interface DailyMenuDao {
             "CASE mealType WHEN 'breakfast' THEN 1 WHEN 'lunch' THEN 2 WHEN 'dinner' THEN 3 END")
     List<DailyMenu> getMealsForDateSync(String date);
 
+    @Query("SELECT * FROM tblDailyMenu WHERE menuDate BETWEEN :startDate AND :endDate " +
+            "ORDER BY menuDate, " +
+            "CASE mealType WHEN 'breakfast' THEN 1 WHEN 'lunch' THEN 2 WHEN 'dinner' THEN 3 END")
+    List<DailyMenu> getMealsInRangeSync(String startDate, String endDate);
+
     @Query("DELETE FROM tblDailyMenu WHERE menuDate BETWEEN :startDate AND :endDate")
     void deleteMealsForDateRange(String startDate, String endDate);
 
