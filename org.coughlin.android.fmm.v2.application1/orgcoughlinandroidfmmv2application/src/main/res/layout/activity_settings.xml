@@ -47,6 +47,15 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_free_tier_ollama"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/settings_ollama_url"
@@ -73,17 +82,21 @@
                     android:textColor="@android:color/white"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/editOllamaModel"
+                <Spinner
+                    android:id="@+id/spinnerOllamaModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:singleLine="true"
                     android:background="@android:color/white"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:hint="llama3.1:8b"
-                    android:padding="8dp"
+                    android:minHeight="40dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/spinnerOllamaModelStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
                     android:layout_marginBottom="12dp" />
 
                 <Button
@@ -101,6 +114,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_free_tier_gemini"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,17 +151,21 @@
                     android:textColor="@android:color/white"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/editTextGeminiModel"
+                <Spinner
+                    android:id="@+id/spinnerGeminiModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:singleLine="true"
                     android:background="@android:color/white"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:hint="gemini-2.0-flash"
-                    android:padding="8dp"
+                    android:minHeight="40dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/spinnerGeminiModelStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
                     android:layout_marginBottom="24dp" />
 
             </LinearLayout>
@@ -150,6 +176,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_free_tier_claude"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -178,17 +213,21 @@
                     android:textColor="@android:color/white"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/editTextClaudeModel"
+                <Spinner
+                    android:id="@+id/spinnerClaudeModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:singleLine="true"
                     android:background="@android:color/white"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:hint="claude-sonnet-4-20250514"
-                    android:padding="8dp"
+                    android:minHeight="40dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/spinnerClaudeModelStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
                     android:layout_marginBottom="24dp" />
 
             </LinearLayout>
@@ -199,6 +238,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_free_tier_groq"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -227,17 +275,21 @@
                     android:textColor="@android:color/white"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/editTextGroqModel"
+                <Spinner
+                    android:id="@+id/spinnerGroqModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:singleLine="true"
                     android:background="@android:color/white"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:hint="llama-3.3-70b-versatile"
-                    android:padding="8dp"
+                    android:minHeight="40dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/spinnerGroqModelStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
                     android:layout_marginBottom="24dp" />
 
             </LinearLayout>
@@ -248,6 +300,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_free_tier_openai"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -276,17 +337,21 @@
                     android:textColor="@android:color/white"
                     android:layout_marginBottom="4dp" />
 
-                <EditText
-                    android:id="@+id/editTextOpenAiModel"
+                <Spinner
+                    android:id="@+id/spinnerOpenAiModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:singleLine="true"
                     android:background="@android:color/white"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:hint="gpt-4o-mini"
-                    android:padding="8dp"
+                    android:minHeight="40dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/spinnerOpenAiModelStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
                     android:layout_marginBottom="24dp" />
 
             </LinearLayout>
@@ -297,6 +362,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_free_tier_grok"
+                    android:textColor="@android:color/white"
+                    android:textSize="13sp"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -330,6 +404,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
+                    android:minHeight="40dp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/spinnerGrokModelStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone"
                     android:layout_marginBottom="24dp" />
 
             </LinearLayout>
