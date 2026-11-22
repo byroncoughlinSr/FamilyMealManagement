@@ -205,4 +205,6 @@
         <item>Saturday</item>
     </string-array>
 
+    <string name="find_new_photo">Find a new photo for this meal</string>
+    <string name="finding_new_photo">Meal saved. Finding a new photo…</string>
 </resources>

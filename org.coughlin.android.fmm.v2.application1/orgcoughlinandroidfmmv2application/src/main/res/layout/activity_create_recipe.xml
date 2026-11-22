@@ -48,6 +48,14 @@
                 android:textColor="?attr/colorPrimary"
                 android:paddingBottom="8dp" />
 
+            <CheckBox
+                android:id="@+id/checkBoxNewPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/find_new_photo"
+                android:visibility="gone"
+                android:layout_marginBottom="8dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
