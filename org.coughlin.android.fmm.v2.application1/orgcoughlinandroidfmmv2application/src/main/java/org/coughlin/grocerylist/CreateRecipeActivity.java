@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -27,8 +28,11 @@ import androidx.appcompat.widget.Toolbar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CreateRecipeActivity extends AppCompatActivity {
 
@@ -45,6 +49,14 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private final List<IngredientEntry> ingredientEntries = new ArrayList<>();
     private ArrayAdapter<String> suggestionAdapter;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    // Photo downloads are slow network calls; keep them off the shared DB executor.
+    private static final ExecutorService PHOTO_EXECUTOR = Executors.newSingleThreadExecutor();
+
+    private CheckBox checkBoxNewPhoto;
+    /** Local path of the photo the meal had before editing ("" if none). */
+    private String existingImagePath = "";
+    /** True once the user has ticked/unticked the photo box themselves. */
+    private boolean photoChoiceTouched = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +86,29 @@ public class CreateRecipeActivity extends AppCompatActivity {
         editProcedure = findViewById(R.id.editTextProcedure);
         Button btnSave = findViewById(R.id.btnSaveRecipe);
         Button btnGenerateRecipe = findViewById(R.id.btnGenerateRecipe);
+        checkBoxNewPhoto = findViewById(R.id.checkBoxNewPhoto);
+
+        // Photos are only shown for dinner, and need a Pexels key to fetch.
+        if ("dinner".equals(mealType) && !AppSettings.getPexelsApiKey(this).isEmpty()) {
+            checkBoxNewPhoto.setVisibility(View.VISIBLE);
+            checkBoxNewPhoto.setChecked(true);
+            checkBoxNewPhoto.setOnClickListener(v -> photoChoiceTouched = true);
+            // A renamed meal should get a matching photo unless the user says otherwise.
+            editMealDesc.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (photoChoiceTouched || existingImagePath.isEmpty()) return;
+                    String original = existingDescription == null ? "" : existingDescription.trim();
+                    checkBoxNewPhoto.setChecked(!s.toString().trim().equalsIgnoreCase(original));
+                }
+            });
+        }
 
         if (isEditMode) {
             btnGenerateRecipe.setVisibility(View.VISIBLE);
@@ -116,7 +151,9 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 return;
             }
 
-            saveRecipe(targetDate, mealType, description, procedureText);
+            boolean fetchNewPhoto = checkBoxNewPhoto.getVisibility() == View.VISIBLE
+                    && checkBoxNewPhoto.isChecked();
+            saveRecipe(targetDate, mealType, description, procedureText, fetchNewPhoto);
         });
 
         // If editing, load existing recipe data
@@ -128,6 +165,17 @@ public class CreateRecipeActivity extends AppCompatActivity {
     private void loadExistingRecipe(int dailyMenuId) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> {
             GroceryListDatabase db = GroceryListDatabase.getDatabase(getApplication());
+            DailyMenu menu = db.dailyMenuDao().getMenuByIdSync(dailyMenuId);
+            String imagePath = menu != null ? menu.getImageUrl() : "";
+            mainHandler.post(() -> {
+                existingImagePath = imagePath == null ? "" : imagePath;
+                // Keep the current photo by default; offer a new one if there isn't one.
+                if (!photoChoiceTouched && !existingImagePath.isEmpty()
+                        && new File(existingImagePath).exists()) {
+                    checkBoxNewPhoto.setChecked(false);
+                }
+            });
+
             Recipe recipe = db.recipeDao().getRecipeForMenuSync(dailyMenuId);
             if (recipe == null) return;
 
@@ -334,7 +382,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
     }
 
     private void saveRecipe(String dateStr, String mealType, String description,
-                            String procedureText) {
+                            String procedureText, boolean fetchNewPhoto) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> {
             GroceryListDatabase db = GroceryListDatabase.getDatabase(getApplication());
             DailyMenuDao menuDao = db.dailyMenuDao();
@@ -344,6 +392,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             // Delete existing meal for this date+type (FK cascade handles recipe+ingredients)
             DailyMenu existing = menuDao.getMealByDateAndTypeSync(dateStr, mealType);
+            String oldImagePath = existing != null ? existing.getImageUrl() : "";
             if (existing != null) {
                 menuDao.delete(existing);
             }
@@ -351,6 +400,10 @@ public class CreateRecipeActivity extends AppCompatActivity {
             // Insert new DailyMenu
             DailyMenu newMeal = new DailyMenu(dateStr, mealType, description);
             newMeal.setManuallySet(true);
+            if (!fetchNewPhoto && oldImagePath != null) {
+                // Keep the existing photo with the edited meal.
+                newMeal.setImageUrl(oldImagePath);
+            }
             long newMenuId = menuDao.insertReturnId(newMeal);
 
             // Insert Recipe if ingredients or procedure provided
@@ -365,7 +418,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                                 (int) newRecipeId, entry.name, entry.quantity));
                         
                         // Check if item exists in database and add to grocery list
-                        updateGroceryList(entry.name, productDao);
+                        GroceryListHelper.addIngredient(entry.name, productDao);
                     }
                     ingredientDao.insertAll(ingredients);
                 }
@@ -373,33 +426,47 @@ public class CreateRecipeActivity extends AppCompatActivity {
 
             MealCalendarHelper.autoSyncMeal(getApplicationContext(), dateStr, mealType);
 
+            if (fetchNewPhoto) {
+                fetchNewPhotoInBackground((int) newMenuId, description, oldImagePath);
+            }
+
             runOnUiThread(() -> {
-                Toast.makeText(this, "Meal saved: " + description,
+                Toast.makeText(this, fetchNewPhoto
+                                ? getString(R.string.finding_new_photo)
+                                : "Meal saved: " + description,
                         Toast.LENGTH_SHORT).show();
                 finish();
             });
         });
     }
 
-    private void updateGroceryList(String ingredientName, ProductDao productDao) {
-        String normalized = ingredientName.trim();
-        Product existingProduct = productDao.getProductByNameIgnoreCaseSync(normalized);
-
-        if (existingProduct == null && normalized.toLowerCase().endsWith("s") && normalized.length() > 3) {
-            String singular = normalized.substring(0, normalized.length() - 1);
-            existingProduct = productDao.getProductByNameIgnoreCaseSync(singular);
-        }
-
-        if (existingProduct != null) {
-            productDao.updateSelectProduct(existingProduct.getId());
-            productDao.uncheckProduct(existingProduct.getId());
-        } else {
-            if (!normalized.isEmpty()) {
-                String formattedName = normalized.substring(0, 1).toUpperCase() + normalized.substring(1);
-                Product newProduct = new Product(formattedName, true, false);
-                productDao.insert(newProduct);
+    /**
+     * Downloads a fresh photo for the saved meal after this screen has closed. The menu
+     * view observes the meal row, so the photo appears there once it is stored. The old
+     * photo file is removed only once a replacement has been saved.
+     */
+    private void fetchNewPhotoInBackground(int menuId, String description, String oldImagePath) {
+        android.content.Context appContext = getApplicationContext();
+        PHOTO_EXECUTOR.execute(() -> {
+            String newPath = ImageSearchClient.fetchAndStoreDinnerImage(
+                    appContext, description, menuId, true);
+            if (newPath.isEmpty()) {
+                // No new photo found: fall back to the old one so the meal isn't left blank.
+                if (oldImagePath != null && !oldImagePath.isEmpty()
+                        && new File(oldImagePath).exists()) {
+                    newPath = oldImagePath;
+                } else {
+                    return;
+                }
             }
-        }
+            GroceryListDatabase.getDatabase(appContext).dailyMenuDao()
+                    .updateImageUrl(menuId, newPath);
+            if (oldImagePath != null && !oldImagePath.isEmpty()
+                    && !oldImagePath.equals(newPath)) {
+                //noinspection ResultOfMethodCallIgnored
+                new File(oldImagePath).delete();
+            }
+        });
     }
 
     @Override

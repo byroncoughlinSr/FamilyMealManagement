@@ -25,6 +25,10 @@
         android:checkable="true"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_choose_calendar"
+        android:title="@string/calendar_choose"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/action_settings"

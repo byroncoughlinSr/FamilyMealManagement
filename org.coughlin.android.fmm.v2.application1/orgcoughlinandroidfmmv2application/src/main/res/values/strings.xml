@@ -79,6 +79,8 @@
     <string name="clear_next_week">Clear Next Week</string>
     <string name="share_week_to_calendar">Add Week to Google Calendar</string>
     <string name="calendar_auto_sync">Auto-add Menus to Calendar</string>
+    <string name="calendar_choose">Choose Meal Calendar</string>
+    <string name="calendar_choose_title">Add meals to which calendar?</string>
     <string name="calendar_app_missing">No calendar app found. Install Google Calendar to share meals.</string>
     <string name="calendar_permission_denied">Calendar permission is needed to add the week\'s meals.</string>
     <string name="calendar_no_google_calendars">No Google calendars found. Add a Google account in Android settings.</string>
@@ -107,6 +109,11 @@
     <string name="generating_recipe">Generating recipe…</string>
     <string name="recipe_generation_failed">Failed to generate recipe. Please try again.</string>
     <string name="generated_recipe_preview">Generated Recipe</string>
+    <string name="regenerate_recipe">Get New Recipe</string>
+    <string name="regenerate_recipe_title">Get a new recipe?</string>
+    <string name="regenerate_recipe_message">Generate a new recipe for \"%1$s\"? The current recipe will be replaced, its ingredients removed from your grocery list (unless another meal uses them), and the new ingredients added.</string>
+    <string name="regenerate_recipe_confirm">Replace</string>
+    <string name="regenerate_recipe_success">New recipe saved and grocery list updated</string>
     <string name="settings_llm_provider_label">LLM Provider</string>
     <string name="settings_api_key">API Key</string>
     <string name="settings_gemini_model">Gemini Model</string>
@@ -198,4 +205,6 @@
         <item>Saturday</item>
     </string-array>
 
+    <string name="find_new_photo">Find a new photo for this meal</string>
+    <string name="finding_new_photo">Meal saved. Finding a new photo…</string>
 </resources>

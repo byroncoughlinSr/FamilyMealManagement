@@ -142,9 +142,8 @@ public class MenuGenerationWorker extends Worker {
             if (isStopped()) return Result.retry();
             Log.d(TAG, "Response: " + response);
 
-            // Delete only non-manual meals (FK CASCADE handles recipe+ingredients)
-            dao.deleteNonManualMealsForDateRange(startDateStr, endDateStr);
-
+            // Parse the whole response before touching the database, so a bad
+            // reply leaves the existing menu (and its calendar events) as they were.
             List<DailyMenu> mealsToInsert = new ArrayList<>();
             String trimmed = response.trim();
             JSONArray menu;
@@ -182,7 +181,20 @@ public class MenuGenerationWorker extends Worker {
                 }
             }
 
-            List<Long> insertedIds = dao.insertAllReturnIds(mealsToInsert);
+            // Swap the old generated meals for the new ones in one transaction.
+            // Delete only non-manual meals (FK CASCADE handles recipe+ingredients)
+            List<Long> insertedIds = db.runInTransaction(() -> {
+                dao.deleteNonManualMealsForDateRange(startDateStr, endDateStr);
+                return dao.insertAllReturnIds(mealsToInsert);
+            });
+
+            // Put the new menu on the family's Google Calendar without any user action.
+            // Done before the image downloads so the calendar doesn't wait on them.
+            int synced = MealCalendarHelper.autoSyncRange(
+                    getApplicationContext(), startDate, endDate);
+            if (synced >= 0) {
+                Log.i(TAG, "Added " + synced + " meals to Google Calendar");
+            }
 
             // Fetch and store a photo for each dinner item. Best-effort: image
             // failures must not abort menu generation. insertAllReturnIds returns
@@ -202,13 +214,6 @@ public class MenuGenerationWorker extends Worker {
 
             Log.i(TAG, "Successfully generated menu from " +
                     startDateStr + " to " + endDateStr);
-
-            // Put the new menu on the family's Google Calendar without any user action.
-            int synced = MealCalendarHelper.autoSyncRange(
-                    getApplicationContext(), startDate, endDate);
-            if (synced >= 0) {
-                Log.i(TAG, "Added " + synced + " meals to Google Calendar");
-            }
 
             // Automatically trigger recipe generation for this new menu
             triggerRecipeGeneration(startDateStr, endDateStr);
@@ -235,11 +240,7 @@ public class MenuGenerationWorker extends Worker {
                 .putInt(RecipeGenerationWorker.KEY_CURRENT_INDEX, 0)
                 .build();
 
-        OneTimeWorkRequest recipeRequest = new OneTimeWorkRequest.Builder(
-                RecipeGenerationWorker.class)
-                .setInputData(inputData)
-                .addTag("RecipeGenerationChain")
-                .build();
+        OneTimeWorkRequest recipeRequest = RecipeGenerationWorker.buildRequest(inputData);
 
         // Use REPLACE to ensure any existing/stale recipe chains are stopped
         WorkManager.getInstance(getApplicationContext()).enqueueUniqueWork(

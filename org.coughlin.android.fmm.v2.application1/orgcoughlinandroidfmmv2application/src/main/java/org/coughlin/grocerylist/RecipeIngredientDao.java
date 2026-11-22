@@ -20,6 +20,13 @@ public interface RecipeIngredientDao {
     @Query("SELECT * FROM tblRecipeIngredient WHERE recipeId = :recipeId")
     List<RecipeIngredient> getIngredientsForRecipeSync(int recipeId);
 
+    @Query("DELETE FROM tblRecipeIngredient WHERE recipeId = :recipeId")
+    void deleteIngredientsForRecipe(int recipeId);
+
+    /** Number of ingredient rows (in any recipe) whose name matches, case-insensitive. */
+    @Query("SELECT COUNT(*) FROM tblRecipeIngredient WHERE LOWER(TRIM(name)) = LOWER(TRIM(:name))")
+    int countIngredientsByName(String name);
+
     @Query("DELETE FROM tblRecipeIngredient WHERE recipeId IN " +
             "(SELECT _id FROM tblRecipe WHERE dailyMenuId IN " +
             "(SELECT _id FROM tblDailyMenu WHERE menuDate BETWEEN :startDate AND :endDate))")

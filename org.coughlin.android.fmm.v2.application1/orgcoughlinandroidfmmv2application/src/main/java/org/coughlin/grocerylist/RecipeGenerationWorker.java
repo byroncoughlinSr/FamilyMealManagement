@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.work.BackoffPolicy;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Generates recipes for a single day's menu. Processes one day at a time
@@ -29,6 +31,9 @@ public class RecipeGenerationWorker extends Worker {
     static final String KEY_END_DATE = "end_date";
     static final String KEY_CURRENT_INDEX = "current_index";
     static final String WORK_NAME = "RecipeGenerationChain";
+
+    /** Retries per day for rate limits (HTTP 429) and server errors before giving up. */
+    private static final int MAX_ATTEMPTS = 6;
 
     public RecipeGenerationWorker(@NonNull Context context,
                                   @NonNull WorkerParameters params) {
@@ -107,6 +112,15 @@ public class RecipeGenerationWorker extends Worker {
             return Result.success();
 
         } catch (LlmApiException e) {
+            // Rate limits (e.g. Groq's free-tier tokens-per-minute cap) and server errors
+            // are temporary: retry this day with backoff instead of ending the chain,
+            // which would leave every later day without recipes.
+            boolean transientError = e.getStatusCode() == 429 || e.getStatusCode() >= 500;
+            if (transientError && getRunAttemptCount() < MAX_ATTEMPTS - 1) {
+                Log.w(TAG, "HTTP " + e.getStatusCode() + " for index " + currentIndex
+                        + ", retrying (attempt " + (getRunAttemptCount() + 1) + ")");
+                return Result.retry();
+            }
             Log.e(TAG, "Failed to generate recipes for index " + currentIndex, e);
             return Result.failure(new Data.Builder()
                     .putString(MenuGenerationWorker.KEY_ERROR_MESSAGE,
@@ -129,11 +143,7 @@ public class RecipeGenerationWorker extends Worker {
                     .putInt(KEY_CURRENT_INDEX, nextIndex)
                     .build();
 
-            OneTimeWorkRequest nextRequest = new OneTimeWorkRequest.Builder(
-                    RecipeGenerationWorker.class)
-                    .setInputData(nextData)
-                    .addTag(WORK_NAME)
-                    .build();
+            OneTimeWorkRequest nextRequest = buildRequest(nextData);
 
             // Use plain enqueue (not enqueueUniqueWork) for chained follow-ups.
             // The unique work constraint on the initial trigger from MenuGenerationWorker
@@ -145,6 +155,18 @@ public class RecipeGenerationWorker extends Worker {
         } else {
             Log.i(TAG, "Recipe generation chain complete.");
         }
+    }
+
+    /**
+     * Request for one day of the chain. Retries back off exponentially from 20s, which
+     * gives per-minute rate limits time to reset.
+     */
+    static OneTimeWorkRequest buildRequest(Data inputData) {
+        return new OneTimeWorkRequest.Builder(RecipeGenerationWorker.class)
+                .setInputData(inputData)
+                .addTag(WORK_NAME)
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 20, TimeUnit.SECONDS)
+                .build();
     }
 
     private String buildRecipePrompt(String date, List<DailyMenu> meals) {
@@ -244,33 +266,12 @@ public class RecipeGenerationWorker extends Worker {
                                 recipeId,
                                 ingredientName,
                                 quantity));
-                        updateGroceryList(ingredientName, productDao);
+                        GroceryListHelper.addIngredient(ingredientName, productDao);
                     }
                 }
             }
             if (!allIngredients.isEmpty()) {
                 ingredientDao.insertAll(allIngredients);
-            }
-        }
-    }
-
-    private void updateGroceryList(String ingredientName, ProductDao productDao) {
-        String normalized = ingredientName.trim();
-        Product existingProduct = productDao.getProductByNameIgnoreCaseSync(normalized);
-
-        if (existingProduct == null && normalized.toLowerCase().endsWith("s") && normalized.length() > 3) {
-            String singular = normalized.substring(0, normalized.length() - 1);
-            existingProduct = productDao.getProductByNameIgnoreCaseSync(singular);
-        }
-
-        if (existingProduct != null) {
-            productDao.updateSelectProduct(existingProduct.getId());
-            productDao.uncheckProduct(existingProduct.getId());
-        } else {
-            if (!normalized.isEmpty()) {
-                String formattedName = normalized.substring(0, 1).toUpperCase() + normalized.substring(1);
-                Product newProduct = new Product(formattedName, true, false);
-                productDao.insert(newProduct);
             }
         }
     }

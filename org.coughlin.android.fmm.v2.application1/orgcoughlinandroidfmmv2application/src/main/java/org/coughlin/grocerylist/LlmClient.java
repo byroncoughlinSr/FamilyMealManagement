@@ -85,6 +85,7 @@ public class LlmClient {
             }
 
             JSONObject ollamaResponse = new JSONObject(responseBuilder.toString());
+            UsageReporter.fromOllama(context, AppSettings.getOllamaModel(context), ollamaResponse);
             return ollamaResponse.getString("response");
         } finally {
             if (conn != null) {
@@ -162,6 +163,7 @@ public class LlmClient {
             }
 
             JSONObject geminiResponse = new JSONObject(responseBuilder.toString());
+            UsageReporter.fromGemini(context, model, geminiResponse);
             JSONArray candidates = geminiResponse.getJSONArray("candidates");
             JSONObject firstCandidate = candidates.getJSONObject(0);
             JSONObject candidateContent = firstCandidate.getJSONObject("content");
@@ -246,6 +248,7 @@ public class LlmClient {
             }
 
             JSONObject claudeResponse = new JSONObject(responseBuilder.toString());
+            UsageReporter.fromAnthropic(context, model, claudeResponse);
             JSONArray content = claudeResponse.getJSONArray("content");
             // Current models think by default, so the reply can open with a thinking
             // block; the answer is the first text block, not necessarily the first block.
@@ -328,6 +331,7 @@ public class LlmClient {
             }
 
             JSONObject groqResponse = new JSONObject(responseBuilder.toString());
+            UsageReporter.fromOpenAi(context, "groq", model, groqResponse);
             JSONArray choices = groqResponse.getJSONArray("choices");
             JSONObject firstChoice = choices.getJSONObject(0);
             JSONObject message = firstChoice.getJSONObject("message");
@@ -345,6 +349,7 @@ public class LlmClient {
             throw new Exception("OpenAI API key is not configured. Set it in Settings.");
         }
         return callOpenAiCompatible(
+                context,
                 "https://api.openai.com/v1/chat/completions",
                 apiKey,
                 AppSettings.getOpenAiModel(context),
@@ -358,6 +363,7 @@ public class LlmClient {
             throw new Exception("Grok API key is not configured. Set it in Settings.");
         }
         return callOpenAiCompatible(
+                context,
                 "https://api.x.ai/v1/chat/completions",
                 apiKey,
                 AppSettings.getGrokModel(context),
@@ -365,7 +371,7 @@ public class LlmClient {
                 "Grok");
     }
 
-    private static String callOpenAiCompatible(String endpoint, String apiKey, String model,
+    private static String callOpenAiCompatible(Context context, String endpoint, String apiKey, String model,
                                                String prompt, String providerName) throws Exception {
         HttpURLConnection conn = null;
         try {
@@ -424,6 +430,7 @@ public class LlmClient {
             }
 
             JSONObject response = new JSONObject(responseBuilder.toString());
+            UsageReporter.fromOpenAi(context, "Grok".equals(providerName) ? "xai" : "openai", model, response);
             JSONArray choices = response.getJSONArray("choices");
             JSONObject firstChoice = choices.getJSONObject(0);
             JSONObject message = firstChoice.getJSONObject("message");
