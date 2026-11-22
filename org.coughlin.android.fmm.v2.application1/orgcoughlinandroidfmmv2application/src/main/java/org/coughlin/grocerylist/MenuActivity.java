@@ -29,7 +29,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.LongConsumer;
 
 public class MenuActivity extends AppCompatActivity {
     private DrawerHandler drawerHandler;
@@ -58,7 +60,7 @@ public class MenuActivity extends AppCompatActivity {
                         } else if (shareWeekAfterPermission) {
                             chooseCalendarAndShareWeek();
                         } else {
-                            autoSyncUpcomingMeals();
+                            startAutoSync();
                         }
                     });
 
@@ -95,6 +97,48 @@ public class MenuActivity extends AppCompatActivity {
         AppSettings.setCalendarPermissionAsked(this);
         shareWeekAfterPermission = false;
         calendarPermissionLauncher.launch(CALENDAR_PERMISSIONS);
+    }
+
+    /**
+     * Turns on automatic adds. With several Google accounts on the phone the app won't guess
+     * which one meals belong to, so it asks once; the choice is then used from here on.
+     */
+    private void startAutoSync() {
+        GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+            boolean needsChoice = MealCalendarHelper.needsCalendarChoice(this);
+            runOnUiThread(() -> {
+                if (isFinishing()) return;
+                if (needsChoice) {
+                    showCalendarChooser(getString(R.string.calendar_choose_title),
+                            calendarId -> autoSyncUpcomingMeals());
+                } else {
+                    autoSyncUpcomingMeals();
+                }
+            });
+        });
+    }
+
+    /** Switches the meal calendar, moving this and next week's meals to the new one. */
+    private void chooseMealCalendar() {
+        long oldCalendarId = AppSettings.getCalendarId(this);
+        showCalendarChooser(getString(R.string.calendar_choose_title), calendarId -> {
+            if (oldCalendarId < 0 || oldCalendarId == calendarId) {
+                autoSyncUpcomingMeals();
+                return;
+            }
+            LocalDate startDate = MenuGenerationWorker.currentWeekStart();
+            LocalDate endDate = startDate.plusDays(13);
+            GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+                try {
+                    // Syncing an empty list removes the app's meal events from the old calendar.
+                    MealCalendarHelper.syncMealsToCalendar(this, oldCalendarId,
+                            startDate, endDate, Collections.emptyList());
+                } catch (RuntimeException ignored) {
+                    // Old calendar may be gone (account removed); nothing to clean up.
+                }
+                runOnUiThread(this::autoSyncUpcomingMeals);
+            });
+        });
     }
 
     /** Adds menus that were generated before calendar access was granted. */
@@ -173,13 +217,24 @@ public class MenuActivity extends AppCompatActivity {
             }
             return true;
         }
+        if (item.getItemId() == R.id.action_choose_calendar) {
+            if (hasCalendarPermission()) {
+                chooseMealCalendar();
+            } else {
+                // Clearing the saved choice makes startAutoSync() ask once access is granted.
+                AppSettings.setCalendarId(this, -1);
+                shareWeekAfterPermission = false;
+                calendarPermissionLauncher.launch(CALENDAR_PERMISSIONS);
+            }
+            return true;
+        }
         if (item.getItemId() == R.id.action_calendar_auto_sync) {
             boolean enabled = !item.isChecked();
             item.setChecked(enabled);
             AppSettings.setCalendarAutoSync(this, enabled);
             if (enabled) {
                 if (hasCalendarPermission()) {
-                    autoSyncUpcomingMeals();
+                    startAutoSync();
                 } else {
                     shareWeekAfterPermission = false;
                     calendarPermissionLauncher.launch(CALENDAR_PERMISSIONS);
@@ -297,9 +352,23 @@ public class MenuActivity extends AppCompatActivity {
                 .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate endDate = startDate.plusDays(6);
 
+        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM d");
+        showCalendarChooser("Add " + startDate.format(displayFormatter) + " – "
+                        + endDate.format(displayFormatter) + " to",
+                calendarId -> executeShareWeek(calendarId, startDate, endDate));
+    }
+
+    /**
+     * Lists the phone's Google calendars, grouped by account. The pick is saved so automatic
+     * syncs use the same calendar, then handed to onPicked.
+     */
+    private void showCalendarChooser(String title, LongConsumer onPicked) {
         GroceryListDatabase.databaseWriteExecutor.execute(() -> {
             List<MealCalendarHelper.CalendarChoice> calendars =
                     MealCalendarHelper.getWritableGoogleCalendars(this);
+            calendars.sort((a, b) -> a.account.equals(b.account)
+                    ? Boolean.compare(b.isMain, a.isMain)
+                    : a.account.compareToIgnoreCase(b.account));
             runOnUiThread(() -> {
                 if (isFinishing()) return;
                 if (calendars.isEmpty()) {
@@ -314,14 +383,12 @@ public class MenuActivity extends AppCompatActivity {
                             ? choice.name
                             : choice.name + " (" + choice.account + ")";
                 }
-                DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM d");
                 new AlertDialog.Builder(this)
-                        .setTitle("Add " + startDate.format(displayFormatter) + " – "
-                                + endDate.format(displayFormatter) + " to")
+                        .setTitle(title)
                         .setItems(labels, (dialog, which) -> {
-                            // Remember the pick so automatic syncs use the same calendar.
-                            AppSettings.setCalendarId(this, calendars.get(which).id);
-                            executeShareWeek(calendars.get(which).id, startDate, endDate);
+                            long calendarId = calendars.get(which).id;
+                            AppSettings.setCalendarId(this, calendarId);
+                            onPicked.accept(calendarId);
                         })
                         .setNegativeButton("Cancel", null)
                         .show();

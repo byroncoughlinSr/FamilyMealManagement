@@ -365,7 +365,7 @@ public class CreateRecipeActivity extends AppCompatActivity {
                                 (int) newRecipeId, entry.name, entry.quantity));
                         
                         // Check if item exists in database and add to grocery list
-                        updateGroceryList(entry.name, productDao);
+                        GroceryListHelper.addIngredient(entry.name, productDao);
                     }
                     ingredientDao.insertAll(ingredients);
                 }
@@ -379,27 +379,6 @@ public class CreateRecipeActivity extends AppCompatActivity {
                 finish();
             });
         });
-    }
-
-    private void updateGroceryList(String ingredientName, ProductDao productDao) {
-        String normalized = ingredientName.trim();
-        Product existingProduct = productDao.getProductByNameIgnoreCaseSync(normalized);
-
-        if (existingProduct == null && normalized.toLowerCase().endsWith("s") && normalized.length() > 3) {
-            String singular = normalized.substring(0, normalized.length() - 1);
-            existingProduct = productDao.getProductByNameIgnoreCaseSync(singular);
-        }
-
-        if (existingProduct != null) {
-            productDao.updateSelectProduct(existingProduct.getId());
-            productDao.uncheckProduct(existingProduct.getId());
-        } else {
-            if (!normalized.isEmpty()) {
-                String formattedName = normalized.substring(0, 1).toUpperCase() + normalized.substring(1);
-                Product newProduct = new Product(formattedName, true, false);
-                productDao.insert(newProduct);
-            }
-        }
     }
 
     @Override

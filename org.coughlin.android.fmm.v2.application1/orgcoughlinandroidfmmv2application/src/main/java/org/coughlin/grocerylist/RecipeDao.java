@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ public interface RecipeDao {
 
     @Query("SELECT * FROM tblRecipe WHERE dailyMenuId = :dailyMenuId LIMIT 1")
     LiveData<Recipe> getRecipeForMenu(int dailyMenuId);
+
+    @Update
+    void update(Recipe recipe);
 
     @Query("SELECT * FROM tblRecipe WHERE dailyMenuId = :dailyMenuId LIMIT 1")
     Recipe getRecipeForMenuSync(int dailyMenuId);

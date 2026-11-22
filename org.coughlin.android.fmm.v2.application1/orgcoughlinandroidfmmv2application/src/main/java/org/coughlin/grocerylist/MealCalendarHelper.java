@@ -18,7 +18,9 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Shares meals to Google Calendar.
@@ -45,11 +47,14 @@ public final class MealCalendarHelper {
         public final long id;
         public final String name;
         public final String account;
+        /** The account's own calendar (the one named after the account), not a secondary one. */
+        public final boolean isMain;
 
-        CalendarChoice(long id, String name, String account) {
+        CalendarChoice(long id, String name, String account, boolean isMain) {
             this.id = id;
             this.name = name;
             this.account = account;
+            this.isMain = isMain;
         }
     }
 
@@ -86,7 +91,8 @@ public final class MealCalendarHelper {
         String[] projection = {
                 CalendarContract.Calendars._ID,
                 CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
-                CalendarContract.Calendars.ACCOUNT_NAME
+                CalendarContract.Calendars.ACCOUNT_NAME,
+                CalendarContract.Calendars.OWNER_ACCOUNT
         };
         String selection = CalendarContract.Calendars.ACCOUNT_TYPE + " = ? AND "
                 + CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL + " >= ? AND "
@@ -95,17 +101,46 @@ public final class MealCalendarHelper {
                 GOOGLE_ACCOUNT_TYPE,
                 String.valueOf(CalendarContract.Calendars.CAL_ACCESS_CONTRIBUTOR)
         };
+        // IS_PRIMARY only exists on Android 10+, so the main calendar is found by
+        // OWNER_ACCOUNT == ACCOUNT_NAME, which works on every supported version.
         try (Cursor cursor = context.getContentResolver().query(
                 CalendarContract.Calendars.CONTENT_URI, projection, selection, args,
-                CalendarContract.Calendars.IS_PRIMARY + " DESC, "
+                CalendarContract.Calendars.ACCOUNT_NAME + ", "
                         + CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)) {
             if (cursor == null) return calendars;
             while (cursor.moveToNext()) {
-                calendars.add(new CalendarChoice(
-                        cursor.getLong(0), cursor.getString(1), cursor.getString(2)));
+                String account = cursor.getString(2);
+                calendars.add(new CalendarChoice(cursor.getLong(0), cursor.getString(1),
+                        account, account != null && account.equals(cursor.getString(3))));
             }
         }
+        // Main calendars first so a single-account phone defaults to the obvious one.
+        calendars.sort((a, b) -> Boolean.compare(b.isMain, a.isMain));
         return calendars;
+    }
+
+    /**
+     * True when meals have nowhere certain to go: no saved calendar (or it was removed)
+     * and the phone has more than one Google account to choose from. Call off the main thread.
+     */
+    public static boolean needsCalendarChoice(Context context) {
+        return pickCalendar(context, getWritableGoogleCalendars(context)) < 0
+                && hasCalendarPermission(context);
+    }
+
+    /**
+     * The saved calendar if it still exists; otherwise the main calendar when the phone has
+     * only one Google account. Never guesses between accounts. -1 if nothing fits.
+     */
+    private static long pickCalendar(Context context, List<CalendarChoice> calendars) {
+        long savedId = AppSettings.getCalendarId(context);
+        Set<String> accounts = new HashSet<>();
+        for (CalendarChoice choice : calendars) {
+            if (choice.id == savedId) return savedId;
+            accounts.add(choice.account);
+        }
+        if (accounts.size() != 1) return -1;
+        return calendars.get(0).id; // main calendar sorts first
     }
 
     public static boolean hasCalendarPermission(Context context) {
@@ -172,18 +207,12 @@ public final class MealCalendarHelper {
         }
     }
 
-    /** Saved calendar if still available, else the primary Google calendar; -1 if off. */
+    /** Calendar automatic syncs write to (see {@link #pickCalendar}); -1 if off or unchosen. */
     private static long autoSyncCalendarId(Context context) {
         if (!AppSettings.isCalendarAutoSync(context) || !hasCalendarPermission(context)) {
             return -1;
         }
-        List<CalendarChoice> calendars = getWritableGoogleCalendars(context);
-        if (calendars.isEmpty()) return -1;
-        long savedId = AppSettings.getCalendarId(context);
-        for (CalendarChoice choice : calendars) {
-            if (choice.id == savedId) return savedId;
-        }
-        return calendars.get(0).id; // primary sorts first
+        return pickCalendar(context, getWritableGoogleCalendars(context));
     }
 
     /**
