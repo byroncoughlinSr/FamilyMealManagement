@@ -163,6 +163,11 @@
     <string name="settings_prompt_required">Prompt cannot be empty</string>
     <string name="title_activity_help">Help</string>
     <string name="help_title">Help &amp; Instructions</string>
+    <string name="help_share_list_heading">Sharing Your Shopping List</string>
+    <string name="help_share_list_body">Tap the share icon in the Grocery List toolbar to send your list to someone, the same way you share a photo from the camera. The app builds a shopping list of the items you have not checked off yet and opens the Android share sheet, where you can pick Messages, Gmail, WhatsApp, Quick Share, a notes app, or any other app. Email apps fill in the subject for you. Items you have already checked off are left out. If everything is checked off, the app tells you there is nothing left to buy.</string>
+    <string name="share_list">Share list</string>
+    <string name="share_list_chooser_title">Share shopping list</string>
+    <string name="share_list_nothing_to_buy">Nothing left to buy \u2014 the shopping list is empty</string>
     <string name="long_press_to_delete">Hold to delete</string>
     <string name="clear_grocery_list">Clear List</string>
 

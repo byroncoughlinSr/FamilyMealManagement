@@ -6,7 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **FamilyMealManagement** — Android app for family meal planning and grocery list management.
 
-- **Package:** `org.coughlin.grocerylist`
+- **Package:** `org.coughlin.grocerylist` (Java namespace)
+- **applicationId:** `org.coughlin.familymeals.planner` (Play Store listing "Family Meals: AI Meal Planner"; the old `org.coughlin.familymeals` belonged to a closed Play account and can't be reused)
 - **Language:** Java
 - **Min SDK:** 26 (Android 8.0) / **Target SDK:** 35 (Android 15)
 - **Build System:** Gradle with Android Gradle Plugin
@@ -83,6 +84,16 @@ Workers use `java.net.HttpURLConnection` directly (no Retrofit/OkHttp). JSON par
 `SettingsActivity` is the UI for all of the above and also provides a connection test button.
 
 Network security config (`res/xml/network_security_config.xml`) explicitly permits cleartext HTTP to the local Ollama host.
+
+### Grocery List Sharing
+
+The share icon in `GrocerylistActivity`'s toolbar (`R.id.action_share_grocery_list`, `res/menu/grocerylist.xml`, `res/drawable/ic_share.xml`) sends the list as a plain-text shopping list through the Android share sheet, like the camera's share button.
+
+- `GroceryListViewModel.loadItemsToBuy()` reads `productDao.getSelectedProductsSync()` on `databaseWriteExecutor` and posts the result to the main thread.
+- `ShoppingListFormatter` (plain Java, no Android deps) keeps items with `proSelected = 1` and `proChecked = 0` (on the list, not checked off), trims names, and drops blanks. It formats them as a title (`Shopping List – Mon, Nov 23`), one `☐ item` line each, and a `Sent from Family Meals` footer.
+- `GrocerylistActivity.shareShoppingList()` sends `Intent.ACTION_SEND` (`text/plain`) with `EXTRA_TEXT`, plus the title as `EXTRA_SUBJECT` (email subject), wrapped in `Intent.createChooser`. No permissions or `FileProvider` are needed.
+- If nothing is left to buy, it shows a toast (`R.string.share_list_nothing_to_buy`) instead of opening the chooser.
+- User instructions are in the Help screen (`activity_help.xml`, "Sharing Your Shopping List", text in `strings.xml`) and in the root `README.md`.
 
 ### Navigation
 

@@ -117,6 +117,10 @@ public class GrocerylistActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_share_grocery_list) {
+            shareShoppingList();
+            return true;
+        }
         if (item.getItemId() == R.id.action_clear_grocery_list) {
             new AlertDialog.Builder(this)
                     .setTitle("Clear Grocery List")
@@ -131,6 +135,30 @@ public class GrocerylistActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    /**
+     * Shares the items still to buy as a plain-text shopping list through the
+     * Android share sheet (the same chooser the camera uses to share a photo).
+     */
+    private void shareShoppingList() {
+        groceryListViewModel.loadItemsToBuy(items -> {
+            if (isFinishing() || isDestroyed()) return;
+            if (items.isEmpty()) {
+                Toast.makeText(this, R.string.share_list_nothing_to_buy, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            java.util.Date now = new java.util.Date();
+            java.util.Locale locale = java.util.Locale.getDefault();
+            String title = ShoppingListFormatter.title(now, locale);
+
+            Intent send = new Intent(Intent.ACTION_SEND);
+            send.setType("text/plain");
+            send.putExtra(Intent.EXTRA_TEXT, ShoppingListFormatter.format(items, now, locale));
+            send.putExtra(Intent.EXTRA_SUBJECT, title);   // email apps use this as the subject
+
+            startActivity(Intent.createChooser(send, getString(R.string.share_list_chooser_title)));
+        });
+    }
+
     private void handleIntent(Intent intent) {
         String action = intent.getAction();
         if (Intent.ACTION_SEARCH.equals(action)) {
