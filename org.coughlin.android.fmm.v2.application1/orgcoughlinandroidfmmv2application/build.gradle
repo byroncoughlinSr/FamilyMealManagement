@@ -11,7 +11,7 @@ android {
     defaultConfig {
         targetSdk 35
         minSdkVersion 26
-        applicationId "org.coughlin.familymeals"
+        applicationId "org.coughlin.familymeals.planner"
         versionCode 1
         versionName "1.0"
     }
