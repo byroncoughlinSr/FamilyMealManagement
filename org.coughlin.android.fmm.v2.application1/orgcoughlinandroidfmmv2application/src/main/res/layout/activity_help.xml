@@ -79,6 +79,24 @@
                 android:layout_marginBottom="24dp"
                 android:text="@string/help_share_list_body" />
 
+            <!-- Voice Prompt Builder -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help_prompt_builder_heading"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="@string/help_prompt_builder_body" />
+
             <!-- Add Product -->
             <TextView
                 android:layout_width="wrap_content"
@@ -131,7 +149,25 @@
                 android:textSize="14sp"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="24dp"
-                android:text="Swipe left and right to browse each day of the week. Each day shows breakfast, lunch, and dinner slots. Tap a meal to view its recipe. Use the Generate Menu button to have the AI fill in empty meal slots for the upcoming week. You can also search past meals to reuse them." />
+                android:text="Swipe left and right to browse each day of the week. Each day shows breakfast, lunch, and dinner slots. Tap a meal to view its recipe. Use the Generate Menu button to have the AI fill in empty meal slots for the upcoming week. Slots your Menu Prompt says to skip (for example \&quot;No lunches this week\&quot;) stay empty. You can also search past meals to reuse them." />
+
+            <!-- Skipping Meals -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help_skip_meals_heading"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="@string/help_skip_meals_body" />
 
             <!-- Add Menu Item -->
             <TextView
@@ -272,7 +308,7 @@
                 android:textSize="14sp"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="24dp"
-                android:text="- Customize the menu generation prompt in Settings to match your family\'s dietary preferences and restrictions.\n\n- Meals marked as manually set will not be overwritten by automatic generation.\n\n- Use the meal search feature to reuse past meals you enjoyed.\n\n- Check your purchase history to see buying patterns and plan ahead." />
+                android:text="- Customize the menu generation prompt in Settings to match your family\'s dietary preferences and restrictions.\n\n- Tap the mic next to a prompt in Settings and say what you want. The AI writes the prompt for you and can use notes you share from Google Keep, such as a freezer inventory.\n\n- Say \&quot;No lunches this week\&quot; in the Menu Prompt to leave those slots empty.\n\n- Meals marked as manually set will not be overwritten by automatic generation.\n\n- Use the meal search feature to reuse past meals you enjoyed.\n\n- Check your purchase history to see buying patterns and plan ahead." />
 
         </LinearLayout>
     </ScrollView>

@@ -67,6 +67,7 @@ ViewModels: `GroceryListViewModel`, `DailyMenuViewModel`, `HistoryViewModel`, `P
 **WorkManager** handles all background tasks.
 
 - `MenuGenerationWorker` — calls Ollama API to generate meal descriptions for empty meal slots in a date range; only fills slots where `manuallySet = false`; chains `RecipeGenerationWorker` on completion
+  - Skipped meals: the request tells the AI to return `""` for a meal the prompt says to skip (e.g. "no lunches"). `isSkippedMeal()` also catches "None", "No lunch", "Skip", "N/A" and the like. Those slots are left empty, so no meal, recipe or grocery items are created for them.
 - `RecipeGenerationWorker` — calls Ollama API to generate recipe procedure, image URL, and ingredients for each meal
 - `MenuGenerationScheduler` — schedules a weekly `MenuGenerationWorker` using day/time from `AppSettings`
 
@@ -95,8 +96,16 @@ The share icon in `GrocerylistActivity`'s toolbar (`R.id.action_share_grocery_li
 - If nothing is left to buy, it shows a toast (`R.string.share_list_nothing_to_buy`) instead of opening the chooser.
 - User instructions are in the Help screen (`activity_help.xml`, "Sharing Your Shopping List", text in `strings.xml`) and in the root `README.md`.
 
+### AI Prompt Builder (voice + shared notes)
+
+The mic buttons next to the menu/recipe prompts in `SettingsActivity` no longer just dictate. After speech recognition, `PromptBuilder.build(kind, spoken, currentPrompt, notes)` (pure Java) makes a request that `LlmClient.callLlm` sends to whichever provider is saved in Settings. The reply goes through `PromptBuilder.cleanResponse` and is shown in a preview dialog with Replace / Insert my words only / Cancel. Nothing is saved until Save. If no provider is configured, it falls back to plain dictation.
+
+- Generated text is appended to the worker prompts (`MenuGenerationWorker`, `RecipeGenerationWorker`), so the builder must produce preferences only, never JSON or format instructions.
+- Notes come from Google Keep (it has no public API for personal accounts) through the share sheet: `SharedNoteReceiverActivity` (`ACTION_SEND` `text/plain`, no UI) saves `EXTRA_TEXT` + `EXTRA_SUBJECT` to `ReferenceNoteStore`. That is JSON in SharedPreferences, so no DB migration. It keeps at most 10 notes of up to 4,000 chars each, newest first, and a same title replaces the old copy. Then it opens Settings with `EXTRA_SCROLL_TO_PROMPTS`.
+- Settings shows the notes as chips (`chipGroupSavedNotes`): tap to preview, ✕ to delete.
+
 ### Navigation
 
 `DrawerHandler` manages the side navigation drawer present in most activities. The drawer provides access to all major sections.
 
-`GroceryContentProvider` (authority: `org.coughlin.provider.grocery`) exposes grocery data for inter-component sharing.
+`GroceryContentProvider` (authority: `org.coughlin.familymeals.planner.provider.grocery`, i.e. `${applicationId}.provider.grocery`; must stay unique because the old `org.coughlin.familymeals` app used `org.coughlin.provider.grocery`) exposes grocery data for inter-component sharing.

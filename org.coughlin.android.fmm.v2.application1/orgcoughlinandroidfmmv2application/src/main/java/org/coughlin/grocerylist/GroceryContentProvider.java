@@ -43,7 +43,7 @@ public class GroceryContentProvider  extends ContentProvider {
 			cursor.addRow(new Object[]{
 					product.getId(),
 					product.getName(),
-					"content://org.coughlin.provider.grocery/" + product.getId()
+					"content://" + FamilyMealContracts.AUTHORITY + "/" + product.getId()
 			});
 		}
 		return cursor;

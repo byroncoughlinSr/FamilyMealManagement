@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme">
     <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
+            android:label="@string/title_activity_label"
             android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
@@ -101,6 +101,20 @@
         </activity>
 
         <activity
+            android:name=".SharedNoteReceiverActivity"
+            android:label="@string/shared_note_target_label"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".HelpActivity"
             android:label="@string/title_activity_help"
             android:parentActivityName=".HomeActivity" >
@@ -112,7 +126,7 @@
         </activity>
         <provider
             android:name=".GroceryContentProvider"
-            android:authorities="org.coughlin.provider.grocery"
+            android:authorities="${applicationId}.provider.grocery"
             android:exported="false" >
         </provider>
     </application>

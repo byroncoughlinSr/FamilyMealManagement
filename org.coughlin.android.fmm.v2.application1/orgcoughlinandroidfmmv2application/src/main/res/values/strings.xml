@@ -151,9 +151,9 @@
     <string name="settings_testing">Testing…</string>
     <string name="settings_prompt_label">Menu Generation Preferences</string>
     <string name="settings_recipe_prompt_label">Recipe Generation Requirements</string>
-    <string name="settings_dictate_menu_prompt">Dictate menu generation preferences</string>
-    <string name="settings_dictate_recipe_prompt">Dictate recipe generation requirements</string>
-    <string name="settings_speech_prompt">Speak your prompt text</string>
+    <string name="settings_dictate_menu_prompt">Speak to have the AI write your menu preferences</string>
+    <string name="settings_dictate_recipe_prompt">Speak to have the AI write your recipe requirements</string>
+    <string name="settings_speech_prompt">Tell the AI what you want, e.g. \"use my grocery note and add fish on Fridays\"</string>
     <string name="settings_speech_unavailable">Speech recognition is not available on this device</string>
     <string name="settings_schedule_label">Generation Schedule</string>
     <string name="settings_schedule_day">Day of week</string>
@@ -212,4 +212,28 @@
 
     <string name="find_new_photo">Find a new photo for this meal</string>
     <string name="finding_new_photo">Meal saved. Finding a new photo…</string>
+    <string name="title_activity_label">Family Meals</string>
+
+    <!-- AI prompt builder + notes shared from Google Keep -->
+    <string name="shared_note_target_label">Family Meals: save note for AI prompts</string>
+    <string name="shared_note_saved">Saved note \"%1$s\" for AI prompts</string>
+    <string name="shared_note_empty">That share had no text to save</string>
+    <string name="settings_saved_notes_label">Saved notes for AI</string>
+    <string name="settings_saved_notes_hint">To give the AI a sample prompt or a list of groceries you have: in Google Keep, open a note, tap Share, and pick Family Meals. Then tap a mic above and say what you want.</string>
+    <string name="settings_saved_notes_empty">No notes saved yet</string>
+    <string name="settings_saved_note_delete">Delete note %1$s</string>
+    <string name="prompt_builder_working_menu">Writing your menu prompt…</string>
+    <string name="prompt_builder_working_recipe">Writing your recipe prompt…</string>
+    <string name="prompt_builder_preview_title">AI-written prompt</string>
+    <string name="prompt_builder_replace">Replace</string>
+    <string name="prompt_builder_insert_words">Insert my words only</string>
+    <string name="prompt_builder_tap_save">Prompt updated. Tap Save to keep it.</string>
+    <string name="prompt_builder_error_title">Couldn\'t write the prompt</string>
+    <string name="prompt_builder_error">The AI request failed: %1$s</string>
+    <string name="prompt_builder_empty">The AI returned an empty reply</string>
+    <string name="prompt_builder_no_provider">Your words were inserted. Set up an AI provider and tap Save to have the AI write prompts for you.</string>
+    <string name="help_prompt_builder_heading">Voice Prompt Builder &amp; Google Keep Notes</string>
+    <string name="help_prompt_builder_body">In Settings, tap the mic next to the Menu or Recipe prompt and say what you want, for example \"use what\'s in my grocery note and add fish on Fridays\" or \"copy the style of my sample prompt\". The AI you chose in Settings writes the new prompt for that field and shows it to you. Tap Replace, then Save to keep it, or Insert my words only to type exactly what you said.\n\nTo let the AI use your Google Keep notes, open a note in Keep, tap Share, and pick \"Family Meals: save note for AI prompts\". Up to 10 notes are kept under Saved notes for AI in Settings. The AI decides which notes fit what you asked for, so you don\'t have to name one. Tap a note to read it, or the x to delete it.\n\nExample: share your freezer inventory and your weekly menu note, then tap the Menu Prompt mic and say: \"Start over and write a weekly menu for two people. Use my freezer inventory note for what we have and follow the style of my weekly menu note. Include eggs four times during the week. Sunday breakfast is omelettes with ham. Friday dinner is homemade pizza and Greek salad. No lunches this week.\"\n\nTips:\n- Say \"start over\" to replace the whole prompt. Without it, the AI changes only what you ask for, so you can add to a prompt in short pieces, such as \"Also add: …\".\n- The mic stops when you pause. If it cuts you off, tap Replace, then tap the mic again and say the rest.\n- Check the preview for misheard food names and fix them in the field before tapping Save.\n- Serving size belongs in the Recipe Prompt, because it changes ingredient amounts. Tap the Recipe Prompt mic and say \"make every recipe serve two people\".\n- The mic uses the AI provider that is saved. If you just switched providers, tap Save first.</string>
+    <string name="help_skip_meals_heading">Skipping Meals</string>
+    <string name="help_skip_meals_body">To leave a meal out, say so in the Menu Prompt, for example \"No lunches this week\" or \"No breakfast on Saturday\". When the menu is generated, those slots stay empty, so no recipe or grocery items are created for them. This works for breakfast, lunch and dinner. Meals you added yourself are never removed. If the AI made a meal you didn\'t want, update the prompt and generate the menu again to replace it.</string>
 </resources>
