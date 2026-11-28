@@ -62,6 +62,8 @@ Tap the mic next to the Menu or Recipe prompt in **Settings** and say what you w
 
 Google Keep has no public API for personal accounts, so you bring notes in with the share sheet: in Keep, open a note → **Share** → **Family Meals: save note for AI prompts**. Up to 10 notes are kept under **Saved notes for AI** in Settings. The AI decides which notes fit your request, such as a sample prompt to copy or a list of groceries you have.
 
+To leave meals out, say so in the Menu Prompt (for example "No lunches this week"). Those slots stay empty when the menu is generated, so no recipe or grocery items are made for them.
+
 The in-app **Help** screen (navigation drawer → Help) explains each of these.
 
 ## Building
