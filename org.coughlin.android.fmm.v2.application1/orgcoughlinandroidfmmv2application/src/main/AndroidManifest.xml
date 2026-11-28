@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme">
     <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
+            android:label="@string/title_activity_label"
             android:launchMode="singleTop"
             android:exported="true">
             <intent-filter>
@@ -112,7 +112,7 @@
         </activity>
         <provider
             android:name=".GroceryContentProvider"
-            android:authorities="org.coughlin.provider.grocery"
+            android:authorities="${applicationId}.provider.grocery"
             android:exported="false" >
         </provider>
     </application>

@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
  * A contract defines the information that a client needs to access the provider as one or more data tables.
  */
 public final class FamilyMealContracts {
-    public static final String AUTHORITY = "org.coughlin.provider.grocery";
+    public static final String AUTHORITY = "org.coughlin.familymeals.planner.provider.grocery";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     // This class cannot be instantiated

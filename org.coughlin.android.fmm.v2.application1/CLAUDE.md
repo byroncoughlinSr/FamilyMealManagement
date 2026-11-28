@@ -99,4 +99,4 @@ The share icon in `GrocerylistActivity`'s toolbar (`R.id.action_share_grocery_li
 
 `DrawerHandler` manages the side navigation drawer present in most activities. The drawer provides access to all major sections.
 
-`GroceryContentProvider` (authority: `org.coughlin.provider.grocery`) exposes grocery data for inter-component sharing.
+`GroceryContentProvider` (authority: `org.coughlin.familymeals.planner.provider.grocery`, i.e. `${applicationId}.provider.grocery`; must stay unique because the old `org.coughlin.familymeals` app used `org.coughlin.provider.grocery`) exposes grocery data for inter-component sharing.
