@@ -28,7 +28,8 @@ public final class PromptBuilder {
               .append("the dates to plan and the exact JSON format to return. So write ONLY the ")
               .append("family's meal preferences: which meals or proteins, how often, dietary ")
               .append("rules, side dishes, and ingredients they already have and want to use up. ")
-              .append("Do NOT mention JSON, output formats, or specific dates.\n")
+              .append("Do NOT mention JSON, output formats, or specific dates. ")
+              .append("If the user wants to skip a meal, say it plainly, e.g. \"No lunches this week.\"\n")
               .append("Example of the style wanted: \"")
               .append(AppSettings.DEFAULT_MENU_PROMPT).append("\"\n\n");
         } else {

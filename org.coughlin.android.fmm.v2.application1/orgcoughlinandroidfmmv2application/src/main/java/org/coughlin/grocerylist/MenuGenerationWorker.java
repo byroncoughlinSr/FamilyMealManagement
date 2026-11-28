@@ -134,7 +134,9 @@ public class MenuGenerationWorker extends Worker {
                     "For each date, provide the meals that are NOT already listed above. " +
                     "Return ONLY valid JSON in this exact format, no other text: " +
                     "{\"menu\":[{\"date\":\"yyyy-MM-dd\",\"breakfast\":\"meal\"," +
-                    "\"lunch\":\"meal\",\"dinner\":\"meal\"}]}" +
+                    "\"lunch\":\"meal\",\"dinner\":\"meal\"}]} " +
+                    "If the preferences below say to skip a meal (for example \"no lunches\"), " +
+                    "set that meal to an empty string \"\" instead of describing it. " +
                     preferences;
 
             Log.d(TAG, "Prompt: " + prompt);
@@ -167,17 +169,20 @@ public class MenuGenerationWorker extends Worker {
                 String date = dayObj.getString("date");
                 Set<String> manualTypes = manualDateMeals.getOrDefault(date, Collections.emptySet());
 
-                if (!manualTypes.contains("breakfast") && dayObj.has("breakfast")) {
+                if (!manualTypes.contains("breakfast") && dayObj.has("breakfast")
+                        && !isSkippedMeal(dayObj.optString("breakfast"))) {
                     mealsToInsert.add(new DailyMenu(date, "breakfast",
-                            dayObj.getString("breakfast")));
+                            dayObj.getString("breakfast").trim()));
                 }
-                if (!manualTypes.contains("lunch") && dayObj.has("lunch")) {
+                if (!manualTypes.contains("lunch") && dayObj.has("lunch")
+                        && !isSkippedMeal(dayObj.optString("lunch"))) {
                     mealsToInsert.add(new DailyMenu(date, "lunch",
-                            dayObj.getString("lunch")));
+                            dayObj.getString("lunch").trim()));
                 }
-                if (!manualTypes.contains("dinner") && dayObj.has("dinner")) {
+                if (!manualTypes.contains("dinner") && dayObj.has("dinner")
+                        && !isSkippedMeal(dayObj.optString("dinner"))) {
                     mealsToInsert.add(new DailyMenu(date, "dinner",
-                            dayObj.getString("dinner")));
+                            dayObj.getString("dinner").trim()));
                 }
             }
 
@@ -251,4 +256,21 @@ public class MenuGenerationWorker extends Worker {
         Log.i(TAG, "Triggered unique recipe generation chain for " + startDate + " to " + endDate);
     }
 
+
+    private static final java.util.regex.Pattern SKIPPED_MEAL = java.util.regex.Pattern.compile(
+            "(none|nothing|n/?a|-+|skip|skipped|skipping|not planned|no meal"
+            + "|no (breakfast|lunch|dinner)( (today|this week|planned))?)");
+
+    /**
+     * True when the AI left a meal slot out on purpose ("", "None", "No lunch",
+     * "Skip", "N/A"...), e.g. because the menu prompt says "no lunches this week".
+     * Those slots are left empty instead of being saved as a meal (which would
+     * also get a recipe and grocery items).
+     */
+    static boolean isSkippedMeal(String description) {
+        if (description == null) return true;
+        String s = description.trim().toLowerCase(java.util.Locale.ROOT)
+                .replaceAll("^[(\\[]+|[)\\].!]+$", "").trim();
+        return s.isEmpty() || SKIPPED_MEAL.matcher(s).matches();
+    }
 }

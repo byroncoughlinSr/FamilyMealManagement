@@ -67,6 +67,7 @@ ViewModels: `GroceryListViewModel`, `DailyMenuViewModel`, `HistoryViewModel`, `P
 **WorkManager** handles all background tasks.
 
 - `MenuGenerationWorker` — calls Ollama API to generate meal descriptions for empty meal slots in a date range; only fills slots where `manuallySet = false`; chains `RecipeGenerationWorker` on completion
+  - Skipped meals: the request tells the AI to return `""` for a meal the prompt says to skip (e.g. "no lunches"). `isSkippedMeal()` also catches "None", "No lunch", "Skip", "N/A" and the like. Those slots are left empty, so no meal, recipe or grocery items are created for them.
 - `RecipeGenerationWorker` — calls Ollama API to generate recipe procedure, image URL, and ingredients for each meal
 - `MenuGenerationScheduler` — schedules a weekly `MenuGenerationWorker` using day/time from `AppSettings`
 
