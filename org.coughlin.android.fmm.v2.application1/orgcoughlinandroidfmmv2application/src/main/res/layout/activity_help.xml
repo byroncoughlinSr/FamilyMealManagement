@@ -59,7 +59,25 @@
                 android:textSize="14sp"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="24dp"
-                android:text="Your grocery list shows all selected products. Tap an item to check it off as purchased. Swipe right on an item to remove it from the list and log it to your purchase history. Use the search icon in the toolbar to filter products by name." />
+                android:text="Your grocery list shows all selected products. Tap an item to check it off as purchased. Swipe right on an item to remove it from the list and log it to your purchase history. Use the search icon in the toolbar to filter products by name, and the share icon to send the list to someone." />
+
+            <!-- Sharing Your Shopping List -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help_share_list_heading"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="@string/help_share_list_body" />
 
             <!-- Add Product -->
             <TextView

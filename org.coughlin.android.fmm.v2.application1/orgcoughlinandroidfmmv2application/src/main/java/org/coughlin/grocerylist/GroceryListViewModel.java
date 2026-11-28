@@ -70,6 +70,17 @@ public class GroceryListViewModel extends AndroidViewModel {
     public void update(Product product) {
         repository.update(product);
     }
+    /**
+     * Loads the grocery list items that are not checked off yet (the shopping
+     * list to share) on the database thread and delivers them on the main thread.
+     */
+    public void loadItemsToBuy(@NonNull java.util.function.Consumer<List<String>> callback) {
+        android.os.Handler main = new android.os.Handler(android.os.Looper.getMainLooper());
+        GroceryListDatabase.databaseWriteExecutor.execute(() -> {
+            List<String> items = ShoppingListFormatter.itemsToBuy(repository.getSelectedProducts());
+            main.post(() -> callback.accept(items));
+        });
+    }
     public void clearGroceryList() {
         repository.clearGroceryList();
     }

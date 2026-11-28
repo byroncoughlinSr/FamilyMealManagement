@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_clear_menu"
         android:title="@string/clear_grocery_list"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_share_grocery_list"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share_list"
+        app:showAsAction="always" />
     <item android:id="@+id/search"
         android:icon="@drawable/ic_menu_search"
         android:title="@string/search_title"
