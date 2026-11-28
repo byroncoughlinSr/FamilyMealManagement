@@ -15,6 +15,7 @@
         app:popupTheme="@style/ToolbarPopupTheme" />
 
     <ScrollView
+        android:id="@+id/settingsScroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -464,6 +465,7 @@
                 android:layout_marginBottom="24dp" />
 
             <TextView
+                android:id="@+id/textMenuPromptLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings_prompt_label"
@@ -534,6 +536,40 @@
                 android:contentDescription="@string/settings_dictate_recipe_prompt"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/textSavedNotesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_saved_notes_label"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_saved_notes_hint"
+                android:textSize="13sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/textSavedNotesEmpty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_saved_notes_empty"
+                android:textSize="13sp"
+                android:textStyle="italic"
+                android:textColor="#CCCCCC"
+                android:layout_marginBottom="16dp" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupSavedNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
 
             <TextView
                 android:layout_width="wrap_content"

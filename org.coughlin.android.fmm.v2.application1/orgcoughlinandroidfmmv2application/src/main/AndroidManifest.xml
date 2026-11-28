@@ -101,6 +101,20 @@
         </activity>
 
         <activity
+            android:name=".SharedNoteReceiverActivity"
+            android:label="@string/shared_note_target_label"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".HelpActivity"
             android:label="@string/title_activity_help"
             android:parentActivityName=".HomeActivity" >

@@ -20,10 +20,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ScrollView;
 import android.widget.Toast;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -38,6 +43,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    /** Intent extra: scroll straight to the prompt fields (used after a note is shared in). */
+    public static final String EXTRA_SCROLL_TO_PROMPTS = "scroll_to_prompts";
 
     private static final String[] PROVIDER_ORDER = {
             AppSettings.PROVIDER_OLLAMA,
@@ -83,6 +91,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final ExecutorService modelListExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService promptBuilderExecutor = Executors.newSingleThreadExecutor();
+    private AlertDialog promptProgressDialog;
 
     private static final int[] DAY_VALUES = {
             Calendar.SUNDAY, Calendar.MONDAY, Calendar.TUESDAY,
@@ -200,6 +210,50 @@ public class SettingsActivity extends AppCompatActivity {
         ImageButton recipePromptMic = findViewById(R.id.btnRecipePromptMic);
         menuPromptMic.setOnClickListener(v -> startSpeechToText(promptEditText));
         recipePromptMic.setOnClickListener(v -> startSpeechToText(recipePromptEditText));
+
+        refreshSavedNotes();
+        if (getIntent().getBooleanExtra(EXTRA_SCROLL_TO_PROMPTS, false)) scrollToPrompts();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        refreshSavedNotes();
+        if (intent.getBooleanExtra(EXTRA_SCROLL_TO_PROMPTS, false)) scrollToPrompts();
+    }
+
+    private void scrollToPrompts() {
+        ScrollView scroll = findViewById(R.id.settingsScroll);
+        View label = findViewById(R.id.textMenuPromptLabel);
+        scroll.post(() -> scroll.smoothScrollTo(0, label.getTop()));
+    }
+
+    /** Shows one chip per note shared in from Google Keep: tap to preview, ✕ to delete. */
+    private void refreshSavedNotes() {
+        ChipGroup group = findViewById(R.id.chipGroupSavedNotes);
+        TextView empty = findViewById(R.id.textSavedNotesEmpty);
+        group.removeAllViews();
+        List<ReferenceNote> notes = ReferenceNoteStore.list(this);
+        empty.setVisibility(notes.isEmpty() ? View.VISIBLE : View.GONE);
+        group.setVisibility(notes.isEmpty() ? View.GONE : View.VISIBLE);
+        for (ReferenceNote note : notes) {
+            Chip chip = new Chip(this);
+            chip.setText(note.displayTitle());
+            chip.setCloseIconVisible(true);
+            chip.setCloseIconContentDescription(
+                    getString(R.string.settings_saved_note_delete, note.displayTitle()));
+            chip.setOnClickListener(v -> new AlertDialog.Builder(this)
+                    .setTitle(note.displayTitle())
+                    .setMessage(note.text)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show());
+            chip.setOnCloseIconClickListener(v -> {
+                ReferenceNoteStore.remove(this, note.id);
+                refreshSavedNotes();
+            });
+            group.addView(chip);
+        }
     }
 
     @Override
@@ -207,6 +261,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onDestroy();
         mainHandler.removeCallbacksAndMessages(null);
         modelListExecutor.shutdownNow();
+        promptBuilderExecutor.shutdownNow();
+        if (promptProgressDialog != null) promptProgressDialog.dismiss();
     }
 
     /**
@@ -251,6 +307,79 @@ public class SettingsActivity extends AppCompatActivity {
         String spoken = matches.get(0).trim();
         if (spoken.isEmpty()) return;
 
+        if (!AppSettings.isProviderConfigured(this)) {
+            insertDictation(target, spoken);
+            Toast.makeText(this, R.string.prompt_builder_no_provider, Toast.LENGTH_LONG).show();
+            return;
+        }
+        buildPromptWithAi(target, spoken);
+    }
+
+    /**
+     * Asks the AI chosen in Settings to write the prompt for {@code target} from what the
+     * user said, the field's current text, and any notes shared in from Google Keep.
+     * The result is shown for review; nothing is saved until the user taps Save.
+     */
+    private void buildPromptWithAi(EditText target, String spoken) {
+        PromptBuilder.Kind kind = target == promptEditText
+                ? PromptBuilder.Kind.MENU : PromptBuilder.Kind.RECIPE;
+        String request = PromptBuilder.build(kind, spoken, target.getText().toString(),
+                ReferenceNoteStore.list(this));
+
+        promptProgressDialog = new AlertDialog.Builder(this)
+                .setMessage(kind == PromptBuilder.Kind.MENU
+                        ? R.string.prompt_builder_working_menu
+                        : R.string.prompt_builder_working_recipe)
+                .setCancelable(false)
+                .show();
+
+        android.content.Context appContext = getApplicationContext();
+        promptBuilderExecutor.execute(() -> {
+            String result = null;
+            String error = null;
+            try {
+                result = PromptBuilder.cleanResponse(LlmClient.callLlm(appContext, request));
+                if (result.isEmpty()) error = getString(R.string.prompt_builder_empty);
+            } catch (Exception e) {
+                error = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+            }
+            String finalResult = result;
+            String finalError = error;
+            mainHandler.post(() -> {
+                if (isFinishing() || isDestroyed()) return;
+                if (promptProgressDialog != null) {
+                    promptProgressDialog.dismiss();
+                    promptProgressDialog = null;
+                }
+                showPromptPreview(target, spoken, finalResult, finalError);
+            });
+        });
+    }
+
+    private void showPromptPreview(EditText target, String spoken, String generated, String error) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setNeutralButton(R.string.prompt_builder_insert_words,
+                        (d, w) -> insertDictation(target, spoken))
+                .setNegativeButton(android.R.string.cancel, null);
+        if (error != null) {
+            builder.setTitle(R.string.prompt_builder_error_title)
+                    .setMessage(getString(R.string.prompt_builder_error, error));
+        } else {
+            builder.setTitle(R.string.prompt_builder_preview_title)
+                    .setMessage(generated)
+                    .setPositiveButton(R.string.prompt_builder_replace, (d, w) -> {
+                        target.setText(generated);
+                        target.setSelection(generated.length());
+                        target.requestFocus();
+                        Toast.makeText(this, R.string.prompt_builder_tap_save,
+                                Toast.LENGTH_SHORT).show();
+                    });
+        }
+        builder.show();
+    }
+
+    /** Plain dictation: insert the spoken words at the cursor. */
+    private void insertDictation(EditText target, String spoken) {
         // Insert at the cursor (or replace the selection); fall back to appending.
         int start = Math.max(0, target.getSelectionStart());
         int end = Math.max(0, target.getSelectionEnd());

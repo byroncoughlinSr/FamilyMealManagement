@@ -57,6 +57,11 @@ Sent from Family Meals
 ### AI providers
 Choose a provider in **Settings**: Ollama (on your local network), Gemini, Claude, Groq, OpenAI, Grok, or an on-device model where the phone supports it. Model lists load live from each provider with prices shown. Prompts can be edited, and dictated with the microphone button.
 
+### Voice prompt builder and Google Keep notes
+Tap the mic next to the Menu or Recipe prompt in **Settings** and say what you want (for example "use what's in my grocery note and add fish on Fridays"). The AI you chose writes a new prompt for that field and shows it for review: **Replace** (then **Save**), **Insert my words only** (plain dictation), or **Cancel**.
+
+Google Keep has no public API for personal accounts, so you bring notes in with the share sheet: in Keep, open a note → **Share** → **Family Meals: save note for AI prompts**. Up to 10 notes are kept under **Saved notes for AI** in Settings. The AI decides which notes fit your request, such as a sample prompt to copy or a list of groceries you have.
+
 The in-app **Help** screen (navigation drawer → Help) explains each of these.
 
 ## Building

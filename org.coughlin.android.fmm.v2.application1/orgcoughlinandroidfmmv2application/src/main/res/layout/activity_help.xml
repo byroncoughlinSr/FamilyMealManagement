@@ -79,6 +79,24 @@
                 android:layout_marginBottom="24dp"
                 android:text="@string/help_share_list_body" />
 
+            <!-- Voice Prompt Builder -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help_prompt_builder_heading"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"
+                android:text="@string/help_prompt_builder_body" />
+
             <!-- Add Product -->
             <TextView
                 android:layout_width="wrap_content"
